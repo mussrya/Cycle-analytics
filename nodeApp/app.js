@@ -1,6 +1,4 @@
 // app.js
-// Written by Ryan Musselwhite
-// Version 0.1
 
 // BASE SETUP
 // Call the packages we need
@@ -83,8 +81,10 @@ function getData() {
 
 function saveData(station) {
     console.log(Date() + '- Adding the data to the database');
+    var entryDate = Date();
     // Save data to database
     var stationSave = new Stations({
+        timestamp: entryDate,
         stationId: '1',
         name: 'River Street , Clerkenwell',
         terminalName: '001023',

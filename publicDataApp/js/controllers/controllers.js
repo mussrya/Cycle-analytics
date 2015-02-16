@@ -1,3 +1,5 @@
+// controllers.js
+
 // Controller for the Home page
 app.controller('publicHome', function ($scope, $http) {
     $scope.config = {
