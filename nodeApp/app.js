@@ -63,7 +63,7 @@ function getData() {
             parseString(xml, function (err, result) {
                 if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                     lastCallTimeStamp = result.stations['$'].lastUpdate;
-                    saveData(JSON.stringify(result.stations.station[0]));
+                    saveData(result.stations['station']);
                 } else {
                     console.log(Date() + '- No new updates since last run');
                 }
@@ -83,27 +83,28 @@ function saveData(station) {
     console.log(Date() + '- Adding the data to the database');
     var entryDate = Date();
     // Save data to database
-    var stationSave = new Stations({
-        timestamp: entryDate,
-        stationId: '1',
-        name: 'River Street , Clerkenwell',
-        terminalName: '001023',
-        lat: '51.52916347',
-        long: '0.109970527',
-        installed: 'true',
-        locked: 'false',
-        installDate: '1278947280000',
-        removalDate: '',
-        temporary: 'false',
-        nbBikes: '4',
-        nbEmptyDocks: '15',
-        nbDocks: '19'
-    });
+    for (var i = 0, len = station.length; i < len; i++) {
 
-    stationSave.save(function (err, thor) {
-        if (err) return console.error(err);
-    });
-
+        var stationSave = new Stations({
+            timestamp: entryDate,
+            stationId: station[i].id,
+            name: station[i].name,
+            terminalName: station[i].terminalName,
+            lat: station[i].lat,
+            long: station[i].long,
+            installed: station[i].installed,
+            locked: station[i].locked,
+            installDate: station[i].installDate,
+            removalDate: station[i].removalDate,
+            temporary: station[i].temporary,
+            nbBikes: station[i].nbBikes,
+            nbEmptyDocks: station[i].nbEmptyDocks,
+            nbDocks: station[i].nbDocks
+        });
+        stationSave.save(function (err, thor) {
+            if (err) return console.error(err);
+        });
+    }
 }
 
 // Will call the captureData function every 30 seconds
