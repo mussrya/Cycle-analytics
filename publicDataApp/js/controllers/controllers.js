@@ -36,15 +36,21 @@ app.controller('publicHome', function ($scope, $http) {
         }
     */
 
-    $scope.data = dataRequest('requestDaily');
+    $scope.data = dataRequest('requestDaily', $http);
 
 
 
 });
 
 // Function to request data from the Node API
-function dataRequest($requestType) {
+function dataRequest($requestType, $http) {
     if ($requestType === 'requestDaily') {
+        $http.get('http://192.168.0.8:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+            console.log(data);
+        }).
+        error(function (data, status, headers, config) {
+            console.log('error');
+        });
         var chartData = {
             series: ['a', 'b'],
             data: [{

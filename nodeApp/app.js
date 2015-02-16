@@ -27,10 +27,21 @@ var dataCounter = 0;
 // Stores the timestamp within the XML request to ensure data is not replicated
 var lastCallTimeStamp = 0;
 
+// Stores a "cached" version of the most up to date data to reduce DB requests
+var stationsRealTime;
+
 // Import the model for the storing of data
 var Stations = require('./models/schema.js');
 
 // Frontend API
+// Allows for cross domain calls for development purposes
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 // Create the middleware which will be used in all requests & log activity to the console
 router.use(function (req, res, next) {
     console.log(Date() + ' - ' + req.originalUrl);
@@ -40,7 +51,7 @@ router.use(function (req, res, next) {
 // Create the stationsActive route, this will get live data
 router.route('/stationsActive')
     .get(function (req, res) {
-        res.json('response');
+        res.json(JSON.stringify(stationsRealTime));
     });
 
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
@@ -63,6 +74,7 @@ function getData() {
             parseString(xml, function (err, result) {
                 if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                     lastCallTimeStamp = result.stations['$'].lastUpdate;
+                    stationsRealTime = result.stations['station'];
                     saveData(result.stations['station']);
                 } else {
                     console.log(Date() + '- No new updates since last run');
