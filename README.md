@@ -1,4 +1,4 @@
-# Public-data-visulisation
+# Public-data-visualisation
 This project provides both real-time and historical analysis of Barcylays cycle stations (aka Borris bikes) within London.
 
 The main structure is as follows:
