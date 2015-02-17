@@ -121,10 +121,10 @@ function saveData(station) {
 }
 
 // Will call the captureData function every 30 seconds
-setInterval(function () {
-    //setTimeout(function () {
+//setInterval(function () {
+    setTimeout(function () {
     getData();
-}, 30000);
+}, 3000);
 
 // Launch the server
 app.listen(port);

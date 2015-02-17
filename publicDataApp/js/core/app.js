@@ -1,6 +1,6 @@
 // app.js
 
-var app = angular.module('publicData', ['ui.bootstrap', "ngRoute", 'angularCharts']);
+var app = angular.module('publicData', ['ui.bootstrap', "ngRoute", 'chart.js']);
 
 app.config(function ($routeProvider) {
     $routeProvider.
