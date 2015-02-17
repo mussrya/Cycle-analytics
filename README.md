@@ -1,5 +1,5 @@
 # Public-data-visualisation
-This project provides both real-time and historical analysis of Barcylays cycle stations (aka Borris bikes) within London.
+This project provides both real-time and historical analysis of Barclays cycle stations (aka Borris bikes) within London.
 
 The main structure is as follows:
 -   nodeApp - the NodeJS backend application which provides both an API for the frontend and a process for grabbing / storing & processing station data
@@ -12,7 +12,7 @@ The main structure is as follows:
 
 Public data visualisation uses multiple frameworks / libraries as shown below:
 
-* [AngularJS] - HTML enhanced for web apps!
+* [AngularJS] - HTML enhanced for web apps
 * [Node.js] - evented I/O for the backend
 * [Express] - fast node.js network app framework [@tjholowaychuk]
 * 
@@ -31,4 +31,4 @@ Want to contribute? Once I have finalised the first version release I will be op
 
 ### License
 
-TBD
+MIT Licence
