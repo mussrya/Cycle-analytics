@@ -51,6 +51,7 @@ router.use(function (req, res, next) {
 // Create the stationsActive route, this will get live data
 router.route('/stationsActive')
     .get(function (req, res) {
+        // look into not converting it to json without stringify
         res.json(JSON.stringify(stationsRealTime));
     });
 

@@ -36,22 +36,30 @@ app.controller('publicHome', function ($scope, $http) {
         }
     */
 
-    $scope.data = dataRequest('requestDaily', $http);
-
-
+    $scope.data = dataRequest('stationsRealTime', $http);
+    console.log($scope.data);
 
 });
 
 // Function to request data from the Node API
 function dataRequest($requestType, $http) {
-    if ($requestType === 'requestDaily') {
-        $http.get('http://192.168.0.8:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
-            console.log(data);
-        }).
-        error(function (data, status, headers, config) {
-            console.log('error');
-        });
-        var chartData = {
+    var chartData = {
+        series: [],
+        data: []
+    };
+    if ($requestType === 'stationsRealTime') {
+        $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+            var station = JSON.parse(data);
+            for (var i = 0, len = station.length; i < len; i++) {
+                chartData.series[i] = station[i].nbBikes.toString();
+                //TODO (look at .push)
+                chartData.data[i] = {
+                    x: station[i].nbBikes,
+                    y: [station[i].nbBikes]
+                };
+
+            }
+            /* var chartData = {
             series: ['a', 'b'],
             data: [{
                 x: 'a',
@@ -60,8 +68,11 @@ function dataRequest($requestType, $http) {
                 x: 'b',
                 y: [20]
             }]
-        };
-
+        };*/
+        }).
+        error(function (data, status, headers, config) {
+            console.log('error');
+        });
         return chartData;
     }
 }
