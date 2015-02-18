@@ -2,7 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var StationsSchema = new Schema({
-    timestamp: { type : Date, default: Date.now },
+    timestamp: {
+        type: Date,
+        default: Date.now
+    },
     stationId: String,
     name: String,
     terminalName: String,

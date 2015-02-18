@@ -119,7 +119,7 @@ app.controller('publicHome', function ($scope, $http) {
 
         // String - Template string for multiple tooltips
         multiTooltipTemplate: "<%= value %>",
-        
+
         // Boolean - Whether grid lines are shown across the chart
         scaleShowGridLines: true,
 
@@ -174,23 +174,23 @@ app.controller('publicHome', function ($scope, $http) {
         console.log(points, evt);
     };
 
-    /*
-    // Has been commented out for now as it may no longer be required
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            $scope.config.isAnimate = false;
-        }
-    */
-
-    $scope.dataRealtime = dataRequest('stationsRealTime', $http, $scope);
+    $scope.dataRealTime = dataRequest('stationsRealTime', $http, $scope);
+    
     $scope.data = dataRequest('chart', $http, $scope);
-    console.log($scope);
+    $scope.selected = undefined;
+    
+    $scope.callBack = function ($item, $model) {
+        $scope.dataRealTimeChild = [];
+        $scope.dataRealTimeChild[0] = $item;
+    };
 });
 
 // Function to request data from the Node API
 function dataRequest($requestType, $http, $scope) {
     if ($requestType === 'stationsRealTime') {
         $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
-            $scope.dataRealtime = JSON.parse(data);
+            $scope.dataRealTime = JSON.parse(data);
+            $scope.dataRealTimeChild = $scope.dataRealTime;
         }).
         error(function (data, status, headers, config) {
             console.log('error');

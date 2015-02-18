@@ -1,10 +1,36 @@
 <div class="containerLg">
     <h1>Bicycle trends</h1>
     <div class="well">
-        <h3>All stations</h3>
+        <h3>Real time cycle hire stations</h3>
         <br/>
-        <div class="section" ng-repeat="stations in dataRealtime">
-            <div>{{stations.name}}</div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" ng-model="selected" typeahead-on-select="callBack($item, $model, $label)" typeahead="stations as stations.name for stations in dataRealTime | filter:$viewValue | limitTo:8" class="form-control">
+                    <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Use my current location</button>
+      </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+        </div>
+        <!-- /.row -->
+        <div class="section" ng-repeat="stations in dataRealTimeChild">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{stations.name[0]}}</h3>
+                </div>
+                <div class="panel-body">
+                    ID: {{stations.id[0]}}
+                    <br/> Installed: {{stations.installed[0]}}
+                    <br/> Locked: {{stations.locked[0]}}
+                    <br/> nbBikes: {{stations.nbBikes[0]}}
+                    <br/> nbEmptyDocks: {{stations.nbEmptyDocks[0]}}
+                    <br/> nbDocks: {{stations.nbDocks[0]}}
+                    <br/>
+                </div>
+            </div>
         </div>
     </div>
     <div class="well">

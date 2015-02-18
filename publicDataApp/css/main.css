@@ -72,3 +72,8 @@ div.containerLg {
 div.well {
     background: #FFFFFF;
 }
+
+.col-lg-6 {
+    width: 100%;
+    margin-bottom:20px;
+}
