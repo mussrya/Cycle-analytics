@@ -119,53 +119,69 @@ app.controller('publicHome', function ($scope, $http) {
 
         // String - Template string for multiple tooltips
         multiTooltipTemplate: "<%= value %>",
+<<<<<<< HEAD
 
         ///Boolean - Whether grid lines are shown across the chart
+=======
+        
+        // Boolean - Whether grid lines are shown across the chart
+>>>>>>> 97a2dc01d6ef1b05b7650844e55d66edb171aedb
         scaleShowGridLines: true,
 
-        //String - Colour of the grid lines
+        // String - Colour of the grid lines
         scaleGridLineColor: "rgba(0,0,0,.05)",
 
-        //Number - Width of the grid lines
+        // Number - Width of the grid lines
         scaleGridLineWidth: 1,
 
-        //Boolean - Whether to show horizontal lines (except X axis)
+        // Boolean - Whether to show horizontal lines (except X axis)
         scaleShowHorizontalLines: true,
 
+<<<<<<< HEAD
         //Boolean - Whether to show vertical lines (except Y axis)
         scaleShowVerticalLines: true,
+=======
+        // Boolean - Whether to show vertical lines (except Y axis)
+        scaleShowVerticalLines: false,
+>>>>>>> 97a2dc01d6ef1b05b7650844e55d66edb171aedb
 
-        //Boolean - Whether the line is curved between points
+        // Boolean - Whether the line is curved between points
         bezierCurve: true,
 
+<<<<<<< HEAD
         //Number - Tension of the bezier curve between points
         bezierCurveTension: 0.3,
+=======
+        // Number - Tension of the bezier curve between points
+        bezierCurveTension: 0.4,
+>>>>>>> 97a2dc01d6ef1b05b7650844e55d66edb171aedb
 
-        //Boolean - Whether to show a dot for each point
+        // Boolean - Whether to show a dot for each point
         pointDot: true,
 
-        //Number - Radius of each point dot in pixels
+        // Number - Radius of each point dot in pixels
         pointDotRadius: 4,
 
-        //Number - Pixel width of point dot stroke
+        // Number - Pixel width of point dot stroke
         pointDotStrokeWidth: 1,
 
-        //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+        // Number - amount extra to add to the radius to cater for hit detection outside the drawn point
         pointHitDetectionRadius: 1,
 
-        //Boolean - Whether to show a stroke for datasets
+        // Boolean - Whether to show a stroke for datasets
         datasetStroke: true,
 
-        //Number - Pixel width of dataset stroke
+        // Number - Pixel width of dataset stroke
         datasetStrokeWidth: 2,
 
-        //Boolean - Whether to fill the dataset with a colour
+        // Boolean - Whether to fill the dataset with a colour
         datasetFill: true,
 
-        //String - A legend template
+        // String - A legend template
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
 
     }
+
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
@@ -183,6 +199,7 @@ app.controller('publicHome', function ($scope, $http) {
 });
 
 // Function to request data from the Node API
+<<<<<<< HEAD
 function dataRequest($requestType, $http, $scope) {
     if ($requestType === 'stationsRealTime') {
         $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
@@ -200,6 +217,17 @@ function dataRequest($requestType, $http, $scope) {
                 colours: ['#03A9F4']
             };
             chartData.data.push([]);
+=======
+function dataRequest($requestType, $http) {
+    var chartData = {
+        labels: [],
+        series: [],
+        data: []
+    };
+    chartData.data.push([]);
+    if ($requestType === 'stationsRealTime'){
+        $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config){
+>>>>>>> 97a2dc01d6ef1b05b7650844e55d66edb171aedb
             var station = JSON.parse(data);
             chartData.series = ['stations'];
             for (var i = 0, len = station.length; i < 60; i++) {
