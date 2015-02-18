@@ -3,9 +3,14 @@
     <div class="well">
         <h3>All stations</h3>
         <br/>
-        <canvas id="line" class="chart chart-line" data="data.data"
-  labels="data.labels" options="options" legend="false" series="data.series"
-  click="onClick">
-</canvas> 
+        <div class="section" ng-repeat="stations in dataRealtime">
+            <div>{{stations.name}}</div>
+        </div>
+    </div>
+    <div class="well">
+        <h3>Chart example</h3>
+        <br/>
+        <canvas id="line" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
+        </canvas>
     </div>
 </div>

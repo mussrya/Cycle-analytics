@@ -33,6 +33,9 @@ var stationsRealTime;
 // Import the model for the storing of data
 var Stations = require('./models/schema.js');
 
+// Work on this more
+var londonBikes = londonBikes || {};
+
 // Frontend API
 // Allows for cross domain calls for development purposes
 app.all('*', function(req, res, next) {

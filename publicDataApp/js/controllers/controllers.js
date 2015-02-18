@@ -49,7 +49,7 @@ app.controller('publicHome', function ($scope, $http) {
         scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
 
         // Number - Scale label font size in pixels
-        scaleFontSize: 12,
+        scaleFontSize: 14,
 
         // String - Scale label font weight style
         scaleFontStyle: "normal",
@@ -119,8 +119,8 @@ app.controller('publicHome', function ($scope, $http) {
 
         // String - Template string for multiple tooltips
         multiTooltipTemplate: "<%= value %>",
-        
-            ///Boolean - Whether grid lines are shown across the chart
+
+        ///Boolean - Whether grid lines are shown across the chart
         scaleShowGridLines: true,
 
         //String - Colour of the grid lines
@@ -133,13 +133,13 @@ app.controller('publicHome', function ($scope, $http) {
         scaleShowHorizontalLines: true,
 
         //Boolean - Whether to show vertical lines (except Y axis)
-        scaleShowVerticalLines: false,
+        scaleShowVerticalLines: true,
 
         //Boolean - Whether the line is curved between points
         bezierCurve: true,
 
         //Number - Tension of the bezier curve between points
-        bezierCurveTension: 0.4,
+        bezierCurveTension: 0.3,
 
         //Boolean - Whether to show a dot for each point
         pointDot: true,
@@ -177,34 +177,43 @@ app.controller('publicHome', function ($scope, $http) {
         }
     */
 
-    $scope.data = dataRequest('stationsRealTime', $http);
-    console.log($scope.data);
-
+    $scope.dataRealtime = dataRequest('stationsRealTime', $http, $scope);
+    $scope.data = dataRequest('chart', $http, $scope);
+    console.log($scope);
 });
 
 // Function to request data from the Node API
-function dataRequest($requestType, $http) {
-    var chartData = {
-        labels: [],
-        series: [],
-        data: []
-    };
-    chartData.data.push([]);
+function dataRequest($requestType, $http, $scope) {
     if ($requestType === 'stationsRealTime') {
         $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
-            var station = JSON.parse(data);
-            //chartData.labels = ["January", "February", "March", "April", "May", "June", "July"];
-            chartData.series = ['Series A'];
-            for (var i = 0, len = station.length; i < 120; i++) {
-                //TODO (look at .push)
-                chartData.labels.push(i.toString());
-                chartData.data[0].push(station[i].nbBikes[0]);
-            }
+            $scope.dataRealtime = JSON.parse(data);
         }).
         error(function (data, status, headers, config) {
             console.log('error');
         });
-        return chartData;
+    } else {
+        $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+            var chartData = {
+                labels: [],
+                series: [],
+                data: [],
+                colours: ['#03A9F4']
+            };
+            chartData.data.push([]);
+            var station = JSON.parse(data);
+            chartData.series = ['stations'];
+            for (var i = 0, len = station.length; i < 60; i++) {
+                chartData.labels.push(station[i].name);
+                chartData.data[0].push(station[i].nbBikes[0]);
+            }
+            $scope.data = chartData;
+        }).
+        error(function (data, status, headers, config) {
+                console.log('error');
+            }
+
+        );
+
     }
 }
 
