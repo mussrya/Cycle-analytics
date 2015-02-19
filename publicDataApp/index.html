@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Public data">
+    <meta name="author" content="Ryan Musselwhite">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Angular includes -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.1/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.1/angular-route.js"></script>
+
+    <!-- Chart includes -->
+    <script src="assets/js/includes/Chart.min.js"></script>
+    <script src="assets/js/includes/angular-chart.js"></script>
+    <link rel="stylesheet" href="assets/css/angular-chart.css">
+
+    <!-- Main Angular code -->
+    <script src="components/app.module.js"></script>
+    <script src="components/app.routes.js"></script>
+    <script src="components/home/homeController.js"></script>
+    <script src="shared/header/headerController.js"></script>
+
+    <!-- Boostrap includes -->
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body>
+    <div ng-app="publicData">
+        <div ng-include="'shared/header/header.html'"></div>
+        <ng-view></ng-view>
+    </div>
+</body>
+
+</html>

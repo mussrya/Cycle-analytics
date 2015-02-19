@@ -1,0 +1,1 @@
+var app = angular.module('publicData', ['ui.bootstrap', "ngRoute", 'chart.js']);
