@@ -1,5 +1,5 @@
 // Controller for the Home page
-app.controller('publicHome', function ($scope, $http) {
+app.controller('publicHome', function ($scope, $http, $window) {
 
     $scope.options = {
         // Boolean - Whether to animate the chart
@@ -172,9 +172,8 @@ app.controller('publicHome', function ($scope, $http) {
         console.log(points, evt);
     };
 
-    $scope.dataRealTime = dataRequest('stationsRealTime', $http, $scope);
+    $scope.dataRealTimeChildNumber = 0;
 
-    $scope.data = dataRequest('chart', $http, $scope);
     $scope.selected = undefined;
 
     $scope.callBack = function ($item, $model) {
@@ -184,43 +183,64 @@ app.controller('publicHome', function ($scope, $http) {
 
     $scope.$watchCollection('selected', function () {
         if ($scope.selected == '') {
-            $scope.dataRealTimeChild = $scope.dataRealTime;
+            $scope.dataRealTimeChildNumber = 0;
+            $scope.setDataRealTime();
+        }
+    });
+
+    // Function to request data from the Node API
+    $scope.dataRequest = function ($requestType, $http) {
+        if ($requestType === 'stationsRealTime') {
+            $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+                $scope.dataRealTime = JSON.parse(data);
+                $scope.setDataRealTime();
+            }).
+            error(function (data, status, headers, config) {
+                console.log('error');
+            });
+        } else {
+            $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+                var chartData = {
+                    labels: [],
+                    series: [],
+                    data: [],
+                    colours: ['#03A9F4']
+                };
+                chartData.data.push([]);
+                var station = JSON.parse(data);
+                chartData.series = ['stations'];
+                for (var i = 0, len = station.length; i < 60; i++) {
+                    chartData.labels.push(station[i].name);
+                    chartData.data[0].push(station[i].nbBikes[0]);
+                }
+                $scope.data = chartData;
+            }).
+            error(function (data, status, headers, config) {
+                    console.log('error');
+                }
+
+            );
+
+        }
+    }
+
+    $scope.setDataRealTime = function () {
+        $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
+        $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
+        console.log($scope.dataRealTimeChildNumber);
+    }
+
+    $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);
+    $scope.data = $scope.dataRequest('chart', $http);
+
+    angular.element($window).bind("scroll", function () {
+        var el = document.querySelector("#loadMore");
+        var top = el.getBoundingClientRect().top;
+        if (el.getBoundingClientRect().top <= 500 && ($scope.selected === '' || $scope.selected === undefined)) {
+            $scope.$apply(function () {
+                $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
+                $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
+            });
         }
     });
 });
-
-// Function to request data from the Node API
-function dataRequest($requestType, $http, $scope) {
-    if ($requestType === 'stationsRealTime') {
-        $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
-            $scope.dataRealTime = JSON.parse(data);
-            $scope.dataRealTimeChild = $scope.dataRealTime;
-        }).
-        error(function (data, status, headers, config) {
-            console.log('error');
-        });
-    } else {
-        $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
-            var chartData = {
-                labels: [],
-                series: [],
-                data: [],
-                colours: ['#03A9F4']
-            };
-            chartData.data.push([]);
-            var station = JSON.parse(data);
-            chartData.series = ['stations'];
-            for (var i = 0, len = station.length; i < 60; i++) {
-                chartData.labels.push(station[i].name);
-                chartData.data[0].push(station[i].nbBikes[0]);
-            }
-            $scope.data = chartData;
-        }).
-        error(function (data, status, headers, config) {
-                console.log('error');
-            }
-
-        );
-
-    }
-}

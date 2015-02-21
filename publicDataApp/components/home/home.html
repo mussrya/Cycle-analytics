@@ -16,27 +16,36 @@
             <!-- /.col-lg-6 -->
         </div>
         <!-- /.row -->
-        <div class="section" ng-repeat="stations in dataRealTimeChild">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{stations.name[0]}}</h3>
-                </div>
-                <div class="panel-body">
-                    ID: {{stations.id[0]}}
+        <div>
+            <div class="section" ng-repeat="stations in dataRealTimeChild">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{stations.name[0]}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4>Bikes available / Empty slots</h4>
+                        <div class="progress custom">
+                            <span ng-if="stations.nbEmptyDocks[0]!=0"><div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} empty</div></span>
+                            <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
+                                <span ng-if="stations.nbBikes[0]!=0">{{stations.nbBikes[0]}} bikes available</span>
+                            </div>
+                        </div>
+                        <!-- ID: {{stations.id[0]}}
                     <br/> Installed: {{stations.installed[0]}}
                     <br/> Locked: {{stations.locked[0]}}
                     <br/> nbBikes: {{stations.nbBikes[0]}}
                     <br/> nbEmptyDocks: {{stations.nbEmptyDocks[0]}}
                     <br/> nbDocks: {{stations.nbDocks[0]}}
-                    <br/>
+                    <br/>-->
+                    </div>
                 </div>
             </div>
+            <div id="loadMore"></div>
+        </div>
+        <div class="well">
+            <h3>Chart example</h3>
+            <br/>
+            <canvas id="line" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
+            </canvas>
         </div>
     </div>
-    <div class="well">
-        <h3>Chart example</h3>
-        <br/>
-        <canvas id="line" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
-        </canvas>
-    </div>
-</div>

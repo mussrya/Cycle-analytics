@@ -75,5 +75,29 @@ div.well {
 
 .col-lg-6 {
     width: 100%;
-    margin-bottom:20px;
+    margin-bottom: 20px;
+}
+
+.custom {
+    font-size: 12px;
+    line-height: 20px;
+    color: #777777;
+    text-align: center;
+    height: 40px;
+}
+
+.custom-pad {
+    padding-top: 10px;
+}
+
+.custom-float {
+    float: right;
+}
+
+.progress-bar-info {
+    background-color: #03A9F4;
+}
+
+.progress-bar {
+    transition: width 1s ease-in-out;
 }
