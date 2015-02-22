@@ -12,6 +12,10 @@ app.config(function ($routeProvider) {
         templateUrl: 'components/contact/contact.html',
         controller: ''
     }).
+    when('/station/:stationId', {
+        templateUrl: 'components/station/station.html',
+        controller: 'stationTrends'
+    }).
     otherwise({
         redirectTo: '/home'
     });

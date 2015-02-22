@@ -38,11 +38,11 @@ var londonBikes = londonBikes || {};
 
 // Frontend API
 // Allows for cross domain calls for development purposes
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
+app.all('*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
 });
 
 // Create the middleware which will be used in all requests & log activity to the console
@@ -54,8 +54,18 @@ router.use(function (req, res, next) {
 // Create the stationsActive route, this will get live data
 router.route('/stationsActive')
     .get(function (req, res) {
-        // look into not converting it to json without stringify
         res.json(JSON.stringify(stationsRealTime));
+    });
+
+router.route('/station/:id')
+    .get(function (req, res) {
+        // search mongodb
+        Stations.find({
+            'stationId': req.params.id
+        }, function (err, station) {
+            if (err) return handleError(err);
+            res.json(JSON.stringify(station));
+        })
     });
 
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
@@ -87,7 +97,6 @@ function getData() {
 
             console.log(Date() + '- Finished data capture run: ' + dataCounter);
         });
-
     });
 
     req.on('error', function (err) {
@@ -124,10 +133,10 @@ function saveData(station) {
 }
 
 // Will call the captureData function every 30 seconds
-//setInterval(function () {
-    setTimeout(function () {
+setInterval(function () {
+//setTimeout(function () {
     getData();
-}, 3000);
+}, 30000);
 
 // Launch the server
 app.listen(port);

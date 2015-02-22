@@ -53,16 +53,10 @@
                     <br/> nbEmptyDocks: {{stations.nbEmptyDocks[0]}}
                     <br/> nbDocks: {{stations.nbDocks[0]}}
                     <br/>-->
-                        <div class="btnLoad btn">view trends and hisotrical data</div>
+                        <div class="btnLoad btn" ng-click="changeView(stations.id[0])">view trends and hisotrical data</div>
                     </div>
                 </div>
             </div>
             <div id="loadMore"></div>
-        </div>
-        <div class="well">
-            <h3>Chart example</h3>
-            <br/>
-            <canvas id="line" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
-            </canvas>
         </div>
     </div>
