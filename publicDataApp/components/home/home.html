@@ -1,15 +1,15 @@
 <div class="containerLg">
-    <h1>Bicycle trends</h1>
+    <h1>Real time cycle hire stations</h1>
     <div class="well">
-        <h3>Real time cycle hire stations</h3>
         <br/>
         <div class="row">
             <div class="col-lg-6">
                 <div class="input-group">
-                    <input type="text" typeahead-template-url="shared/typeahead/typeahead-popup.html" ng-model="selected" typeahead-on-select="callBack($item, $model, $label)" typeahead="stations as stations.name for stations in dataRealTime | filter:$viewValue | limitTo:8" class="form-control">
+                    <input type="text" typeahead-template-url="shared/typeahead/typeahead-popup.html" ng-model="selected" typeahead-on-select="callBack($item, $model)" typeahead="stations as stations.name for stations in dataRealTime | filter:$viewValue | limitTo:8" class="form-control" placeholder="search stations">
                     <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Use my current location</button>
-      </span>
+        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                    </button>
+                    </span>
                 </div>
                 <!-- /input-group -->
             </div>
@@ -25,10 +25,26 @@
                     <div class="panel-body">
                         <h4>Bikes available / Empty slots</h4>
                         <div class="progress custom">
-                            <span ng-if="stations.nbEmptyDocks[0]!=0"><div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} empty</div></span>
-                            <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
-                                <span ng-if="stations.nbBikes[0]!=0">{{stations.nbBikes[0]}} bikes available</span>
-                            </div>
+                            <span ng-if="stations.nbEmptyDocks[0]!=0 && stations.nbBikes[0]!=0">
+                                <span ng-if="stations.nbEmptyDocks[0]!=0">
+                                    <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} slots</div>
+                                </span>
+                            <span ng-if="stations.nbBikes[0]!=0">
+                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
+                                        {{stations.nbBikes[0]}} bikes
+                                    </div>
+                                </span>
+                            </span>
+                            <span ng-if="stations.nbEmptyDocks[0]==0 || stations.nbBikes[0]==0">
+                                <span ng-if="stations.nbEmptyDocks[0]!=0">
+                                    <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} slots</div>
+                                </span>
+                            <span ng-if="stations.nbBikes[0]!=0">
+                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
+                                        {{stations.nbBikes[0]}} bikes
+                                    </div>
+                                </span>
+                            </span>
                         </div>
                         <!-- ID: {{stations.id[0]}}
                     <br/> Installed: {{stations.installed[0]}}
@@ -37,6 +53,7 @@
                     <br/> nbEmptyDocks: {{stations.nbEmptyDocks[0]}}
                     <br/> nbDocks: {{stations.nbDocks[0]}}
                     <br/>-->
+                        <div class="btnLoad btn">view trends and hisotrical data</div>
                     </div>
                 </div>
             </div>

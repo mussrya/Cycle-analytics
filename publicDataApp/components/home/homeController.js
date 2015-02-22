@@ -176,6 +176,9 @@ app.controller('publicHome', function ($scope, $http, $window) {
 
     $scope.selected = undefined;
 
+    //$scope.host = 'http://localhost:8080/api/v1/';
+    $scope.host = 'http://192.168.0.8:8080/api/v1/';
+
     $scope.callBack = function ($item, $model) {
         $scope.dataRealTimeChild = [];
         $scope.dataRealTimeChild[0] = $item;
@@ -191,7 +194,7 @@ app.controller('publicHome', function ($scope, $http, $window) {
     // Function to request data from the Node API
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {
-            $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+            $http.get($scope.host + 'stationsActive').success(function (data, status, headers, config) {
                 $scope.dataRealTime = JSON.parse(data);
                 $scope.setDataRealTime();
             }).
@@ -199,7 +202,7 @@ app.controller('publicHome', function ($scope, $http, $window) {
                 console.log('error');
             });
         } else {
-            $http.get('http://localhost:8080/api/v1/stationsActive').success(function (data, status, headers, config) {
+            $http.get($scope.host + 'stationsActive').success(function (data, status, headers, config) {
                 var chartData = {
                     labels: [],
                     series: [],
@@ -227,7 +230,6 @@ app.controller('publicHome', function ($scope, $http, $window) {
     $scope.setDataRealTime = function () {
         $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
         $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
-        console.log($scope.dataRealTimeChildNumber);
     }
 
     $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);
@@ -236,7 +238,7 @@ app.controller('publicHome', function ($scope, $http, $window) {
     angular.element($window).bind("scroll", function () {
         var el = document.querySelector("#loadMore");
         var top = el.getBoundingClientRect().top;
-        if (el.getBoundingClientRect().top <= 500 && ($scope.selected === '' || $scope.selected === undefined)) {
+        if (el.getBoundingClientRect().top <= 700 && ($scope.selected === '' || $scope.selected === undefined)) {
             $scope.$apply(function () {
                 $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);

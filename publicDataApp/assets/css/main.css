@@ -94,10 +94,28 @@ div.well {
     float: right;
 }
 
+.custom-width {
+    max-width: 80%;
+    min-width: 20%;
+}
+
 .progress-bar-info {
     background-color: #03A9F4;
 }
 
 .progress-bar {
     transition: width 1s ease-in-out;
+}
+
+.btnLoad {
+    background: #00BCD4;
+    border-color: #04a1b5;
+    color: #fff;
+    width: 100%;
+}
+
+.btnLoad:hover {
+    background: #03A9F4;
+    border-color: #0691d0;
+    color: #fff;
 }
