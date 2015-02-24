@@ -89,7 +89,8 @@ function getData() {
                 if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                     lastCallTimeStamp = result.stations['$'].lastUpdate;
                     stationsRealTime = result.stations['station'];
-                    saveData(result.stations['station']);
+                    // commented this out during testing
+                    //saveData(result.stations['station']);
                 } else {
                     console.log(Date() + '- No new updates since last run');
                 }
