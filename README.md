@@ -1,4 +1,4 @@
-# Public-data-visualisation
+# Cycle-analytics
 This project provides both real-time and historical analysis of Barclays cycle stations (aka Borris bikes) within London.
 
 The main structure is as follows:
