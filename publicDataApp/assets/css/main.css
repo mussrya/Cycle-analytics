@@ -24,6 +24,7 @@ nav.navbar-default {
 nav.navbar-default .navbar-brand {
     color: #FFFFFF;
     font-size: 18px;
+    padding: 10px 15px;
 }
 
 nav.navbar-default .navbar-nav>li>a {
@@ -118,4 +119,8 @@ div.well {
     background: #03A9F4;
     border-color: #0691d0;
     color: #fff;
+}
+
+.navbar-brand>img {
+  display: inline;
 }
