@@ -27,7 +27,7 @@ Want to contribute? Once I have finalised the first version release I will be op
 
 ### Todo's
 
--   Release initial version [0.1]
+See the public Trello board here: https://trello.com/b/xgTHXbhR/cycleanalytics
 
 ### License
 

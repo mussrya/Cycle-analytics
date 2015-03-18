@@ -59,13 +59,22 @@ router.route('/stationsActive')
 
 router.route('/station/:id')
     .get(function (req, res) {
+        
+        var tenMinutesAgo = new Date().getTime() - 600000;
+    
         // search mongodb
-        Stations.find({
-            'stationId': req.params.id
-        }, function (err, station) {
-            if (err) return handleError(err);
-            res.json(JSON.stringify(station));
-        })
+        Stations.aggregate({
+                $match: {
+                    "stationId": req.params.id,
+                    "timestamp": {
+                        $gte: new Date(tenMinutesAgo)
+                    }
+                }
+            },
+            function (err, station) {
+                if (err) return handleError(err);
+                res.json(JSON.stringify(station));
+            });
     });
 
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
@@ -90,7 +99,7 @@ function getData() {
                     lastCallTimeStamp = result.stations['$'].lastUpdate;
                     stationsRealTime = result.stations['station'];
                     // commented this out during testing
-                    //saveData(result.stations['station']);
+                    saveData(result.stations['station']);
                 } else {
                     console.log(Date() + '- No new updates since last run');
                 }
@@ -123,9 +132,9 @@ function saveData(station) {
             installDate: station[i].installDate,
             removalDate: station[i].removalDate,
             temporary: station[i].temporary,
-            nbBikes: station[i].nbBikes,
-            nbEmptyDocks: station[i].nbEmptyDocks,
-            nbDocks: station[i].nbDocks
+            nbBikes: parseInt(station[i].nbBikes),
+            nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
+            nbDocks: parseInt(station[i].nbDocks)
         });
         stationSave.save(function (err, thor) {
             if (err) return console.error(err);
@@ -134,10 +143,10 @@ function saveData(station) {
 }
 
 // Will call the captureData function every 30 seconds
-//setInterval(function () {
-setTimeout(function () {
+setInterval(function () {
+    //setTimeout(function () {
     getData();
-}, 3000);
+}, 30000);
 
 // Launch the server
 app.listen(port);

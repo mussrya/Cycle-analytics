@@ -16,9 +16,9 @@ var StationsSchema = new Schema({
     installDate: String,
     removalDate: String,
     temporary: String,
-    nbBikes: String,
-    nbEmptyDocks: String,
-    nbDocks: String
+    nbBikes: Number,
+    nbEmptyDocks: Number,
+    nbDocks: Number
 });
 
 module.exports = mongoose.model('Stations', StationsSchema);

@@ -55,6 +55,7 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
     });
 
     $scope.changeView = function (station) {
+        $window.scrollTo(0, 0);
         $scope.infinate.unbind();
         var stationPath = '/station/' + station;
         $location.path(stationPath);

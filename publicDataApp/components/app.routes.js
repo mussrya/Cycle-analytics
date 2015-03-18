@@ -4,6 +4,10 @@ app.config(function ($routeProvider) {
         templateUrl: 'components/home/home.html',
         controller: 'publicHome'
     }).
+    when('/activity', {
+        templateUrl: 'components/activity/activity.html',
+        controller: ''
+    }).
     when('/about', {
         templateUrl: 'components/about/about.html',
         controller: ''
