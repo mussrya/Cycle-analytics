@@ -59,9 +59,9 @@ router.route('/stationsActive')
 
 router.route('/station/:id')
     .get(function (req, res) {
-        
+
         var tenMinutesAgo = new Date().getTime() - 600000;
-    
+
         // search mongodb
         Stations.aggregate({
                 $match: {
@@ -95,13 +95,15 @@ function getData() {
         res.on('end', function () {
             console.log(Date() + '- Converting data to JSON');
             parseString(xml, function (err, result) {
-                if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
-                    lastCallTimeStamp = result.stations['$'].lastUpdate;
-                    stationsRealTime = result.stations['station'];
-                    // commented this out during testing
-                    saveData(result.stations['station']);
-                } else {
-                    console.log(Date() + '- No new updates since last run');
+                if (result.hasOwnProperty(stations)) {
+                    if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
+                        lastCallTimeStamp = result.stations['$'].lastUpdate;
+                        stationsRealTime = result.stations['station'];
+                        // commented this out during testing
+                        saveData(result.stations['station']);
+                    } else {
+                        console.log(Date() + '- No new updates since last run');
+                    }
                 }
             });
 
