@@ -60,22 +60,34 @@ router.route('/stationsActive')
 router.route('/station/:id')
     .get(function (req, res) {
 
-        var tenMinutesAgo = new Date().getTime() - 600000;
-
         // search mongodb
-        Stations.aggregate({
-                $match: {
-                    "stationId": req.params.id,
-                    "timestamp": {
-                        $gte: new Date(tenMinutesAgo)
-                    }
-                }
+        Stations.findOne({
+            'stationId' : req.params.id
             },
             function (err, station) {
                 if (err) return handleError(err);
                 res.json(JSON.stringify(station));
             });
     });
+
+router.route('/stationLive/:id').get(function (req, res) {
+    var tenMinutesAgo = new Date().getTime() - 600000;
+
+    // search mongodb
+    Stations.aggregate({
+            $match: {
+                "stationId": req.params.id,
+                "timestamp": {
+                    $gte: new Date(tenMinutesAgo)
+                }
+            }
+        },
+        function (err, station) {
+            if (err) return handleError(err);
+            res.json(JSON.stringify(station));
+        });
+});
+
 
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
 app.use('/api/v1', router);
@@ -95,7 +107,7 @@ function getData() {
         res.on('end', function () {
             console.log(Date() + '- Converting data to JSON');
             parseString(xml, function (err, result) {
-                if (result.hasOwnProperty(stations)) {
+                if (result.hasOwnProperty('stations')) {
                     if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                         lastCallTimeStamp = result.stations['$'].lastUpdate;
                         stationsRealTime = result.stations['station'];
@@ -144,7 +156,7 @@ function saveData(station) {
     }
 }
 
-// Will call the captureData function every 30 seconds
+// Will call the getData function every 30 seconds
 setInterval(function () {
     //setTimeout(function () {
     getData();
