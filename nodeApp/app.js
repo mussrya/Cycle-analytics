@@ -62,7 +62,7 @@ router.route('/station/:id')
 
         // search mongodb
         Stations.findOne({
-            'stationId' : req.params.id
+                'stationId': req.params.id
             },
             function (err, station) {
                 if (err) return handleError(err);
@@ -106,6 +106,8 @@ function getData() {
 
         res.on('end', function () {
             console.log(Date() + '- Converting data to JSON');
+            // Bug fix for incorrect white spacing
+            xml = xml.replace("\ufeff", "");
             parseString(xml, function (err, result) {
                 if (result.hasOwnProperty('stations')) {
                     if (lastCallTimeStamp != result.stations['$'].lastUpdate) {

@@ -27,11 +27,15 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {
             $http.get($scope.host + 'stationsActive').success(function (data, status, headers, config) {
-                $scope.dataRealTime = JSON.parse(data);
-                $scope.setDataRealTime();
+                if (data) {
+                    $scope.dataRealTime = JSON.parse(data);
+                    $scope.setDataRealTime();
+                } else {
+                    $scope.errorMessage = true;
+                }
             }).
             error(function (data, status, headers, config) {
-                console.log('error');
+                $scope.errorMessage = true;
             });
         }
     }
@@ -64,5 +68,4 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
 
     // Calls to functions on initial load
     $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);
-    $scope.data = $scope.dataRequest('chart', $http);
 });
