@@ -92,7 +92,7 @@ router.route('/stationLive/:id').get(function (req, res) {
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
 app.use('/api/v1', router);
 
-// Backend capture process
+// Backend for capture & prcoessing
 // The function which is called as part of the setInterval to capture and store data into the database
 function getData() {
     dataCounter++;
@@ -163,6 +163,32 @@ setInterval(function () {
     //setTimeout(function () {
     getData();
 }, 30000);
+
+
+
+// testing timer for the average hour function call
+function checkTime() {
+    var timeDifference = new Date().getTime() + 3600000;
+    timeDifference = new Date(timeDifference);
+    timeDifference = new Date(timeDifference.getFullYear(), timeDifference.getMonth(), timeDifference.getDate(), timeDifference.getHours());
+    timeDifference = timeDifference.getTime() - new Date().getTime();
+    setTimeout(function () {
+        // run function
+    }, timeDifference);
+}
+
+// Initiate the checkTime function
+//checkTime();
+
+// Average the mongoDB data every hour
+
+
+// Average the mongoDB data every day
+    // Remove all data except for the last 2 hours to be safe
+
+// Average the mongoDB data every week
+
+
 
 // Launch the server
 app.listen(port);
