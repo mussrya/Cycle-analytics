@@ -72,6 +72,11 @@ div.containerLg {
 
 div.well {
     background: #FFFFFF;
+    padding: 10px 19px 19px 19px;
+}
+
+div.input-group {
+    margin-top: 10px;
 }
 
 .col-lg-6 {
@@ -126,18 +131,12 @@ div.well {
 }
 
 .chart-container {
-    height: 300px;
+    height: 250px;
 }
 
-.nav-tabs.nav-justified .active a,
-.nav-tabs.nav-justified .active a:focus,
-.nav-tabs.nav-justified .active a:hover {
-    border: 1px solid #FFFFFF;
-}
-
-.nav-tabs li.active a,
-.nav-tabs li.active a:focus,
-.nav-tabs li.active a:hover {
+.nav-pills li.active a,
+.nav-pills li.active a:focus,
+.nav-pills li.active a:hover {
     background: #00BCD4;
     color: #FFFFFF;
 }
@@ -169,15 +168,18 @@ div.well {
     color: #8f8f8f;
 }
 
-.alert-danger{
-    text-align:center;
+.alert-danger {
+    text-align: center;
 }
 
+h3 {
+    margin-top: 0px;
+}
 /* Clock */
 
 .clockSection {
-    width: 300px;
-    float: left;
+    width: 250px;
+    margin: 0 auto;
 }
 
 .clear {
@@ -189,13 +191,12 @@ div.well {
     font-family: Helvetica;
     color: #eee;
     font-weight: bold;
+    margin: 0 auto;
+    width: 220px;
 }
 
 .clock .number-wrapper {
     margin: 10px;
-    -moz-box-shadow: 0 5px 8px #000000;
-    -webkit-box-shadow: 0 5px 8px #000000;
-    box-shadow: 0 5px 8px #000000;
     position: relative;
 }
 
@@ -203,12 +204,7 @@ div.well {
     display: inline-block;
     *display: inline;
     *zoom: 1;
-    background: #000;
-    background-image: linear-gradient(bottom, #000000 2%, #3c3c3c 50%, #000000 100%);
-    background-image: -o-linear-gradient(bottom, #000000 2%, #3c3c3c 50%, #000000 100%);
-    background-image: -moz-linear-gradient(bottom, #000000 2%, #3c3c3c 50%, #000000 100%);
-    background-image: -webkit-linear-gradient(bottom, #000000 2%, #3c3c3c 50%, #000000 100%);
-    background-image: -ms-linear-gradient(bottom, #000000 2%, #3c3c3c 50%, #000000 100%);
+    background: #333;
     -webkit-border-top-right-radius: 7px;
     -webkit-border-bottom-right-radius: 0;
     -webkit-border-bottom-left-radius: 0;
@@ -232,25 +228,11 @@ div.well {
     line-height: 80px;
     text-align: center;
     border: 1px solid #555;
-    -moz-box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.2);
-    -webkit-box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.2);
-    box-shadow: inset 0 4px 0 rgba(255, 255, 255, 0.2);
     -moz-text-shadow: 0 3px 3px #000000;
     -webkit-text-shadow: 0 3px 3px #000000;
     text-shadow: 0 3px 3px #000000;
 }
 
-.clock .line {
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    top: 52%;
-    left: 0;
-    background: #000;
-    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-}
 
 .clock .caption {
     font-size: 12px;
@@ -260,4 +242,10 @@ div.well {
     text-align: center;
     width: 100%;
     color: #777;
+}
+
+.clockWell {
+    float: left;
+    width: 50%;
+    margin-top: 5px;
 }
