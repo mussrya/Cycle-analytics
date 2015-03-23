@@ -71,7 +71,7 @@ router.route('/station/:id')
     });
 
 router.route('/stationLive/:id').get(function (req, res) {
-    var tenMinutesAgo = new Date().getTime() - 600000;
+    var tenMinutesAgo = new Date().getTime() - 3600000;
 
     // search mongodb
     Stations.aggregate({

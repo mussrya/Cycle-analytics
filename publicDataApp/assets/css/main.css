@@ -178,8 +178,7 @@ h3 {
 /* Clock */
 
 .clockSection {
-    width: 250px;
-    margin: 0 auto;
+    text-align:center;
 }
 
 .clear {
@@ -191,8 +190,6 @@ h3 {
     font-family: Helvetica;
     color: #eee;
     font-weight: bold;
-    margin: 0 auto;
-    width: 220px;
 }
 
 .clock .number-wrapper {
@@ -231,8 +228,8 @@ h3 {
     -moz-text-shadow: 0 3px 3px #000000;
     -webkit-text-shadow: 0 3px 3px #000000;
     text-shadow: 0 3px 3px #000000;
+    width: 40%;
 }
-
 
 .clock .caption {
     font-size: 12px;
@@ -248,4 +245,12 @@ h3 {
     float: left;
     width: 50%;
     margin-top: 5px;
+}
+
+@media (max-width: 767px) {
+    .clockWell {
+        float: none;
+        width: 100%;
+        margin-top: 5px;
+    }
 }

@@ -1,0 +1,49 @@
+<div>
+    <div class="containerLg" ng-if="stationData">
+        <h2>{{stationData.name}}</h2>
+        <h3>Best time to get a bicycle (Mon-Fri)</h3>
+        <tabset justified="true" type="pills">
+            <tab ng-repeat="day in bestTimes" heading="{{day.day}}">
+                <div class="well clockWell">
+                    <div class="clockSection">
+                        <h4>Peak morning (06:30 to 09:29)</h4>
+                        <div class="clock"><span class="number-wrapper"><div class="caption">HOURS</div><span class="number hour">{{day.morning.getHours()}}</span></span><span class="number-wrapper"><div class="caption">MINS</div><span class="number min">{{day.morning.getMinutes()}}</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="well clockWell">
+                    <div class="clockSection">
+                        <h4>Peak evening (16:00 to 18:59)</h4>
+                        <div class="clock"><span class="number-wrapper"><div class="caption">HOURS</div><span class="number hour">{{day.morning.getHours()}}</span></span><span class="number-wrapper"><div class="caption">MINS</div><span class="number min">{{day.morning.getMinutes()}}</span></span>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+        <h3>Historical trends and analytics</h3>
+        <tabset justified="true" type="pills">
+            <tab ng-click="liveReload()" heading="Last hour">
+                <div class="well" style="margin-top:5px;">
+                    <h4>Last hour (updates automatically)</h4>
+                    <span ng-if="stationLiveData.length>=6">
+                        <canvas id="line" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
+                        </canvas>
+                    </span>
+                    <span ng-if="stationLiveData.length<=5 || !stationLiveData">
+                        <h3><small><center>Data is currently being generated</center></small></h3>
+                    </span>
+                </div>
+            </tab>
+            <tab ng-click="stopLiveReload()" heading="Last 24 hours">Short Labeled Justified content</tab>
+            <tab ng-click="stopLiveReload()" heading="Weekly average">Long Labeled Justified content</tab>
+            <tab ng-click="stopLiveReload()" heading="Monthly average">Long Labeled Justified content</tab>
+        </tabset>
+
+    </div>
+    <div class="containerLg" ng-if="errorMessage">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> Data could not be retrieved, please try again later
+        </div>
+    </div>
+</div>
