@@ -12,14 +12,14 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         // Boolean - If we should show the scale at all
         showScale: true,
         // Boolean - If we want to override with a hard coded scale
-        scaleOverride: false,
+        scaleOverride: true,
         // ** Required if scaleOverride is true **
         // Number - The number of steps in a hard coded scale
-        scaleSteps: null,
+        scaleSteps: 5,
         // Number - The value jump in the hard coded scale
-        scaleStepWidth: null,
+        scaleStepWidth: 10,
         // Number - The scale starting value
-        scaleStartValue: null,
+        scaleStartValue: 0,
         // String - Colour of the scale line
         scaleLineColor: "rgba(0,0,0,.1)",
         // Number - Pixel width of the scale line
@@ -58,7 +58,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
     };
 
     // Used to switch out hosts for mobile testing
-    $scope.host = 'http://localhost:8080/api/v1';
+    $scope.host = 'http://192.30.192.15:8080/api/v1';
     //$scope.host = 'http://192.168.0.8:8080/api/v1';
 
     // Getting the ID from the URL path
@@ -68,7 +68,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     // Request for station information (title etc.)
     $scope.stationRequest = function ($http) {
-        $http.get('http://localhost:8080/api/v1/station/' + $scope.stationId).success(function (data, status, headers, config) {
+        $http.get($scope.host+'/station/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationData = JSON.parse(data);
         }).
         error(function (data, status, headers, config) {
@@ -79,7 +79,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     // Request for the station chart data (last 10 minutes chart)
     $scope.stationLive = function ($http) {
-        $http.get('http://localhost:8080/api/v1/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
+        $http.get($scope.host+'/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationLiveData = JSON.parse(data);
 
             // Defining the chart structure
