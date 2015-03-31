@@ -14,9 +14,12 @@ var port = process.env.PORT || 8081;
 
 // Create the express app
 var app = express();
+console.log(Date()+' - Launching the server');
+
 
 // Database connection
 mongoose.connect('mongodb://localhost/cycleHire');
+console.log(Date()+' - Connecting to the DB');
 
 // Create the router
 var router = express.Router();
@@ -27,8 +30,12 @@ var dataCounter = 0;
 // Stores the timestamp within the XML request to ensure data is not replicated
 var lastCallTimeStamp = 0;
 
-// Import the model for the storing of data
-var Stations = require('./models/schema.js');
+// Import the models for the storing of data
+var Stations = require('./models/stations.js');
+var StationsBestTimes = require('./models/stationsBestTimes.js');
+var StationsAveragesHour = require('./models/stationsAveragesHour.js');
+var StationsAveragesDay = require('./models/stationsAveragesDay.js');
+var StationsAveragesWeek = require('./models/stationsAveragesWeek.js');
 
 
 // Backend for capture & prcoessing
@@ -55,14 +62,14 @@ function getData() {
                         // commented this out during testing
                         saveData(result.stations['station']);
                     } else {
-                        console.log(Date() + '- No new updates since last run');
+                        console.log(Date() + ' - No new updates since last run');
                     }
                 }
             });
 
-            console.log(Date() + '- Finished data capture run: ' + dataCounter);
+            console.log(Date() + ' - Finished data capture run: ' + dataCounter);
         });
-        
+
         res.on('error', function (err) {
             // error in processing
             console.log(err);
@@ -75,11 +82,11 @@ function getData() {
 }
 
 function saveData(station) {
-    console.log(Date() + '- Adding the data to the database');
+    console.log(Date() + ' - Adding the data to the database');
     var entryDate = Date();
+
     // Save data to database
     for (var i = 0, len = station.length; i < len; i++) {
-
         var stationSave = new Stations({
             timestamp: entryDate,
             stationId: station[i].id,
@@ -104,35 +111,37 @@ function saveData(station) {
 
 // Will call the getData function every 30 seconds
 setInterval(function () {
-    //setTimeout(function () {
     getData();
 }, 30000);
 
-
-
-// testing timer for the average hour function call
+// checkTime function which is used to run the ETL reports for hourly, daily and weekly averages as well as the cleanup of the previous day of live data
 function checkTime() {
     var timeDifference = new Date().getTime() + 3600000;
     timeDifference = new Date(timeDifference);
     timeDifference = new Date(timeDifference.getFullYear(), timeDifference.getMonth(), timeDifference.getDate(), timeDifference.getHours());
     timeDifference = timeDifference.getTime() - new Date().getTime();
     setTimeout(function () {
-        // run function
+        // Run hourly average
+        console.log(Date()+' - Running hourly average ETL function');
+        
+        // If the hour is equal to midnight, then run the daily average function
+        if (new Date().getHours() == 0) {
+            console.log(Date() + ' - Running the daily average ETL function');
+        } else if (new Date().getHours == 2) {
+            // If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
+            console.log(Date() + ' - Running the daily cleanup function');
+        }
+
+        // Call to re-run checkTime to run again in 1 hours time
+        checkTime();
+        console.log(Date()+' - Re-running checkTime function');
+
     }, timeDifference);
 }
 
-// Initiate the checkTime function
-//checkTime();
-
-// Average the mongoDB data every hour
-
-
-// Average the mongoDB data every day
-// Remove all data except for the last 2 hours to be safe
-
-// Average the mongoDB data every week
-
-
+// Initiate the checkTime function when node loads
+checkTime();
+console.log(Date()+' - Running checkTime function for the first time');
 
 // Launch the server
 app.listen(port);
