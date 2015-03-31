@@ -178,7 +178,7 @@ h3 {
 /* Clock */
 
 .clockSection {
-    text-align:center;
+    text-align: center;
 }
 
 .clear {
@@ -253,4 +253,16 @@ h3 {
         width: 100%;
         margin-top: 5px;
     }
+}
+/* Loading animation */
+
+.svgCenter {
+    text-align: center;
+}
+
+.svgLoader {
+    height: 15vmin;
+    margin-top:60px;
+    vertical-align: top;
+    text-align: center;
 }

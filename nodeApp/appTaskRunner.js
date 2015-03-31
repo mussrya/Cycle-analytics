@@ -10,7 +10,7 @@ var application_root = __dirname,
     parseString = require('xml2js').parseString;
 
 // Set the port
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8081;
 
 // Create the express app
 var app = express();
@@ -27,70 +27,9 @@ var dataCounter = 0;
 // Stores the timestamp within the XML request to ensure data is not replicated
 var lastCallTimeStamp = 0;
 
-// Stores a "cached" version of the most up to date data to reduce DB requests
-var stationsRealTime;
-
 // Import the model for the storing of data
 var Stations = require('./models/schema.js');
 
-// Work on this more
-var londonBikes = londonBikes || {};
-
-// Frontend API
-// Allows for cross domain calls for development purposes
-app.all('*', function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
-
-// Create the middleware which will be used in all requests & log activity to the console
-router.use(function (req, res, next) {
-    console.log(Date() + ' - ' + req.originalUrl);
-    next(); // Run the next routes so it doesn't halt at this position
-});
-
-// Create the stationsActive route, this will get live data
-router.route('/stationsActive')
-    .get(function (req, res) {
-        res.json(JSON.stringify(stationsRealTime));
-    });
-
-router.route('/station/:id')
-    .get(function (req, res) {
-
-        // search mongodb
-        Stations.findOne({
-                'stationId': req.params.id
-            },
-            function (err, station) {
-                if (err) return handleError(err);
-                res.json(JSON.stringify(station));
-            });
-    });
-
-router.route('/stationLive/:id').get(function (req, res) {
-    var tenMinutesAgo = new Date().getTime() - 3600000;
-
-    // search mongodb
-    Stations.aggregate({
-            $match: {
-                "stationId": req.params.id,
-                "timestamp": {
-                    $gte: new Date(tenMinutesAgo)
-                }
-            }
-        },
-        function (err, station) {
-            if (err) return handleError(err);
-            res.json(JSON.stringify(station));
-        });
-});
-
-
-// Pre-fix all API calls are with /api/v1 for future proofing of the API
-app.use('/api/v1', router);
 
 // Backend for capture & prcoessing
 // The function which is called as part of the setInterval to capture and store data into the database
@@ -123,10 +62,15 @@ function getData() {
 
             console.log(Date() + '- Finished data capture run: ' + dataCounter);
         });
+        
+        res.on('error', function (err) {
+            // error in processing
+            console.log(err);
+        });
     });
 
     req.on('error', function (err) {
-        // debug error
+        // error in receiving
     });
 }
 
@@ -184,7 +128,7 @@ function checkTime() {
 
 
 // Average the mongoDB data every day
-    // Remove all data except for the last 2 hours to be safe
+// Remove all data except for the last 2 hours to be safe
 
 // Average the mongoDB data every week
 

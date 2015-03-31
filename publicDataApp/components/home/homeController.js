@@ -5,9 +5,7 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
     $scope.dataRealTimeChildNumber = 0;
     $scope.selected = undefined;
 
-    // Used to switch out hosts for mobile testing
     $scope.host = 'http://192.30.192.15:8080/api/v1/';
-    //$scope.host = 'http://192.168.0.8:8080/api/v1/';
 
     // Function for clicking a station within search
     $scope.callBack = function ($item, $model) {

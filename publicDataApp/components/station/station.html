@@ -26,12 +26,15 @@
                 <div class="well" style="margin-top:5px;">
                     <h4>Last hour (updates automatically)</h4>
                     <span ng-if="stationLiveData.length>=6">
-                        <canvas id="line" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="options" legend="false" series="data.series" click="onClick">
+                        <canvas id="line" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
                         </canvas>
                     </span>
-                    <span ng-if="stationLiveData.length<=5 || !stationLiveData">
+                    <span ng-if="stationLiveData.length<=5">
                         <h3><small><center>Data is currently being generated</center></small></h3>
                     </span>
+                    <div class="svgCenter" ng-if="!stationLiveData">
+                        <div ng-include="'shared/loading/loading.html'"></div>
+                    </div>
                 </div>
             </tab>
             <tab ng-click="stopLiveReload()" heading="Last 24 hours">Short Labeled Justified content</tab>

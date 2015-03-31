@@ -1,5 +1,8 @@
 <div class="containerLg">
     <h2>Cycle hire stations</h2>
+    <div class="svgCenter" ng-if="!dataRealTimeChild">
+        <div ng-include="'shared/loading/loading.html'"></div>
+    </div>
     <div ng-if="dataRealTimeChild">
         <div class="well">
             <div class="row">
@@ -45,7 +48,7 @@
                                 </span>
                             </span>
                         </div>
-                        <div class="btnLoad btn" ng-click="changeView(stations.id[0])">view trends and historical data</div>
+                        <div class="btnLoad btn" ng-click="changeView(stations.stationId[0])">view trends and historical data</div>
                     </div>
                 </div>
             </div>

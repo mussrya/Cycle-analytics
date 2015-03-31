@@ -2,7 +2,7 @@
 app.controller('stationTrends', function ($scope, $http, $window, $location, $interval) {
 
     // Options for the charts
-    $scope.options = {
+    $scope.defaults = {
         // Boolean - Whether to animate the chart
         animation: true,
         // Number - Number of animation steps
@@ -15,9 +15,9 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         scaleOverride: true,
         // ** Required if scaleOverride is true **
         // Number - The number of steps in a hard coded scale
-        scaleSteps: 5,
+        scaleSteps: 20,
         // Number - The value jump in the hard coded scale
-        scaleStepWidth: 10,
+        scaleStepWidth: 5,
         // Number - The scale starting value
         scaleStartValue: 0,
         // String - Colour of the scale line
@@ -57,9 +57,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         console.log(points, evt);
     };
 
-    // Used to switch out hosts for mobile testing
     $scope.host = 'http://192.30.192.15:8080/api/v1';
-    //$scope.host = 'http://192.168.0.8:8080/api/v1';
 
     // Getting the ID from the URL path
     $scope.stationId = $location.$$path;
@@ -77,11 +75,14 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     }
 
-    // Request for the station chart data (last 10 minutes chart)
+    // Request for the station chart data (last 60 minutes chart)
     $scope.stationLive = function ($http) {
         $http.get($scope.host+'/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationLiveData = JSON.parse(data);
 
+            $scope.stationLiveOptions = $scope.defaults;
+            $scope.stationLiveOptions.scaleSteps = $scope.stationLiveData[0].nbDocks/5;
+            
             // Defining the chart structure
             var chartData = {
                 labels: [],
