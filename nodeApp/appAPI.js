@@ -28,7 +28,8 @@ var dataCounter = 0;
 var lastCallTimeStamp = 0;
 
 // Import the model for the storing of data
-var Stations = require('./models/schema.js');
+var Stations = require('./models/stations.js');
+var StationsLives = require('./models/stationsLives.js');
 
 // Frontend API
 // Allows for cross domain calls for development purposes
@@ -48,38 +49,8 @@ router.use(function (req, res, next) {
 // Create the stationsActive route, this will get live data
 router.route('/stationsActive')
     .get(function (req, res) {
-
-
-
         // search mongodb
-        Stations.aggregate([
-                {
-                    $group: {
-                        _id: "$stationId",
-                        "name": {
-                            "$addToSet": "$name"
-                        },
-                        "nbBikes": {
-                            "$addToSet": "$nbBikes"
-                        },
-                        nbEmptyDocks: {
-                            "$addToSet": "$nbEmptyDocks"
-                        },
-                        nbDocks: {
-                            "$addToSet": "$nbDocks"
-                        },
-                        stationId: {
-                            "$addToSet": "$stationId"
-                        }
-                    }
-                },
-                {
-                    $sort: {
-                        ISODate: 1
-                    }
-                }
-
-        ],
+        StationsLives.find({},
             function (err, station) {
                 if (err) return handleError(err);
                 res.json(JSON.stringify(station));

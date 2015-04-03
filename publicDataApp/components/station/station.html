@@ -32,7 +32,7 @@
                     <span ng-if="stationLiveData.length<=5">
                         <h3><small><center>Data is currently being generated</center></small></h3>
                     </span>
-                    <div class="svgCenter" ng-if="!stationLiveData">
+                    <div class="svgCenter" ng-if="!stationLiveData && !errorMessage">
                         <div ng-include="'shared/loading/loading.html'"></div>
                     </div>
                 </div>

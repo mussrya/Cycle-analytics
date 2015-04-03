@@ -66,7 +66,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     // Request for station information (title etc.)
     $scope.stationRequest = function ($http) {
-        $http.get($scope.host+'/station/' + $scope.stationId).success(function (data, status, headers, config) {
+        $http.get($scope.host + '/station/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationData = JSON.parse(data);
         }).
         error(function (data, status, headers, config) {
@@ -77,12 +77,12 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     // Request for the station chart data (last 60 minutes chart)
     $scope.stationLive = function ($http) {
-        $http.get($scope.host+'/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
+        $http.get($scope.host + '/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationLiveData = JSON.parse(data);
 
             $scope.stationLiveOptions = $scope.defaults;
-            $scope.stationLiveOptions.scaleSteps = $scope.stationLiveData[0].nbDocks/5;
-            
+            $scope.stationLiveOptions.scaleSteps = $scope.stationLiveData[0].nbDocks / 5;
+
             // Defining the chart structure
             var chartData = {
                 labels: [],
@@ -100,20 +100,20 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
                     var minutes = date.getMinutes();
                     var hours = date.getHours();
                     var stationDate = hours + ' : ' + minutes;
-                    
-                    
+
+
                     if (counterLoop == 0) {
                         chartData.labels.push(stationDate);
                         counterLoop++;
-                    }else if(counterLoop < 3){
+                    } else if (counterLoop < 3) {
                         chartData.labels.push('');
                         counterLoop++;
-                    }else{
+                    } else {
                         chartData.labels.push('');
                         counterLoop = 0;
                     }
                     chartData.data[0].push($scope.stationLiveData[i].nbBikes);
-                    
+
                 }
             }
 

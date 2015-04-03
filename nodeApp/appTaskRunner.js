@@ -14,12 +14,12 @@ var port = process.env.PORT || 8081;
 
 // Create the express app
 var app = express();
-console.log(Date()+' - Launching the server');
+console.log(Date() + ' - Launching the server');
 
 
 // Database connection
 mongoose.connect('mongodb://localhost/cycleHire');
-console.log(Date()+' - Connecting to the DB');
+console.log(Date() + ' - Connecting to the DB');
 
 // Create the router
 var router = express.Router();
@@ -32,6 +32,7 @@ var lastCallTimeStamp = 0;
 
 // Import the models for the storing of data
 var Stations = require('./models/stations.js');
+var StationsLives = require('./models/stationsLive.js');
 var StationsBestTimes = require('./models/stationsBestTimes.js');
 var StationsAveragesHour = require('./models/stationsAveragesHour.js');
 var StationsAveragesDay = require('./models/stationsAveragesDay.js');
@@ -85,6 +86,10 @@ function saveData(station) {
     console.log(Date() + ' - Adding the data to the database');
     var entryDate = Date();
 
+    // Remove StationsLive collection prior to importing new content
+    StationsLives.remove({}, function () {
+    });
+
     // Save data to database
     for (var i = 0, len = station.length; i < len; i++) {
         var stationSave = new Stations({
@@ -103,9 +108,32 @@ function saveData(station) {
             nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
             nbDocks: parseInt(station[i].nbDocks)
         });
-        stationSave.save(function (err, thor) {
-            if (err) return console.error(err);
+
+        stationSave.save(function (err) {
+            if (err) return console.error('Error:'+err);
         });
+
+        var stationSave = new StationsLives({
+            timestamp: entryDate,
+            stationId: station[i].id,
+            name: station[i].name,
+            terminalName: station[i].terminalName,
+            lat: station[i].lat,
+            long: station[i].long,
+            installed: station[i].installed,
+            locked: station[i].locked,
+            installDate: station[i].installDate,
+            removalDate: station[i].removalDate,
+            temporary: station[i].temporary,
+            nbBikes: parseInt(station[i].nbBikes),
+            nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
+            nbDocks: parseInt(station[i].nbDocks)
+        });
+
+        stationSave.save(function (err) {
+            if (err) return console.error('Error:'+err);
+        });
+
     }
 }
 
@@ -121,27 +149,29 @@ function checkTime() {
     timeDifference = new Date(timeDifference.getFullYear(), timeDifference.getMonth(), timeDifference.getDate(), timeDifference.getHours());
     timeDifference = timeDifference.getTime() - new Date().getTime();
     setTimeout(function () {
+        var currentTime = new Date();
         // Run hourly average
-        console.log(Date()+' - Running hourly average ETL function');
-        
+        console.log(currentTime + ' - Running hourly average ETL function');
         // If the hour is equal to midnight, then run the daily average function
-        if (new Date().getHours() == 0) {
-            console.log(Date() + ' - Running the daily average ETL function');
-        } else if (new Date().getHours == 2) {
+        if (currentTime.getHours() == 0) {
+            console.log(currentTime + ' - Running the daily average ETL function');
+        } else if (currentTime.getHours == 2) {
             // If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
-            console.log(Date() + ' - Running the daily cleanup function');
+            console.log(currentTime + ' - Running the daily cleanup function');
+        } else {
+            console.log(currentTime.getHours() + 'DEBUG PURPOSE');
         }
 
         // Call to re-run checkTime to run again in 1 hours time
         checkTime();
-        console.log(Date()+' - Re-running checkTime function');
+        console.log(Date() + ' - Re-running checkTime function');
 
     }, timeDifference);
 }
 
 // Initiate the checkTime function when node loads
 checkTime();
-console.log(Date()+' - Running checkTime function for the first time');
+console.log(Date() + ' - Running checkTime function for the first time');
 
 // Launch the server
 app.listen(port);

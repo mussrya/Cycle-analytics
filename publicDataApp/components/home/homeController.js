@@ -14,13 +14,12 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
     };
 
     // Function to prevent infinate scroll when 1 station is selected
-    $scope.$watchCollection('selected', function () {
-        if ($scope.selected == '') {
+    $scope.searchValue = function () {
+        if ($scope.selected === '') {
             $scope.dataRealTimeChildNumber = 0;
             $scope.setDataRealTime();
         }
-    });
-
+    };
     // Function to request data from the Node API
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {
@@ -44,11 +43,17 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
         $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
     }
 
+    $scope.reset = function () {
+        $scope.selected = undefined;
+        $scope.dataRealTimeChildNumber = 0;
+        $scope.setDataRealTime();
+    }
+
     // Function to provide infinate scroll functinality
     $scope.infinate = angular.element($window).bind("scroll", function () {
         var el = document.querySelector("#loadMore");
         var top = el.getBoundingClientRect().top;
-        if (el.getBoundingClientRect().top <= 700 && ($scope.selected === '' || $scope.selected === undefined)) {
+        if (el.getBoundingClientRect().top <= 730 && ($scope.selected === '' || $scope.selected === undefined)) {
             $scope.$apply(function () {
                 $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
