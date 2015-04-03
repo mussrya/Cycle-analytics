@@ -2,20 +2,28 @@
 This project provides both real-time and historical analysis of Barclays cycle stations (aka Borris bikes) within London.
 
 The main structure is as follows:
--   nodeApp - the NodeJS backend application which provides both an API for the frontend and a process for grabbing / storing & processing station data
--   publicDataApp - the AngularJS frontend which acts as an MVC application
+* nodeApp - the NodeJS backend, which is split into 2 seperate node servers:
+ * API for the front-end application
+ * Task runner for the grabbing, storing & processing cycle station data
+* publicDataApp - the AngularJS frontend which acts as the MVC application
 
 ### Version
 0.1 [WIP]
 
-### Tech
+### Frameworks / Libraries used
 
-Public data visualisation uses multiple frameworks / libraries as shown below:
+Cycle Analytics makes use of multiple frameworks & libraries as shown below:
 
-* [AngularJS] - HTML enhanced for web apps
-* [Node.js] - evented I/O for the backend
-* [Express] - fast node.js network app framework [@tjholowaychuk]
-* 
+* [AngularJS] 
+ * [Chart.js] 
+* [Node.js] 
+ * [Express] 
+ * [XML2JS] 
+ * [Mongoose] 
+
+### High level design
+
+TBD
 
 ### Installation
 
@@ -23,11 +31,11 @@ TBD
 
 ### Development
 
-Want to contribute? Once I have finalised the first version release I will be open to suggestions. The README.md will be updated accordingly when the time is right!
+Want to contribute? Feel free to submit a pull request.
 
 ### Todo's
 
-See the public Trello board here: https://trello.com/b/xgTHXbhR/cycleanalytics
+See the public Trello board here for the current tasks & bugs outstanding: https://trello.com/b/xgTHXbhR/cycleanalytics
 
 ### License
 
