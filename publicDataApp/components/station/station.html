@@ -22,11 +22,12 @@
         </tabset>
         <h3>Historical trends and analytics</h3>
         <tabset justified="true" type="pills">
-            <tab ng-click="liveReload()" heading="Last hour">
-                <div class="well" style="margin-top:5px;">
+            <tab select="loadLive()">
+                <tab-heading>Last hour</tab-heading>
+                <div class="well" style="height:330px; margin-top:5px;">
                     <h4>Last hour (updates automatically)</h4>
                     <span ng-if="stationLiveData.length>=6">
-                        <canvas id="line" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
+                        <canvas id="live" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
                         </canvas>
                     </span>
                     <span ng-if="stationLiveData.length<=5">
@@ -37,9 +38,25 @@
                     </div>
                 </div>
             </tab>
-            <tab ng-click="stopLiveReload()" heading="Last 24 hours">Short Labeled Justified content</tab>
-            <tab ng-click="stopLiveReload()" heading="Weekly average">Long Labeled Justified content</tab>
-            <tab ng-click="stopLiveReload()" heading="Monthly average">Long Labeled Justified content</tab>
+            <tab select="loadHourly()">
+                <tab-heading>
+                    Last 48 hours
+                </tab-heading>
+                <div class="well" style="height:330px; margin-top:5px;">
+                    <h4>Last 48 hours</h4>
+                    <span ng-if="stationHourlyData.length>=2">
+                        <canvas id="hourly" height="325" class="chart chart-line" data="dataHourly.data" labels="dataHourly.labels" colours="dataHourly.colours" options="stationHourlyOptions" legend="false" series="dataHourly.series" click="onClick">
+                        </canvas>
+                                 </span>
+                    <span ng-if="stationHourlyData.length<=2">
+                        <h3><small><center>Data is currently being generated</center></small></h3>
+                    </span>
+                    <div class="svgCenter" ng-if="!stationHourlyData && !errorMessage">
+                        <div ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                </div>
+            </tab>
+            <tab ng-click="stopLiveReload()" heading="Daily average">Long Labeled Justified content</tab>
         </tabset>
 
     </div>

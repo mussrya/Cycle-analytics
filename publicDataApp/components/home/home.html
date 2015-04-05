@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input type="text" typeahead-template-url="shared/typeahead/typeahead-popup.html" ng-model="$parent.selected" ng-change="searchValue()" typeahead-on-select="callBack($item, $model)" typeahead="stations as stations.name for stations in dataRealTime | filter:$viewValue | limitTo:8" class="form-control" placeholder="search stations">
+                        <input type="text" ng-model="$parent.selected" ng-change="searchValue()" class="form-control" placeholder="search stations">
                         <span class="input-group-btn">
         <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove" ng-click="reset()" aria-hidden="true"></span>
                         </button>
@@ -19,7 +19,12 @@
                 <!-- /.col-lg-6 -->
             </div>
             <!-- /.row -->
-            <div class="section" ng-repeat="stations in dataRealTimeChild">
+            <div ng-hide="dataRealTimeFiltered.length" class=" alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span> No stations found, please try an alternative search term
+            </div>
+
+            <div ng-if="selected.length>2" class="section" ng-repeat="stations in dataRealTimeFiltered=( dataRealTime | filter:selected)">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{stations.name}}</h3>
@@ -51,9 +56,41 @@
                     </div>
                 </div>
             </div>
-            <div id="loadMore"></div>
+            <div ng-if="selected.length<3 || selected.length===undefined" class="section" ng-repeat="stations in dataRealTimeChild">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{stations.name}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="progress custom">
+                            <span ng-if="stations.nbEmptyDocks!=0 && stations.nbBikes!=0">
+                                <span ng-if="stations.nbEmptyDocks!=0">
+                                    <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
+                                </span>
+                            <span ng-if="stations.nbBikes!=0">
+                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                        {{stations.nbBikes}} bikes
+                                    </div>
+                                </span>
+                            </span>
+                            <span ng-if="stations.nbEmptyDocks==0 || stations.nbBikes==0">
+                                <span ng-if="stations.nbEmptyDocks!=0">
+                                    <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
+                                </span>
+                            <span ng-if="stations.nbBikes!=0">
+                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                        {{stations.nbBikes}} bikes
+                                    </div>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="btnLoad btn" ng-click="changeView(stations.stationId)">view trends and historical data</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div id="loadMore"></div>
     <div ng-if="errorMessage">
         <div class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>

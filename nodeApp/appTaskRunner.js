@@ -32,11 +32,11 @@ var lastCallTimeStamp = 0;
 
 // Import the models for the storing of data
 var Stations = require('./models/stations.js');
-var StationsLives = require('./models/stationsLive.js');
+var StationsLives = require('./models/stationsLives.js');
 var StationsBestTimes = require('./models/stationsBestTimes.js');
-var StationsAveragesHour = require('./models/stationsAveragesHour.js');
-var StationsAveragesDay = require('./models/stationsAveragesDay.js');
-var StationsAveragesWeek = require('./models/stationsAveragesWeek.js');
+var StationsAveragesHours = require('./models/stationsAveragesHours.js');
+var StationsAveragesDays = require('./models/stationsAveragesDays.js');
+var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
 
 // Backend for capture & prcoessing
@@ -56,15 +56,29 @@ function getData() {
             // Bug fix for incorrect white spacing
             xml = xml.replace("\ufeff", "");
             parseString(xml, function (err, result) {
-                if (result.hasOwnProperty('stations')) {
-                    if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
-                        lastCallTimeStamp = result.stations['$'].lastUpdate;
-                        stationsRealTime = result.stations['station'];
-                        // commented this out during testing
-                        saveData(result.stations['station']);
-                    } else {
-                        console.log(Date() + ' - No new updates since last run');
+                try {
+                    if (result.hasOwnProperty('stations')) {
+                        if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
+                            lastCallTimeStamp = result.stations['$'].lastUpdate;
+                            stationsRealTime = result.stations['station'];
+                            // commented this out during testing
+                            saveData(result.stations['station']);
+                        } else {
+                            console.log(Date() + ' - No new updates since last run');
+                        }
                     }
+                    if (result.hasOwnProperty('stations')) {
+                        if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
+                            lastCallTimeStamp = result.stations['$'].lastUpdate;
+                            stationsRealTime = result.stations['station'];
+                            // commented this out during testing
+                            saveData(result.stations['station']);
+                        } else {
+                            console.log(Date() + ' - No new updates since last run');
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
                 }
             });
 
@@ -87,8 +101,7 @@ function saveData(station) {
     var entryDate = Date();
 
     // Remove StationsLive collection prior to importing new content
-    StationsLives.remove({}, function () {
-    });
+    StationsLives.remove({}, function () {});
 
     // Save data to database
     for (var i = 0, len = station.length; i < len; i++) {
@@ -110,7 +123,7 @@ function saveData(station) {
         });
 
         stationSave.save(function (err) {
-            if (err) return console.error('Error:'+err);
+            if (err) return console.error('Error:' + err);
         });
 
         var stationSave = new StationsLives({
@@ -131,7 +144,7 @@ function saveData(station) {
         });
 
         stationSave.save(function (err) {
-            if (err) return console.error('Error:'+err);
+            if (err) return console.error('Error:' + err);
         });
 
     }
@@ -152,10 +165,80 @@ function checkTime() {
         var currentTime = new Date();
         // Run hourly average
         console.log(currentTime + ' - Running hourly average ETL function');
+
+
+        // Calculating time an hour ago
+        var hourAverageEnd = new Date();
+        var hourAverageStart = hourAverageEnd.getTime() - 3600000;
+        hourAverageStart = new Date(hourAverageStart);
+
+        console.log(hourAverageStart);
+        console.log(hourAverageEnd);
+
+        // Query the stations collection
+        // search mongodb
+
+        Stations.aggregate([
+                {
+                    $match: {
+                        "timestamp": {
+                            $gte: hourAverageStart,
+                            $lt: hourAverageEnd
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$stationId",
+                        "name": {
+                            "$addToSet": "$name"
+                        },
+                        nbBikes: {
+                            $avg: "$nbBikes"
+                        },
+                        nbEmptyDocks: {
+                            $avg: "$nbEmptyDocks"
+                        },
+                        nbDocks: {
+                            $avg: "$nbDocks"
+                        },
+                        timestamp: {
+                            "$addToSet": hourAverageStart
+                        }
+                    }
+
+                }, {
+                    $sort: {
+                        ISODate: 1
+                    }
+                }
+
+            ],
+            function (err, station) {
+                if (err) {
+                    console.log(err)
+                } else {
+
+                    for (var i = 0, len = station.length; i < len; i++) {
+                        var stationSave = new StationsAveragesHours({
+                            timestamp: station[i].timestamp,
+                            stationId: station[i]._id,
+                            nbBikes: parseInt(station[i].nbBikes),
+                            nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
+                            nbDocks: parseInt(station[i].nbDocks)
+                        });
+
+                        stationSave.save(function (err) {
+                            if (err) return console.error('Error:' + err);
+                        });
+                    }
+                }
+            });
+
         // If the hour is equal to midnight, then run the daily average function
         if (currentTime.getHours() == 0) {
             console.log(currentTime + ' - Running the daily average ETL function');
-        } else if (currentTime.getHours == 2) {
+        } else if (currentTime.getHours() == 2) {
             // If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
             console.log(currentTime + ' - Running the daily cleanup function');
         } else {

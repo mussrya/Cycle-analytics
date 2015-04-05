@@ -1,17 +1,11 @@
 // Controller for the Home page
-app.controller('publicHome', function ($scope, $http, $window, $location) {
+app.controller('publicHome', function ($scope, $http, $window, $location, $filter) {
 
     // Defining core variables
     $scope.dataRealTimeChildNumber = 0;
     $scope.selected = undefined;
 
     $scope.host = 'http://192.30.192.15:8080/api/v1/';
-
-    // Function for clicking a station within search
-    $scope.callBack = function ($item, $model) {
-        $scope.dataRealTimeChild = [];
-        $scope.dataRealTimeChild[0] = $item;
-    };
 
     // Function to prevent infinate scroll when 1 station is selected
     $scope.searchValue = function () {
@@ -53,7 +47,8 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
     $scope.infinate = angular.element($window).bind("scroll", function () {
         var el = document.querySelector("#loadMore");
         var top = el.getBoundingClientRect().top;
-        if (el.getBoundingClientRect().top <= 730 && ($scope.selected === '' || $scope.selected === undefined)) {
+       
+        if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
             $scope.$apply(function () {
                 $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
@@ -67,7 +62,6 @@ app.controller('publicHome', function ($scope, $http, $window, $location) {
         var stationPath = '/station/' + station;
         $location.path(stationPath);
     }
-
 
     // Calls to functions on initial load
     $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);

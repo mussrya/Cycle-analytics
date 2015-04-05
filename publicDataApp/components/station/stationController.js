@@ -33,7 +33,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
         scaleBeginAtZero: true,
         // String - Scale label font declaration for the scale label
-        scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+        scaleFontFamily: "'Helvetica'",
         // Number - Scale label font size in pixels
         scaleFontSize: 12,
         // String - Scale label font weight style
@@ -101,6 +101,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
                     var hours = date.getHours();
                     var stationDate = hours + ' : ' + minutes;
 
+                    // % 3
 
                     if (counterLoop == 0) {
                         chartData.labels.push(stationDate);
@@ -125,6 +126,45 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         });
     };
 
+
+    // Request for the hourly average chart
+    $scope.stationHourly = function ($http) {
+        $http.get($scope.host + '/stationHourly/' + $scope.stationId).success(function (data, status, headers, config) {
+            $scope.stationHourlyData = JSON.parse(data);
+
+            $scope.stationHourlyOptions = $scope.defaults;
+            $scope.stationHourlyOptions.scaleSteps = $scope.stationHourlyData[0].nbDocks / 5;
+
+            // Defining the chart structure
+            var chartData = {
+                labels: [],
+                series: [],
+                data: [[]],
+                colours: ['#03A9F4']
+            };
+            chartData.series = ['stations'];
+
+            // Looping through the data to build the chart
+            for (var i = 0, len = $scope.stationHourlyData.length; i < len; i++) {
+                if ($scope.stationHourlyData[i]) {
+                    var date = new Date($scope.stationHourlyData[i].timestamp);
+                    var minutes = date.getMinutes();
+                    var hours = date.getHours();
+                    var stationDate = hours + ' : ' + minutes;
+                    chartData.labels.push(stationDate);
+                    chartData.data[0].push($scope.stationHourlyData[i].nbBikes);
+
+                }
+            }
+
+            // Updating the chart data
+            $scope.dataHourly = chartData;
+        }).
+        error(function (data, status, headers, config) {
+            $scope.errorMessage = true;
+        });
+    };
+
     // Updates the (last 10 minutes) chart data every 35 seconds
     $scope.liveReload = function () {
         $scope.liveReloadVar = $interval(function () {
@@ -132,20 +172,44 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         }, 35000);
     };
 
-    // function for stopping the setInterval
+    // Function for stopping the setInterval
     $scope.stopLiveReload = function () {
         $interval.cancel($scope.liveReloadVar);
     };
 
+    // Cancel the live reload function
     $scope.$on('$destroy', function () {
         $interval.cancel($scope.liveReloadVar);
     });
 
-    // Initial calls to get the data required
-    $scope.stationData = $scope.stationRequest($http);
-    $scope.stationLiveData = $scope.stationLive($http);
+    // Function which is called from the front-end to re-load the live data
+    $scope.loadLive = function () {
+        $scope.stopLiveReload();
+        $scope.stationLiveData = '';
+        $scope.stationLiveData = $scope.stationLive($http);
+        $scope.liveReload();
+    };
+
+    // Function which is called from the front-end to re-load the hourly average data
+    $scope.loadHourly = function () {
+        $scope.stopLiveReload();
+        $scope.stationHourlyData = '';
+        $scope.dataHourly = '';
+        $scope.stationHourlyData = $scope.stationHourly($http);
+    };
+
+    // Function which is called from the front-end to re-load the daily average data
+    $scope.loadDaily = function () {
+
+    };
+
+    // Start the live reload function
     $scope.liveReload();
 
+    // Initial calls to get the data required
+    $scope.stationData = $scope.stationRequest($http);
+
+    // Dummy array until the real functionality has been added
     $scope.bestTimes = [{
         day: 'Mon',
         morning: new Date(),
@@ -167,4 +231,5 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         morning: new Date(),
         evening: new Date()
     }];
+
 });

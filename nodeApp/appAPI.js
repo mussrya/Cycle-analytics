@@ -30,6 +30,7 @@ var lastCallTimeStamp = 0;
 // Import the model for the storing of data
 var Stations = require('./models/stations.js');
 var StationsLives = require('./models/stationsLives.js');
+var StationsAveragesHourly = require('./models/stationsAveragesHours.js');
 
 // Frontend API
 // Allows for cross domain calls for development purposes
@@ -65,29 +66,55 @@ router.route('/station/:id')
                 'stationId': req.params.id
             },
             function (err, station) {
-                if (err) return handleError(err);
-                res.json(JSON.stringify(station));
+                if (err) {
+                    console.log(err)
+                } else {
+                    res.json(JSON.stringify(station));
+                }
             });
     });
 
 router.route('/stationLive/:id').get(function (req, res) {
-    var tenMinutesAgo = new Date().getTime() - 3600000;
+    var oneHourAgo = new Date().getTime() - 3600000;
 
     // search mongodb
     Stations.aggregate({
             $match: {
                 "stationId": req.params.id,
                 "timestamp": {
-                    $gte: new Date(tenMinutesAgo)
+                    $gte: new Date(oneHourAgo)
                 }
             }
         },
         function (err, station) {
-            if (err) return handleError(err);
-            res.json(JSON.stringify(station));
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
         });
 });
 
+router.route('/stationHourly/:id').get(function (req, res) {
+
+    // search mongodb
+    StationsAveragesHourly.aggregate({
+            $match: {
+                "stationId": req.params.id
+            }
+        }, {
+            $sort: {
+                timestamp: 1
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
 
 // Pre-fix all API calls are with /api/v1 for future proofing of the API
 app.use('/api/v1', router);
