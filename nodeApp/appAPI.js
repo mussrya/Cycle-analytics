@@ -31,6 +31,7 @@ var lastCallTimeStamp = 0;
 var Stations = require('./models/stations.js');
 var StationsLives = require('./models/stationsLives.js');
 var StationsAveragesHourly = require('./models/stationsAveragesHours.js');
+var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 
 // Frontend API
 // Allows for cross domain calls for development purposes
@@ -99,6 +100,28 @@ router.route('/stationHourly/:id').get(function (req, res) {
 
     // search mongodb
     StationsAveragesHourly.aggregate({
+            $match: {
+                "stationId": req.params.id
+            }
+        }, {
+            $sort: {
+                timestamp: 1
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
+
+router.route('/stationDaily/:id').get(function (req, res) {
+
+    // search mongodb
+    StationsAveragesDays.aggregate({
             $match: {
                 "stationId": req.params.id
             }

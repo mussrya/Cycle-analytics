@@ -48,7 +48,7 @@
                         <canvas id="hourly" height="325" class="chart chart-line" data="dataHourly.data" labels="dataHourly.labels" colours="dataHourly.colours" options="stationHourlyOptions" legend="false" series="dataHourly.series" click="onClick">
                         </canvas>
                                  </span>
-                    <span ng-if="stationHourlyData.length<=2">
+                    <span ng-if="stationHourlyData.length<2">
                         <h3><small><center>Data is currently being generated</center></small></h3>
                     </span>
                     <div class="svgCenter" ng-if="!stationHourlyData && !errorMessage">
@@ -56,7 +56,24 @@
                     </div>
                 </div>
             </tab>
-            <tab ng-click="stopLiveReload()" heading="Daily average">Long Labeled Justified content</tab>
+            <tab select="loadDaily()">
+                <tab-heading>
+                    Daily average
+                </tab-heading>
+                <div class="well" style="height:330px; margin-top:5px;">
+                    <h4>Last 48 hours</h4>
+                    <span ng-if="stationDailyData.length>=1">
+                        <canvas id="daily" height="325" class="chart chart-line" data="dataDaily.data" labels="dataDaily.labels" colours="dataDaily.colours" options="stationDailyOptions" legend="false" series="dataDaily.series" click="onClick">
+                        </canvas>
+                                 </span>
+                    <span ng-if="stationDailyData.length<=1">
+                        <h3><small><center>Data is currently being generated</center></small></h3>
+                    </span>
+                    <div class="svgCenter" ng-if="!stationDailyData && !errorMessage">
+                        <div ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                </div>
+            </tab>
         </tabset>
 
     </div>

@@ -93,28 +93,26 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
             chartData.series = ['stations'];
 
             // Looping through the data to build the chart
-            var counterLoop = 0;
             for (var i = 0, len = $scope.stationLiveData.length; i < len; i++) {
                 if ($scope.stationLiveData[i]) {
                     var date = new Date($scope.stationLiveData[i].timestamp);
                     var minutes = date.getMinutes();
+                    if (minutes < 10) {
+                        minutes = "0" + minutes.toString();
+                    }
                     var hours = date.getHours();
-                    var stationDate = hours + ' : ' + minutes;
+                    if (hours < 10) {
+                        hours = "0" + hours.toString();
+                    }
 
-                    // % 3
-
-                    if (counterLoop == 0) {
+                    var stationDate = hours + ':' + minutes;
+                    
+                    if (i % 3 == 0) {
                         chartData.labels.push(stationDate);
-                        counterLoop++;
-                    } else if (counterLoop < 3) {
-                        chartData.labels.push('');
-                        counterLoop++;
                     } else {
                         chartData.labels.push('');
-                        counterLoop = 0;
                     }
                     chartData.data[0].push($scope.stationLiveData[i].nbBikes);
-
                 }
             }
 
@@ -149,16 +147,58 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
                 if ($scope.stationHourlyData[i]) {
                     var date = new Date($scope.stationHourlyData[i].timestamp);
                     var minutes = date.getMinutes();
+                    if (minutes < 10) {
+                        minutes = "0" + minutes.toString();
+                    }
                     var hours = date.getHours();
-                    var stationDate = hours + ' : ' + minutes;
+                    if (hours < 10) {
+                        hours = "0" + hours.toString();
+                    }
+
+                    var stationDate = hours + ':' + minutes;
                     chartData.labels.push(stationDate);
                     chartData.data[0].push($scope.stationHourlyData[i].nbBikes);
-
                 }
             }
 
             // Updating the chart data
             $scope.dataHourly = chartData;
+        }).
+        error(function (data, status, headers, config) {
+            $scope.errorMessage = true;
+        });
+    };
+
+    // Request for the daily average chart
+    $scope.stationDaily = function ($http) {
+        $http.get($scope.host + '/stationDaily/' + $scope.stationId).success(function (data, status, headers, config) {
+            $scope.stationDailyData = JSON.parse(data);
+
+            $scope.stationDailyOptions = $scope.defaults;
+            $scope.stationDailyOptions.scaleSteps = $scope.stationDailyData[0].nbDocks / 5;
+
+            // Defining the chart structure
+            var chartData = {
+                labels: [],
+                series: [],
+                data: [[]],
+                colours: ['#03A9F4']
+            };
+            chartData.series = ['stations'];
+
+            // Looping through the data to build the chart
+            for (var i = 0, len = $scope.stationDailyData.length; i < len; i++) {
+                if ($scope.stationDailyData[i]) {
+                    var date = new Date($scope.stationDailyData[i].timestamp);
+                    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours());
+                    chartData.labels.push(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear());
+                    chartData.data[0].push($scope.stationDailyData[i].nbBikes);
+
+                }
+            }
+
+            // Updating the chart data
+            $scope.dataDaily = chartData;
         }).
         error(function (data, status, headers, config) {
             $scope.errorMessage = true;
@@ -200,7 +240,10 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
     // Function which is called from the front-end to re-load the daily average data
     $scope.loadDaily = function () {
-
+        $scope.stopLiveReload();
+        $scope.stationDailyData = '';
+        $scope.dataDaily = '';
+        $scope.stationDailyData = $scope.stationDaily($http);
     };
 
     // Start the live reload function
