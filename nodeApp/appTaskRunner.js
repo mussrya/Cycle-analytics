@@ -36,8 +36,6 @@ var StationsLives = require('./models/stationsLives.js');
 var StationsBestTimes = require('./models/stationsBestTimes.js');
 var StationsAveragesHours = require('./models/stationsAveragesHours.js');
 var StationsAveragesDays = require('./models/stationsAveragesDays.js');
-var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
-
 
 // Backend for capture & prcoessing
 // The function which is called as part of the setInterval to capture and store data into the database
@@ -60,91 +58,68 @@ function getData() {
                     if (result.hasOwnProperty('stations')) {
                         if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                             lastCallTimeStamp = result.stations['$'].lastUpdate;
-                            stationsRealTime = result.stations['station'];
+                            var stationsRealTime = result.stations['station'];
                             // commented this out during testing
-                            saveData(result.stations['station']);
-                        } else {
-                            console.log(Date() + ' - No new updates since last run');
-                        }
-                    }
-                    if (result.hasOwnProperty('stations')) {
-                        if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
-                            lastCallTimeStamp = result.stations['$'].lastUpdate;
-                            stationsRealTime = result.stations['station'];
-                            // commented this out during testing
+                            console.log('Calling the saveData function');
                             saveData(result.stations['station']);
                         } else {
                             console.log(Date() + ' - No new updates since last run');
                         }
                     }
                 } catch (e) {
-                    console.log(e);
+                    console.log('Error saving the stations: ' + e);
                 }
             });
 
             console.log(Date() + ' - Finished data capture run: ' + dataCounter);
         });
-
         res.on('error', function (err) {
             // error in processing
-            console.log(err);
+            console.log('Error retrieving all of the XML content'+err);
         });
     });
 
     req.on('error', function (err) {
-        // error in receiving
+        console.log('Error requesting the XML data: '+err);
     });
 }
 
 function saveData(station) {
-    console.log(Date() + ' - Adding the data to the database');
+    console.log(Date() + ' - Adding the data to the collections');
     var entryDate = Date();
 
+    console.log(Date() + ' - Removing previous station data');
     // Remove StationsLive collection prior to importing new content
     StationsLives.remove({}, function () {});
 
+    console.log(Date() + ' - Saving data to the stations collection');
     // Save data to database
     for (var i = 0, len = station.length; i < len; i++) {
         var stationSave = new Stations({
             timestamp: entryDate,
             stationId: station[i].id,
             name: station[i].name,
-            terminalName: station[i].terminalName,
-            lat: station[i].lat,
-            long: station[i].long,
-            installed: station[i].installed,
-            locked: station[i].locked,
-            installDate: station[i].installDate,
-            removalDate: station[i].removalDate,
-            temporary: station[i].temporary,
             nbBikes: parseInt(station[i].nbBikes),
             nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
             nbDocks: parseInt(station[i].nbDocks)
         });
 
         stationSave.save(function (err) {
-            if (err) return console.error('Error:' + err);
+            if (err) return console.error('Error saving data to the stations collection: ' + err);
         });
 
+        console.log(Date() + ' - Saving data to the stationsLives collection');
         var stationSave = new StationsLives({
             timestamp: entryDate,
             stationId: station[i].id,
             name: station[i].name,
-            terminalName: station[i].terminalName,
-            lat: station[i].lat,
-            long: station[i].long,
-            installed: station[i].installed,
-            locked: station[i].locked,
-            installDate: station[i].installDate,
-            removalDate: station[i].removalDate,
-            temporary: station[i].temporary,
             nbBikes: parseInt(station[i].nbBikes),
             nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
             nbDocks: parseInt(station[i].nbDocks)
         });
 
         stationSave.save(function (err) {
-            if (err) return console.error('Error:' + err);
+            if (err) return console.error('Error saving data to the stationsLives collection: ' + err);
         });
 
     }
@@ -153,7 +128,7 @@ function saveData(station) {
 // Will call the getData function every 30 seconds
 setInterval(function () {
     getData();
-}, 30000);
+}, 60000);
 
 // checkTime function which is used to run the ETL reports for hourly, daily and weekly averages as well as the cleanup of the previous day of live data
 function checkTime() {
@@ -165,19 +140,15 @@ function checkTime() {
         var currentTime = new Date();
         // Run hourly average
         console.log(currentTime + ' - Running hourly average ETL function');
-
-
         // Calculating time an hour ago
         var hourAverageEnd = new Date();
         var hourAverageStart = hourAverageEnd.getTime() - 3600000;
         hourAverageStart = new Date(hourAverageStart);
 
-        console.log(hourAverageStart);
-        console.log(hourAverageEnd);
-
         // Query the stations collection
         // search mongodb
 
+        console.log(Date() + ' - Searching mongodb');
         Stations.aggregate([
                 {
                     $match: {
@@ -216,9 +187,9 @@ function checkTime() {
             ],
             function (err, station) {
                 if (err) {
-                    console.log(err)
+                    console.log('Error querying the stations collection: ' + err)
                 } else {
-
+                    console.log(Date() + ' - Saving data to the stationsAveragesHours collection');
                     for (var i = 0, len = station.length; i < len; i++) {
                         var stationSave = new StationsAveragesHours({
                             timestamp: station[i].timestamp,
@@ -229,7 +200,7 @@ function checkTime() {
                         });
 
                         stationSave.save(function (err) {
-                            if (err) return console.error('Error:' + err);
+                            if (err) return console.error('Error saving stationsAveragesHours collection: ' + err);
                         });
                     }
                 }
@@ -243,6 +214,7 @@ function checkTime() {
             var dayAverageStart = dayAverageEnd.getTime() - 86400000;
             dayAverageStart = new Date(dayAverageStart);
 
+            console.log(currentTime + ' - Querying the stationsAveragesHours collection');
             StationsAveragesHours.aggregate([
                     {
                         $match: {
@@ -281,9 +253,9 @@ function checkTime() {
             ],
                 function (err, station) {
                     if (err) {
-                        console.log(err)
+                        console.log('Error querying the stationsAveragesHours collection: ' + err)
                     } else {
-
+                        console.log(currentTime + ' - Saving to the stationsAveragesDays collection');
                         for (var i = 0, len = station.length; i < len; i++) {
                             var stationSave = new StationsAveragesDays({
                                 timestamp: station[i].timestamp,
@@ -302,8 +274,6 @@ function checkTime() {
         } else if (currentTime.getHours() == 2) {
             // If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
             console.log(currentTime + ' - Running the daily cleanup function');
-        } else {
-            console.log(currentTime.getHours() + 'DEBUG PURPOSE');
         }
 
         // Call to re-run checkTime to run again in 1 hours time
@@ -313,9 +283,9 @@ function checkTime() {
     }, timeDifference);
 }
 
-// Initiate the checkTime function when node loads
-checkTime();
 console.log(Date() + ' - Running checkTime function for the first time');
+// Initiate the checkTime function when node loads, commented out for test purposes
+checkTime();
 
 // Launch the server
 app.listen(port);
