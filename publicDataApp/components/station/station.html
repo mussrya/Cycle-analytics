@@ -24,10 +24,10 @@
         <tabset justified="true" type="pills">
             <tab select="loadLive()">
                 <tab-heading>Last hour</tab-heading>
-                <div class="well" style="height:330px; margin-top:5px;">
+                <div class="well chartContainer">
                     <h4>Last hour (updates automatically)</h4>
                     <span ng-if="stationLiveData.length>=6">
-                        <canvas id="live" height="325" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
+                        <canvas id="live" height="250" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
                         </canvas>
                     </span>
                     <span ng-if="stationLiveData.length<=5">
@@ -42,10 +42,10 @@
                 <tab-heading>
                     Last 48 hours
                 </tab-heading>
-                <div class="well" style="height:330px; margin-top:5px;">
+                <div class="well chartContainer">
                     <h4>Last 48 hours</h4>
                     <span ng-if="stationHourlyData.length>=2">
-                        <canvas id="hourly" height="325" class="chart chart-line" data="dataHourly.data" labels="dataHourly.labels" colours="dataHourly.colours" options="stationHourlyOptions" legend="false" series="dataHourly.series" click="onClick">
+                        <canvas id="hourly" height="250" class="chart chart-line" data="dataHourly.data" labels="dataHourly.labels" colours="dataHourly.colours" options="stationHourlyOptions" legend="false" series="dataHourly.series" click="onClick">
                         </canvas>
                                  </span>
                     <span ng-if="stationHourlyData.length<2">
@@ -60,10 +60,10 @@
                 <tab-heading>
                     Daily average
                 </tab-heading>
-                <div class="well" style="height:330px; margin-top:5px;">
-                    <h4>Last 48 hours</h4>
+                <div class="well chartContainer">
+                    <h4>Last 14 days</h4>
                     <span ng-if="stationDailyData.length>=1">
-                        <canvas id="daily" height="325" class="chart chart-line" data="dataDaily.data" labels="dataDaily.labels" colours="dataDaily.colours" options="stationDailyOptions" legend="false" series="dataDaily.series" click="onClick">
+                        <canvas id="daily" height="250" class="chart chart-line" data="dataDaily.data" labels="dataDaily.labels" colours="dataDaily.colours" options="stationDailyOptions" legend="false" series="dataDaily.series" click="onClick">
                         </canvas>
                                  </span>
                     <span ng-if="stationDailyData.length<=1">

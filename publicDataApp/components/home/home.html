@@ -1,11 +1,11 @@
 <div class="containerLg">
     <h2>Cycle hire stations</h2>
-    <div class="svgCenter" ng-if="!dataRealTimeChild && !errorMessage">
-        <div ng-include="'shared/loading/loading.html'"></div>
-    </div>
     <div ng-if="dataRealTimeChild">
         <div class="well">
-            <div class="row">
+            <div class="svgCenter" ng-if="dataRealTimeChild.length < 1 && !errorMessage">
+                <div ng-include="'shared/loading/loading.html'"></div>
+            </div>
+            <div ng-if="dataRealTimeChild.length > 1" class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
                         <input type="text" ng-model="$parent.selected" ng-change="searchValue()" class="form-control" placeholder="search stations">
@@ -19,7 +19,7 @@
                 <!-- /.col-lg-6 -->
             </div>
             <!-- /.row -->
-            <div ng-hide="dataRealTimeFiltered.length" class=" alert alert-danger" role="alert">
+            <div ng-hide="dataRealTimeFiltered.length || dataRealTimeChild.length < 1" class=" alert alert-danger" role="alert">
                 <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
                 <span class="sr-only">Error:</span> No stations found, please try an alternative search term
             </div>
@@ -36,7 +36,7 @@
                                     <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
                             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>
@@ -46,7 +46,7 @@
                                     <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
                             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>
@@ -68,7 +68,7 @@
                                     <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
                             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>
@@ -78,7 +78,7 @@
                                     <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
                             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>

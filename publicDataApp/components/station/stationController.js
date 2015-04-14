@@ -6,7 +6,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         // Boolean - Whether to animate the chart
         animation: true,
         // Number - Number of animation steps
-        animationSteps: 100,
+        animationSteps: 30,
         // String - Animation easing effect
         animationEasing: "easeOutQuart",
         // Boolean - If we should show the scale at all
@@ -106,7 +106,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
                     }
 
                     var stationDate = hours + ':' + minutes;
-                    
+
                     if (i % 3 == 0) {
                         chartData.labels.push(stationDate);
                     } else {
@@ -156,7 +156,12 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
                     }
 
                     var stationDate = hours + ':' + minutes;
-                    chartData.labels.push(stationDate);
+                    if (i % 3 == 0) {
+                        chartData.labels.push(stationDate);
+                    } else {
+                        chartData.labels.push('');
+                    }
+
                     chartData.data[0].push($scope.stationHourlyData[i].nbBikes);
                 }
             }

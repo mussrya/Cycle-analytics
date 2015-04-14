@@ -14,7 +14,7 @@ app.config(function ($routeProvider) {
     }).
     when('/contact', {
         templateUrl: 'components/contact/contact.html',
-        controller: ''
+        controller: 'publicContact'
     }).
     when('/station/:stationId', {
         templateUrl: 'components/station/station.html',

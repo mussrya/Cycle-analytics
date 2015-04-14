@@ -98,10 +98,15 @@ router.route('/stationLive/:id').get(function (req, res) {
 
 router.route('/stationHourly/:id').get(function (req, res) {
 
+    var fortyEightHoursAgo = new Date().getTime() - 172800000;
+    
     // search mongodb
     StationsAveragesHourly.aggregate({
             $match: {
-                "stationId": req.params.id
+                "stationId": req.params.id,
+                "timestamp": {
+                    $gte: new Date(fortyEightHoursAgo)
+                }
             }
         }, {
             $sort: {
@@ -120,10 +125,15 @@ router.route('/stationHourly/:id').get(function (req, res) {
 
 router.route('/stationDaily/:id').get(function (req, res) {
 
+    var twoWeeksAgo = new Date().getTime() - 2419200000;
+    
     // search mongodb
     StationsAveragesDays.aggregate({
             $match: {
-                "stationId": req.params.id
+                "stationId": req.params.id,
+                "timestamp": {
+                    $gte: new Date(twoWeeksAgo)
+                }
             }
         }, {
             $sort: {

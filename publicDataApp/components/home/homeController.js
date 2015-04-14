@@ -4,7 +4,8 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
     // Defining core variables
     $scope.dataRealTimeChildNumber = 0;
     $scope.selected = undefined;
-
+    // This is set so angular animation works on first page load
+    $scope.dataRealTimeChild = [];
     $scope.host = 'http://192.30.192.15:8080/api/v1/';
 
     // Function to prevent infinate scroll when 1 station is selected
@@ -47,11 +48,16 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
     $scope.infinate = angular.element($window).bind("scroll", function () {
         var el = document.querySelector("#loadMore");
         var top = el.getBoundingClientRect().top;
-       
+
         if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
             $scope.$apply(function () {
                 $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
+
+                $timeout(function () {
+                 
+                }, 3000);
+
             });
         }
     });

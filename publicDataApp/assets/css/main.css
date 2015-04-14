@@ -109,8 +109,17 @@ div.input-group {
     background-color: #03A9F4;
 }
 
-.progress-bar {
-    transition: width 1s ease-in-out;
+.section.ng-enter, .section.ng-enter .custom{
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.section.ng-enter .custom{
+width:0px;
+}
+
+.section.ng-enter-active .custom{
+width:100%;
 }
 
 .btnLoad {
@@ -130,8 +139,9 @@ div.input-group {
     display: inline;
 }
 
-.chart-container {
-    height: 250px;
+.chartContainer {
+    height: 330px;
+    margin-top: 5px;
 }
 
 .nav-pills li.active a,
