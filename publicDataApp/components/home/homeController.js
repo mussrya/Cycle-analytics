@@ -39,7 +39,6 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
     }
 
     $scope.reset = function () {
-        $scope.selected = undefined;
         $scope.dataRealTimeChildNumber = 0;
         $scope.setDataRealTime();
     }
@@ -55,7 +54,7 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
 
                 $timeout(function () {
-                 
+
                 }, 3000);
 
             });

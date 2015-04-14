@@ -10,7 +10,7 @@
                     <div class="input-group">
                         <input type="text" ng-model="$parent.selected" ng-change="searchValue()" class="form-control" placeholder="search stations">
                         <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove" ng-click="reset()" aria-hidden="true"></span>
+        <button class="btn btn-default" ng-click="reset(); $parent.selected = undefined" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
                         </span>
                     </div>
