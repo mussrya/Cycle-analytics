@@ -57,7 +57,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         console.log(points, evt);
     };
 
-    $scope.host = 'http://192.30.192.15:8080/api/v1';
+    $scope.host = 'http://cycleanalytics.io:8080/api/v1';
 
     // Getting the ID from the URL path
     $scope.stationId = $location.$$path;

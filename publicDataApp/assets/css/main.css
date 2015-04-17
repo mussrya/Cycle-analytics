@@ -3,12 +3,12 @@
 body {
     background: #E7E9EC;
     height: 100%;
-    font-family:"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 a {
     color: #00BCD4;
-    outline:none;
+    outline: none;
 }
 
 a:hover {
@@ -27,7 +27,7 @@ nav.navbar-default .navbar-brand {
     color: #FFFFFF;
     font-size: 18px;
     padding: 10px 15px;
-    font-weight:600;
+    font-weight: 600;
 }
 
 nav.navbar-default .navbar-nav>li>a {
@@ -39,7 +39,7 @@ nav.navbar-default .navbar-nav>.active>a:focus,
 nav.navbar-default .navbar-nav>.active>a:hover {
     background: #00BCD4;
     color: #EEEEEE;
-    font-weight:600;
+    font-weight: 600;
 }
 
 nav.navbar-default .navbar-toggle .icon-bar {
@@ -113,17 +113,57 @@ div.input-group {
     background-color: #03A9F4;
 }
 
-.section.ng-enter, .section.ng-enter .custom{
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
+.box {
+    padding: 5px;
+    margin: 10px 0px 20px 0px;
+    border: 1px solid #eee;
+    border-left-color: #6BC89A;
+    border-left-width: 5px;
+    border-radius: 3px;
 }
 
-.section.ng-enter .custom{
-width:0px;
+.box h4 {
+    padding-left: 10px;
 }
 
-.section.ng-enter-active .custom{
-width:100%;
+.legend {
+    width: 420px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    clear: both;
+}
+
+.legendOk,
+.legendWarn,
+.legendIssue {
+    border-left: 18px solid #6BC89A;
+    float: left;
+    margin-right: 25px;
+    padding-left: 8px;
+}
+
+.boxWarn,
+.legendWarn {
+    border-color: rgba(255, 174, 0, 0.6);
+}
+
+.boxIssue,
+.legendIssue {
+    border-color: #C86B6B;
+}
+
+.section.ng-enter,
+.section.ng-enter .custom {
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}
+
+.section.ng-enter .custom {
+    width: 0px;
+}
+
+.section.ng-enter-active .custom {
+    width: 100%;
 }
 
 .btnLoad {
@@ -155,27 +195,18 @@ width:100%;
     color: #FFFFFF;
 }
 
-.cycle-content {
+.ibox-content {
     background-color: #ffffff;
     color: inherit;
     padding: 15px 20px 20px 20px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0px;
 }
 
-.feed-activity-list .feed-element {
-    border-bottom: 1px solid #e7eaec;
-}
-
-.feed-element:first-child {
-    margin-top: 0;
-}
-
-.feed-element,
-.media-body {
-    overflow: hidden;
-}
-
-.feed-element {
-    padding: 10px 0px 10px 0px;
+.customMargin {
+    margin-top:30px;
 }
 
 .pull-right {

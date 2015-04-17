@@ -6,7 +6,7 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
     $scope.selected = undefined;
     // This is set so angular animation works on first page load
     $scope.dataRealTimeChild = [];
-    $scope.host = 'http://192.30.192.15:8080/api/v1/';
+    $scope.host = 'http://cycleanalytics.io:8080/api/v1/';
 
     // Function to prevent infinate scroll when 1 station is selected
     $scope.searchValue = function () {
@@ -52,11 +52,6 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
             $scope.$apply(function () {
                 $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
                 $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
-
-                $timeout(function () {
-
-                }, 3000);
-
             });
         }
     });
