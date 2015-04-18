@@ -123,10 +123,15 @@ function getData() {
 
             console.log(Date() + '- Finished data capture run: ' + dataCounter);
         });
+        
+        res.on('error', function (err) {
+            // error in processing
+            console.log(err);
+        });
     });
 
     req.on('error', function (err) {
-        // debug error
+        // error in receiving
     });
 }
 
@@ -184,7 +189,7 @@ function checkTime() {
 
 
 // Average the mongoDB data every day
-    // Remove all data except for the last 2 hours to be safe
+// Remove all data except for the last 2 hours to be safe
 
 // Average the mongoDB data every week
 

@@ -1,60 +1,92 @@
 <div class="containerLg">
-    <h2>Cycle hire stations</h2>
-    <div ng-if="dataRealTimeChild">
-        <div class="well">
+    <h2>Activity dashboard</h2>
+    <div class="row activity">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">Realtime</span>
+                    <h5>Bikes available</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">1300</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">Realtime</span>
+                    <h5>Slots available</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">2600</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Today</span>
+                    <h5>Bikes rented out</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">80,600</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Today</span>
+                    <h5>Most popular station</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins station">Paddington Green Police Station, Paddington</h1>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row m-t-lg customMargin">
+        <div class="col-lg-6">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input type="text" typeahead-template-url="shared/typeahead/typeahead-popup.html" ng-model="selected" typeahead-on-select="callBack($item, $model)" typeahead="stations as stations.name for stations in dataRealTime | filter:$viewValue | limitTo:8" class="form-control" placeholder="search stations">
-                        <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
-                        </button>
-                        </span>
+                <div class="col-md-12">
+                    <div class="ibox-title">
+                        <span class="label label-info pull-right">Realtime</span>
+                        <h4>Station activity <small><a href="/#/stations">(view individual stations)</a></small></h4>
                     </div>
-                    <!-- /input-group -->
+                    <div class="ibox-content">
+                        <img style="max-width:100%; max-height:100%;" src="/assets/img/ex.png" />
+                    </div>
                 </div>
-                <!-- /.col-lg-6 -->
             </div>
-            <!-- /.row -->
-            <div class="section" ng-repeat="stations in dataRealTimeChild">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{stations.name[0]}}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <h4>Bikes available / Empty slots</h4>
-                        <div class="progress custom">
-                            <span ng-if="stations.nbEmptyDocks[0]!=0 && stations.nbBikes[0]!=0">
-                                <span ng-if="stations.nbEmptyDocks[0]!=0">
-                                    <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} slots</div>
-                                </span>
-                            <span ng-if="stations.nbBikes[0]!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
-                                        {{stations.nbBikes[0]}} bikes
-                                    </div>
-                                </span>
-                            </span>
-                            <span ng-if="stations.nbEmptyDocks[0]==0 || stations.nbBikes[0]==0">
-                                <span ng-if="stations.nbEmptyDocks[0]!=0">
-                                    <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes[0] / stations.nbDocks[0]) * 100)}}%">{{stations.nbEmptyDocks[0]}} slots</div>
-                                </span>
-                            <span ng-if="stations.nbBikes[0]!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" animate="true" aria-valuenow="{{stations.nbBikes[0]}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks[0]}}" style="width: {{(stations.nbBikes[0] / stations.nbDocks[0]) * 100}}%">
-                                        {{stations.nbBikes[0]}} bikes
-                                    </div>
-                                </span>
-                            </span>
+        </div>
+    </div>
+    <div class="row m-t-lg">
+        <div class="col-lg-6">
+            <div>
+                <div class="row ">
+                    <div class="col-md-6">
+                        <div class="ibox-title">
+                            <span class="label label-success pull-right">Today</span>
+                            <h4>Stations run out of bikes</h4>
                         </div>
-                        <div class="btnLoad btn" ng-click="changeView(stations.id[0])">view trends and historical data</div>
+                        <div class="ibox-content">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ibox-title">
+                            <span class="label label-success pull-right">Today</span>
+                            <h4>Stations run out of empty slots</h4>
+                        </div>
+                        <div class="ibox-content">
+
+                        </div>
                     </div>
                 </div>
+
             </div>
-            <div id="loadMore"></div>
         </div>
     </div>
-    <div ng-if="errorMessage">
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span> Data could not be retrieved, please try again later
-        </div>
-    </div>
+</div>

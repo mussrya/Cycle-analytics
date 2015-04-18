@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var StationsSchema = new Schema({
+var stationsSchema = new Schema({
     timestamp: {
         type: Date,
         default: Date.now
@@ -21,4 +21,11 @@ var StationsSchema = new Schema({
     nbDocks: Number
 });
 
-module.exports = mongoose.model('Stations', StationsSchema);
+var stationsBestTimesSchema = new Schema({
+    stationId: String,
+    times: [{
+        day: String,
+        morning: String,
+        evening: String
+    }]
+});
