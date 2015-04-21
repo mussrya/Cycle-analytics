@@ -118,6 +118,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
             // Updating the chart data
             $scope.data = chartData;
+            $scope.apply;
         }).
         error(function (data, status, headers, config) {
             $scope.errorMessage = true;

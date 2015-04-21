@@ -1,5 +1,5 @@
 // Controller for the Home page
-app.controller('publicHome', function ($scope, $http, $window, $location, $filter) {
+app.controller('publicStations', function ($scope, $http, $window, $location, $filter) {
 
     // Defining core variables
     $scope.dataRealTimeChildNumber = 0;
@@ -44,24 +44,35 @@ app.controller('publicHome', function ($scope, $http, $window, $location, $filte
     }
 
     // Function to provide infinate scroll functinality
-    $scope.infinate = angular.element($window).bind("scroll", function () {
-        var el = document.querySelector("#loadMore");
-        var top = el.getBoundingClientRect().top;
+    $scope.infinate = function () {
+        if ($scope.dataRealTime) {
+            // Locate the hidden load button and the top of the scroll
+            var el = document.querySelector("#loadMore");
+            var top = el.getBoundingClientRect().top;
 
-        if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
-            $scope.$apply(function () {
-                $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
-                $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
-            });
+            // Check it's within X pixels of the load button before initiating the loading of more results
+            if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
+                $scope.$apply(function () {
+                    console.log(el.getBoundingClientRect().top);
+                    $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
+                    $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
+                });
+            }
         }
+    }
+
+    // When the scope is destroyed, unbind the infinate scroll function and scroll to the top of the page
+    $scope.$on("$destroy", function () {
+        // Scroll to top
+        $window.scrollTo(0, 0);
+
+        // Unbind scroll when leaving the view
+        angular.element($window).unbind("scroll", $scope.infinate);
     });
 
-    $scope.changeView = function (station) {
-        $window.scrollTo(0, 0);
-        $scope.infinate.unbind();
-        var stationPath = '/station/' + station;
-        $location.path(stationPath);
-    }
+    // Bind the infinate scroll function to window
+    angular.element($window).bind("scroll", $scope.infinate);
+
 
     // Calls to functions on initial load
     $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);

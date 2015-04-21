@@ -146,12 +146,31 @@ div.input-group {
     .legend {
         width: 160px;
     }
-    
     .legendOk,
     .legendWarn,
     .legendIssue {
         float: none;
         margin: 5px 0px 0px 15px;
+    }
+}
+
+@media (min-width: 900px) {
+    .activity .col-lg-3 {
+        width: 25%;
+        float: left;
+    }
+    .activity .ibox-content .station {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 900px) {
+    .activity .ibox-content .no-margins {
+        text-align: center;
+    }
+    .activity .ibox-content .station {
+        margin-top: 0;
+        margin-top: 20px;
     }
 }
 
@@ -218,6 +237,11 @@ div.input-group {
     border-width: 1px 0px;
 }
 
+.stationList {
+    border-bottom: 1px solid #eee;
+    padding-top: 10px;
+}
+
 .customMargin {
     margin-top: 30px;
 }
@@ -232,6 +256,26 @@ div.input-group {
 
 h3 {
     margin-top: 0px;
+}
+
+.pull-right {
+    color: #fff;
+}
+
+.label-success {
+    background-color: #00BCD4;
+}
+
+.label-info {
+    background-color: #03A9F4;
+}
+
+.activity .ibox-content {
+    height: 105px;
+}
+
+.activity .ibox-content .station {
+    font-size: 19px;
 }
 /* Clock */
 

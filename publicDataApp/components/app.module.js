@@ -1,1 +1,1 @@
-var app = angular.module('publicData', ['ui.bootstrap', "ngRoute", 'chart.js', 'ngAnimate']);
+var app = angular.module('publicData', ['ui.bootstrap', "ngRoute", 'chart.js', 'ngAnimate', 'angulartics', 'angulartics.google.analytics']);

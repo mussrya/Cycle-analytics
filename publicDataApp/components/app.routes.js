@@ -2,11 +2,11 @@ app.config(function ($routeProvider) {
     $routeProvider.
     when('/home', {
         templateUrl: 'components/home/home.html',
-        controller: 'publicHome'
-    }).
-    when('/activity', {
-        templateUrl: 'components/activity/activity.html',
         controller: ''
+    }).
+    when('/stations', {
+        templateUrl: 'components/stations/stations.html',
+        controller: 'publicStations'
     }).
     when('/about', {
         templateUrl: 'components/about/about.html',

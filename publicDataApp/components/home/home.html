@@ -1,47 +1,102 @@
 <div class="containerLg">
-    <h2>Cycle hire stations</h2>
-    <div ng-if="dataRealTimeChild">
-        <div class="well">
-            <div class="svgCenter" ng-if="dataRealTimeChild.length < 1 && !errorMessage">
-                <div ng-include="'shared/loading/loading.html'"></div>
-            </div>
-            <div ng-if="dataRealTimeChild.length > 1" class="row">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input type="text" ng-model="$parent.selected" ng-change="searchValue()" class="form-control" placeholder="search stations">
-                        <span class="input-group-btn">
-        <button class="btn btn-default" ng-click="reset(); $parent.selected = undefined" type="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </button>
-                        </span>
-                    </div>
-                    <!-- /input-group -->
+    <h2>Activity dashboard (Prototype)</h2>
+    <div class="row activity">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">Realtime</span>
+                    <h5>Bikes available</h5>
                 </div>
-                <!-- /.col-lg-6 -->
-                <div class="legend">
-                    <div class="legendOk">Good Availability</div>
-                    <div class="legendWarn">Low Availability</div>
-                    <div class="legendIssue">Empty</div>
-                    <div class="clear"></div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">1300</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">Realtime</span>
+                    <h5>Slots available</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">2600</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Today</span>
+                    <h5>Bikes rented out</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">2433</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Today</span>
+                    <h5>Most popular station</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins station"><a href="/#/station/408">Paddington Green Police Station, Paddington</a></h1>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row m-t-lg customMargin">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox-title">
+                        <span class="label label-info pull-right">Realtime</span>
+                        <h4>Station activity <small><a href="/#/stations">(view individual stations)</a></small></h4>
+                    </div>
+                    <div class="ibox-content">
+                        <img style="max-width:100%; max-height:100%;" src="/assets/img/ex.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-lg">
+        <div class="col-lg-6">
+            <div>
+                <div class="row ">
+                    <div class="col-md-6">
+                        <div class="ibox-title">
+                            <span class="label label-success pull-right">Today</span>
+                            <h4>Stations run out of bikes</h4>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="stationList"><a href="/#/station/1">River Street , Clerkenwell</a>
+                            </div>
+                            <div class="stationList"><a href="/#/station/2">Phillimore Gardens, Kensington</a>
+                            </div>
+                            <div class="stationList"><a href="/#/station/3">Christopher Street, Liverpool Street</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ibox-title">
+                            <span class="label label-success pull-right">Today</span>
+                            <h4>Stations run out of empty slots</h4>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="stationList"><a href="/#/station/14">Belgrove Street , King's Cross</a>
+                            </div>
+                            <div class="stationList"><a href="/#/station/15">Great Russell Street, Bloomsbury</a>
+                            </div>
+                            <div class="stationList"><a href="/#/station/20">Drummond Street , Euston</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
-            <!-- /.row -->
-            <div ng-hide="dataRealTimeFiltered.length || dataRealTimeChild.length < 1" class=" alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-                <span class="sr-only">Error:</span> No stations found, please try an alternative search term
-            </div>
-            <div ng-if="selected.length>2" class="section" ng-repeat="stations in dataRealTimeFiltered=( dataRealTime | filter:selected)">
-                <div class="viewAnimate" ng-include="'/components/home/homeStation.html'"></div>
-            </div>
-            <div ng-if="selected.length<3 || selected.length===undefined" class="section" ng-repeat="stations in dataRealTimeChild">
-                <div class="viewAnimate" ng-include="'/components/home/homeStation.html'"></div>
-            </div>
         </div>
     </div>
-    <div id="loadMore"></div>
-    <div ng-if="errorMessage">
-        <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span> Data could not be retrieved, please try again later
-        </div>
-    </div>
+</div>
