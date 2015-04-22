@@ -1,4 +1,4 @@
-// Controller for the Home page
+// Controller for the Stations page
 app.controller('publicStations', function ($scope, $http, $window, $location, $filter) {
 
     // Defining core variables
@@ -15,7 +15,8 @@ app.controller('publicStations', function ($scope, $http, $window, $location, $f
             $scope.setDataRealTime();
         }
     };
-    // Function to request data from the Node API
+    
+    // Function to request data from the Node API to get the list of stations on the /stations page
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {
             $http.get($scope.host + 'stationsActive').success(function (data, status, headers, config) {

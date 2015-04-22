@@ -1,4 +1,4 @@
-// Controller for the Station trends page
+// Controller for the individual station page
 app.controller('stationTrends', function ($scope, $http, $window, $location, $interval) {
 
     // Options for the charts

@@ -45,63 +45,42 @@ console.log(currentTime + ' - Running hourly average ETL function');
 
 console.log(currentTime + ' - Running the daily average ETL function');
 
-var dayAverageEnd = new Date();
-var dayAverageStart = dayAverageEnd.getTime() - 86400000;
-dayAverageStart = new Date(dayAverageStart);
+var currentTime = new Date();
+var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
 
-StationsAveragesHours.aggregate([
-        {
-            $match: {
-                "timestamp": {
-                    $gte: dayAverageStart,
-                    $lt: dayAverageEnd
-                }
-            }
-                },
-        {
-            $group: {
-                _id: "$stationId",
-                "name": {
-                    "$addToSet": "$name"
-                },
-                nbBikes: {
-                    $avg: "$nbBikes"
-                },
-                nbEmptyDocks: {
-                    $avg: "$nbEmptyDocks"
-                },
-                nbDocks: {
-                    $avg: "$nbDocks"
-                },
-                timestamp: {
-                    "$addToSet": dayAverageStart
-                }
-            }
+console.log(startTime);
+console.log(currentTime);
 
-                }, {
-            $sort: {
-                ISODate: 1
+// search mongodb
+Stations.aggregate(
+     {
+        $match: {
+            "timestamp": {
+                $gte: startTime,
+                $lt: currentTime,
+                
             }
-                }
-
-            ],
+        }
+    },
+    {
+        $group: {
+            _id: null,
+            "totalEmpty": {
+                $sum: "$nbEmptyDocks"
+            },
+            "totalSlots": {
+                $sum: "$nbDocks"
+            },
+            "totalBikes": {
+                $sum: "$nbBikes"
+            }
+        }
+    },
     function (err, station) {
         if (err) {
             console.log(err)
         } else {
-
-            for (var i = 0, len = station.length; i < len; i++) {
-                var stationSave = new StationsAveragesDays({
-                    timestamp: station[i].timestamp,
-                    stationId: station[i]._id,
-                    nbBikes: parseInt(station[i].nbBikes),
-                    nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
-                    nbDocks: parseInt(station[i].nbDocks)
-                });
-
-                stationSave.save(function (err) {
-                    if (err) return console.error('Error:' + err);
-                });
-            }
+           // res.json(JSON.stringify(station));
+            console.log(JSON.stringify(station));
         }
     });

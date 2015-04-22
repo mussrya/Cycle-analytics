@@ -48,7 +48,7 @@ router.use(function (req, res, next) {
     next(); // Run the next routes so it doesn't halt at this position
 });
 
-// Create the stationsActive route, this will get live data
+// API to return data for the /#/stations page
 router.route('/stationsActive')
     .get(function (req, res) {
         // search mongodb
@@ -59,6 +59,93 @@ router.route('/stationsActive')
             });
     });
 
+
+// API to return the total number of slots available
+router.route('/homeSlotsAvail').get(function (req, res) {
+
+    StationsLives.aggregate({
+            $group: {
+                _id: null,
+                "total": {
+                    $sum: "$nbEmptyDocks"
+                }
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+
+});
+
+// API to return the total number of bikes available
+router.route('/homeBikesAvail').get(function (req, res) {
+
+    StationsLives.aggregate({
+            $group: {
+                _id: null,
+                "total": {
+                    $sum: "$nbBikes"
+                }
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+
+});
+
+
+// API to return data for bikes rented out today
+router.route('/homeBikesRented').get(function (req, res) {
+
+    var currentTime = new Date();
+    var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
+
+    // search mongodb
+    StationsLives.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: new Date(startTime),
+                    $lt: new Date(currentTime),
+
+                }
+            }
+        }, {
+            $group: {
+                _id: null,
+                "totalBikes": {
+                    $sum: "$nbBikes"
+                },
+                "totalSlots": {
+                    $sum: "$nbDocks"
+                }
+            }
+        }, {
+            $project: {
+                _id: 1,
+                "diff": {
+                    $subtract: ["$totalSlots", "$totalBikes"]
+                }
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
+// API to return data for a single station - overview
 router.route('/station/:id')
     .get(function (req, res) {
 
@@ -75,6 +162,7 @@ router.route('/station/:id')
             });
     });
 
+// API to return data for a single station - last 60 minutes chart
 router.route('/stationLive/:id').get(function (req, res) {
     var oneHourAgo = new Date().getTime() - 3600000;
 
@@ -96,10 +184,11 @@ router.route('/stationLive/:id').get(function (req, res) {
         });
 });
 
+// API to return data for a single station - last 48 hours chart
 router.route('/stationHourly/:id').get(function (req, res) {
 
     var fortyEightHoursAgo = new Date().getTime() - 172800000;
-    
+
     // search mongodb
     StationsAveragesHourly.aggregate({
             $match: {
@@ -126,7 +215,7 @@ router.route('/stationHourly/:id').get(function (req, res) {
 router.route('/stationDaily/:id').get(function (req, res) {
 
     var twoWeeksAgo = new Date().getTime() - 2419200000;
-    
+
     // search mongodb
     StationsAveragesDays.aggregate({
             $match: {

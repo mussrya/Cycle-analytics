@@ -8,7 +8,10 @@
                     <h5>Bikes available</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">1300</h1>
+                    <div class="svgCenter dashboard" ng-if="!totalBikes && !errorMessage">
+                        <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                    <h1 class="no-margins">{{totalBikes[0].total}}</h1>
                 </div>
             </div>
         </div>
@@ -19,7 +22,12 @@
                     <h5>Slots available</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">2600</h1>
+                    <div class="svgCenter dashboard" ng-if="!totalSlots && !errorMessage">
+                        <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                    <h1 class="no-margins">
+                        {{totalSlots[0].total}}
+                    </h1>
                 </div>
             </div>
         </div>
@@ -30,7 +38,10 @@
                     <h5>Bikes rented out</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">2433</h1>
+                    <div class="svgCenter dashboard" ng-if="!totalRented && !errorMessage">
+                        <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                    <h1 class="no-margins">{{totalRented[0].diff}}</h1>
                 </div>
             </div>
         </div>
