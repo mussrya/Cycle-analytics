@@ -67,7 +67,17 @@
                         <h4>Station activity <small><a href="/#/stations">(view individual stations)</a></small></h4>
                     </div>
                     <div class="ibox-content">
-                        <img style="max-width:100%; max-height:100%;" src="/assets/img/ex.png" />
+                        <h4>Last hour</h4>
+                        <span ng-if="stationLiveData.length>=6">
+                        <canvas id="live" height="250" class="chart chart-line" data="data.data" labels="data.labels" colours="data.colours" options="stationLiveOptions" legend="false" series="data.series" click="onClick">
+                        </canvas>
+                    </span>
+                        <span ng-if="stationLiveData.length<=5">
+                        <h3><small><center>Data is currently being generated</center></small></h3>
+                    </span>
+                        <div class="svgCenter" ng-if="!stationLiveData && !errorMessage">
+                            <div ng-include="'shared/loading/loading.html'"></div>
+                        </div>
                     </div>
                 </div>
             </div>

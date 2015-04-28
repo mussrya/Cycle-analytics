@@ -145,6 +145,37 @@ router.route('/homeBikesRented').get(function (req, res) {
         });
 });
 
+// API to return data for a single station - last 60 minutes chart
+router.route('/stationLiveOverview').get(function (req, res) {
+    var oneHourAgo = new Date().getTime() - 3600000;
+
+    // search mongodb
+    Stations.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: new Date(oneHourAgo)
+                }
+            }
+        }, {
+            $group: {
+                _id: "$timestamp",
+                "totalBikes": {
+                    $sum: "$nbBikes"
+                },
+                "totalSlots": {
+                    $sum: "$nbEmptyDocks"
+                }
+            }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
 // API to return data for a single station - overview
 router.route('/station/:id')
     .get(function (req, res) {
