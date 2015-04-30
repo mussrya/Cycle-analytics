@@ -34,14 +34,14 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-success pull-right">Today</span>
-                    <h5>Bikes rented out</h5>
+                    <span class="label label-info pull-right">Realtime</span>
+                    <h5>Total slots</h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="svgCenter dashboard" ng-if="!totalRented && !errorMessage">
+                    <div class="svgCenter dashboard" ng-if="!totalSlots && !errorMessage">
                         <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
                     </div>
-                    <h1 class="no-margins">{{totalRented[0].diff}}</h1>
+                    <h1 class="no-margins">{{totalSlotsAll[0].totalSlotsAll}}</h1>
                 </div>
             </div>
         </div>
@@ -52,7 +52,10 @@
                     <h5>Most popular station</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins station"><a href="/#/station/408">Paddington Green Police Station, Paddington</a></h1>
+                    <div class="svgCenter dashboard" ng-if="!popularStation && !errorMessage">
+                        <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
+                    </div>
+                    <h1 class="no-margins station"><a href="/#/station/{{popularStation[0]['_id']}}">{{popularStation[0].name[0]}}</a></h1>
                 </div>
             </div>
         </div>
@@ -85,38 +88,29 @@
     </div>
     <div class="row m-t-lg">
         <div class="col-lg-6">
-            <div>
-                <div class="row ">
-                    <div class="col-md-6">
-                        <div class="ibox-title">
-                            <span class="label label-success pull-right">Today</span>
-                            <h4>Stations run out of bikes</h4>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="stationList"><a href="/#/station/1">River Street , Clerkenwell</a>
-                            </div>
-                            <div class="stationList"><a href="/#/station/2">Phillimore Gardens, Kensington</a>
-                            </div>
-                            <div class="stationList"><a href="/#/station/3">Christopher Street, Liverpool Street</a>
-                            </div>
-                        </div>
+            <div class="row ">
+                <div class="col-md-6">
+                    <div class="ibox-title">
+                        <span class="label label-success pull-right">Today</span>
+                        <h4>Stations run out of bikes</h4>
                     </div>
-                    <div class="col-md-6">
-                        <div class="ibox-title">
-                            <span class="label label-success pull-right">Today</span>
-                            <h4>Stations run out of empty slots</h4>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="stationList"><a href="/#/station/14">Belgrove Street , King's Cross</a>
-                            </div>
-                            <div class="stationList"><a href="/#/station/15">Great Russell Street, Bloomsbury</a>
-                            </div>
-                            <div class="stationList"><a href="/#/station/20">Drummond Street , Euston</a>
-                            </div>
-                        </div>
+                    <div class="ibox-content">
+                        <a class="stationList" href="/#/station/1">River Street , Clerkenwell</a>
+                        <a class="stationList" href="/#/station/2">Phillimore Gardens, Kensington</a>
+                        <a class="stationList" href="/#/station/3">Christopher Street, Liverpool Street</a>
                     </div>
                 </div>
-
+                <div class="col-md-6">
+                    <div class="ibox-title">
+                        <span class="label label-success pull-right">Today</span>
+                        <h4>Stations run out of empty slots</h4>
+                    </div>
+                    <div class="ibox-content">
+                        <a class="stationList" href="/#/station/14">Belgrove Street , King's Cross</a>
+                        <a class="stationList" href="/#/station/15">Great Russell Street, Bloomsbury</a>
+                        <a class="stationList" href="/#/station/20">Drummond Street , Euston</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

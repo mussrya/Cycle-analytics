@@ -104,37 +104,57 @@ router.route('/homeBikesAvail').get(function (req, res) {
 
 
 // API to return data for bikes rented out today
-router.route('/homeBikesRented').get(function (req, res) {
+router.route('/homeBikesTotalSlots').get(function (req, res) {
 
     var currentTime = new Date();
     var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
 
     // search mongodb
     StationsLives.aggregate({
-            $match: {
-                "timestamp": {
-                    $gte: new Date(startTime),
-                    $lt: new Date(currentTime),
-
-                }
-            }
-        }, {
             $group: {
                 _id: null,
-                "totalBikes": {
-                    $sum: "$nbBikes"
-                },
-                "totalSlots": {
+                "totalSlotsAll": {
                     $sum: "$nbDocks"
                 }
             }
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
+// API to return data for the most popular station (based on station that had the most empty slots)
+router.route('/homePopularStation').get(function (req, res) {
+    var oneDayAgo = new Date().getTime() - 86400000;
+
+    // search mongodb
+    Stations.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: new Date(oneDayAgo)
+                },
+                "nbBikes": 0
+            }
         }, {
-            $project: {
-                _id: 1,
-                "diff": {
-                    $subtract: ["$totalSlots", "$totalBikes"]
+            $group: {
+                _id: "$stationId",
+                count: {
+                    $sum: 1
+                },
+                "name": {
+                    "$addToSet": "$name"
                 }
             }
+        }, {
+            $sort: {
+                count: -1
+            }
+        }, {
+            $limit: 1
         },
         function (err, station) {
             if (err) {

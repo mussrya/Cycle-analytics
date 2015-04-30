@@ -32,10 +32,24 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
     }
 
     // Function to request data from the Node API to get the total number of bikes rented today
-    $scope.bikesRentedRequest = function ($http) {
-        $http.get($scope.host + 'homeBikesRented').success(function (data, status, headers, config) {
+    $scope.slotsRequest = function ($http) {
+        $http.get($scope.host + 'homeBikesTotalSlots').success(function (data, status, headers, config) {
             if (data) {
-                $scope.totalRented = JSON.parse(data);
+                $scope.totalSlotsAll = JSON.parse(data);
+            } else {
+                $scope.errorMessage = true;
+            }
+        }).
+        error(function (data, status, headers, config) {
+            $scope.errorMessage = true;
+        });
+    }
+
+    // Function to request data from the Node API to get the most popular station
+    $scope.popularStationRequest = function ($http) {
+        $http.get($scope.host + 'homePopularStation').success(function (data, status, headers, config) {
+            if (data) {
+                $scope.popularStation = JSON.parse(data);
             } else {
                 $scope.errorMessage = true;
             }
@@ -47,7 +61,7 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
 
     // Request for the station chart data (last 60 minutes chart)
     $scope.stationLive = function ($http) {
-        $http.get($scope.host + '/stationLiveOverview').success(function (data, status, headers, config) {
+        $http.get($scope.host + 'stationLiveOverview').success(function (data, status, headers, config) {
             $scope.stationLiveData = JSON.parse(data);
             // Options for the charts
             $scope.defaults = {
@@ -63,9 +77,9 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
                 scaleOverride: true,
                 // ** Required if scaleOverride is true **
                 // Number - The number of steps in a hard coded scale
-                scaleSteps: 20,
+                scaleSteps: 10,
                 // Number - The value jump in the hard coded scale
-                scaleStepWidth: 20,
+                scaleStepWidth: 150,
                 // Number - The scale starting value
                 scaleStartValue: 9000,
                 // String - Colour of the scale line
@@ -142,6 +156,9 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
                 }
             }
 
+            /*
+            // this section is the logic for the labels to ensure they are outputted correctly and not "guessed"
+            
             // sort the total bikes asc
             $scope.stationLiveDataSortBikes = $scope.stationLiveDataSortBikes.sort(function (a, b) {
                 return a - b;
@@ -167,7 +184,9 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
 
             // set the scale step width the same as the scale steps i.e. if both were 12, it would essentially run 12*12 = 144 incriment in total which would be the number difference between bikes & slots / slots & bikes
             $scope.stationLiveOptions.scaleStepWidth = $scope.stationLiveOptions.scaleSteps;
+*/
 
+            $scope.stationLiveOptions.scaleStartValue = 8000;
             // Updating the chart data
             $scope.data = chartData;
             $scope.apply;
@@ -180,6 +199,7 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
     // run the initial function calls
     $scope.bikeTotalRequest($http);
     $scope.slotTotalRequest($http);
-    $scope.bikesRentedRequest($http);
+    $scope.slotsRequest($http);
+    $scope.popularStationRequest($http);
     $scope.stationLive($http);
 });

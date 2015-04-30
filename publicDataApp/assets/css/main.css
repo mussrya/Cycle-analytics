@@ -1,9 +1,13 @@
-/* Core CSS */
+/* Core */
 
 body {
     background: #E7E9EC;
     height: 100%;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h3 {
+    margin-top: 0px;
 }
 
 a {
@@ -15,6 +19,48 @@ a:hover {
     color: #000000;
     text-decoration: none;
 }
+
+div.containerLg {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.well {
+    background: #FFFFFF;
+    padding: 10px 19px 19px 19px;
+}
+
+div.input-group {
+    margin-top: 10px;
+}
+
+.col-lg-6 {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.custom {
+    font-size: 12px;
+    line-height: 20px;
+    color: #777777;
+    text-align: center;
+    height: 40px;
+}
+
+.custom-pad {
+    padding-top: 10px;
+}
+
+.custom-float {
+    float: right;
+}
+
+.custom-width {
+    max-width: 80%;
+    min-width: 20%;
+}
+/* Header */
 
 nav.navbar-default {
     background: #03A9F4;
@@ -68,46 +114,19 @@ nav.navbar-default .navbar-toggle {
     }
 }
 
-div.containerLg {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+@media (min-width: 268px) {
+    .nav-justified>li {
+        display: table-cell;
+        width: 1%;
+    }
 }
 
-div.well {
-    background: #FFFFFF;
-    padding: 10px 19px 19px 19px;
+.pull-right {
+    color: #fff;
 }
-
-div.input-group {
-    margin-top: 10px;
-}
-
-.col-lg-6 {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.custom {
-    font-size: 12px;
-    line-height: 20px;
-    color: #777777;
-    text-align: center;
-    height: 40px;
-}
-
-.custom-pad {
-    padding-top: 10px;
-}
-
-.custom-float {
-    float: right;
-}
-
-.custom-width {
-    max-width: 80%;
-    min-width: 20%;
-}
+/* Home */
+/* Activity */
+/* Stations */
 
 .progress-bar-info {
     background-color: #03A9F4;
@@ -151,26 +170,6 @@ div.input-group {
     .legendIssue {
         float: none;
         margin: 5px 0px 0px 15px;
-    }
-}
-
-@media (min-width: 900px) {
-    .activity .col-lg-3 {
-        width: 25%;
-        float: left;
-    }
-    .activity .ibox-content .station {
-        margin: 5px;
-    }
-}
-
-@media (max-width: 900px) {
-    .activity .ibox-content .no-margins {
-        text-align: center;
-    }
-    .activity .ibox-content .station {
-        margin-top: 0;
-        margin-top: 20px;
     }
 }
 
@@ -240,26 +239,15 @@ div.input-group {
 .stationList {
     border-bottom: 1px solid #eee;
     padding-top: 10px;
+    display: block;
 }
 
 .customMargin {
     margin-top: 30px;
 }
 
-.pull-right {
-    color: #8f8f8f;
-}
-
 .alert-danger {
     text-align: center;
-}
-
-h3 {
-    margin-top: 0px;
-}
-
-.pull-right {
-    color: #fff;
 }
 
 .label-success {
@@ -286,8 +274,7 @@ h3 {
     margin-top: 0;
     height: 100%;
 }
-
-/* Clock */
+/* Individual station */
 
 .clockSection {
     text-align: center;
@@ -366,20 +353,36 @@ h3 {
         margin-top: 5px;
     }
 }
+/* Loading */
 
-@media (min-width: 268px) {
-    .nav-justified>li {
-        display: table-cell;
-        width: 1%
+.svgCenter {
+    text-align: center;
+}
+
+.svgLoader {
+    height: 15vmin;
+    margin-top: 60px;
+    vertical-align: top;
+    text-align: center;
+}
+/*
+@media (min-width: 900px) {
+    .activity .col-lg-3 {
+        width: 25%;
+        float: left;
     }
-    /* Loading animation */
-    
-    .svgCenter {
+    .activity .ibox-content .station {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 900px) {
+    .activity .ibox-content .no-margins {
         text-align: center;
     }
-    .svgLoader {
-        height: 15vmin;
-        margin-top: 60px;
-        vertical-align: top;
-        text-align: center;
+    .activity .ibox-content .station {
+        margin-top: 0;
+        margin-top: 20px;
     }
+}
+*/
