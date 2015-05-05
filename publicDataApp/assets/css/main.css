@@ -80,6 +80,10 @@ nav.navbar-default .navbar-nav>li>a {
     color: #FFFFFF;
 }
 
+a.navbarTitle:hover, a.navbarTitle:active, a.navbarTitle:focus{
+    color:#FFFFFF!important;
+}
+
 nav.navbar-default .navbar-nav>.active>a,
 nav.navbar-default .navbar-nav>.active>a:focus,
 nav.navbar-default .navbar-nav>.active>a:hover {
@@ -125,6 +129,32 @@ nav.navbar-default .navbar-toggle {
     color: #fff;
 }
 /* Home */
+.availableTime{
+    color:#888;
+    float:right;
+    font-size:14px;
+}
+
+@media (min-width: 900px) {
+    .activity .col-lg-3 {
+        width: 25%;
+        float: left;
+    }
+    .activity .ibox-content .station {
+        margin: 5px;
+    }
+}
+
+@media (max-width: 900px) {
+    .activity .ibox-content .no-margins {
+        text-align: center;
+    }
+    .activity .ibox-content .station {
+        margin-top: 0;
+        margin-top: 20px;
+    }
+}
+
 /* Activity */
 /* Stations */
 
@@ -365,24 +395,3 @@ nav.navbar-default .navbar-toggle {
     vertical-align: top;
     text-align: center;
 }
-/*
-@media (min-width: 900px) {
-    .activity .col-lg-3 {
-        width: 25%;
-        float: left;
-    }
-    .activity .ibox-content .station {
-        margin: 5px;
-    }
-}
-
-@media (max-width: 900px) {
-    .activity .ibox-content .no-margins {
-        text-align: center;
-    }
-    .activity .ibox-content .station {
-        margin-top: 0;
-        margin-top: 20px;
-    }
-}
-*/

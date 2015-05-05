@@ -196,6 +196,84 @@ router.route('/stationLiveOverview').get(function (req, res) {
         });
 });
 
+
+// API to return data for stations run out of bicycles
+router.route('/homeEmptyBicycles').get(function (req, res) {
+    var oneDayAgo = new Date().getTime() - 86400000;
+
+    // search mongodb
+    Stations.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: new Date(oneDayAgo)
+                },
+                "nbBikes": 0
+            }
+        }, {
+            $group: {
+                _id: "$stationId",
+                count: {
+                    $sum: 1
+                },
+                "name": {
+                    "$addToSet": "$name"
+                }
+            }
+        }, {
+            $sort: {
+                count: -1
+            }
+        }, {
+            $limit: 10
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
+// API to return data for stations run out of bicycles
+router.route('/homeEmptySlots').get(function (req, res) {
+    var oneDayAgo = new Date().getTime() - 86400000;
+
+    // search mongodb
+    Stations.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: new Date(oneDayAgo)
+                },
+                "nbEmptyDocks": 0
+            }
+        }, {
+            $group: {
+                _id: "$stationId",
+                count: {
+                    $sum: 1
+                },
+                "name": {
+                    "$addToSet": "$name"
+                }
+            }
+        }, {
+            $sort: {
+                count: -1
+            }
+        }, {
+            $limit: 10
+        },
+        function (err, station) {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json(JSON.stringify(station));
+            }
+        });
+});
+
+
 // API to return data for a single station - overview
 router.route('/station/:id')
     .get(function (req, res) {

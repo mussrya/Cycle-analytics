@@ -45,42 +45,42 @@ console.log(currentTime + ' - Running hourly average ETL function');
 
 console.log(currentTime + ' - Running the daily average ETL function');
 
-var currentTime = new Date();
-var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
+var endTime = new Date();
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
+var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 
 console.log(startTime);
 console.log(currentTime);
 
 // search mongodb
-Stations.aggregate(
-     {
+Stations.aggregate({
         $match: {
             "timestamp": {
                 $gte: startTime,
-                $lt: currentTime,
-                
+                $lt: endTime,
             }
         }
-    },
-    {
+    }, {
         $group: {
-            _id: null,
-            "totalEmpty": {
-                $sum: "$nbEmptyDocks"
-            },
-            "totalSlots": {
-                $sum: "$nbDocks"
-            },
-            "totalBikes": {
-                $sum: "$nbBikes"
+            _id: "$stationId",
+            "results": {
+                "$push": "$$ROOT"
             }
         }
+    }, {
+        $sort: {
+            results.nbBikes: -1
+        }
+    }, {
+        $limit: 1
     },
     function (err, station) {
         if (err) {
             console.log(err)
         } else {
-           // res.json(JSON.stringify(station));
+            // res.json(JSON.stringify(station));
             console.log(JSON.stringify(station));
+
+
         }
     });

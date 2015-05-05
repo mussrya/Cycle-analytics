@@ -196,10 +196,41 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
         });
     };
 
+
+    // Function to request data from the Node API to get the most popular station
+    $scope.emptyBicycles = function ($http) {
+        $http.get($scope.host + 'homeEmptyBicycles').success(function (data, status, headers, config) {
+            if (data) {
+                $scope.topEmptyBicycles = JSON.parse(data);
+            } else {
+                $scope.errorMessage = true;
+            }
+        }).
+        error(function (data, status, headers, config) {
+            $scope.errorMessage = true;
+        });
+    }
+
+    // Function to request data from the Node API to get the most popular station
+    $scope.emptySlots = function ($http) {
+        $http.get($scope.host + 'homeEmptySlots').success(function (data, status, headers, config) {
+            if (data) {
+                $scope.topEmptySlots = JSON.parse(data);
+            } else {
+                $scope.errorMessage = true;
+            }
+        }).
+        error(function (data, status, headers, config) {
+            $scope.errorMessage = true;
+        });
+    }
+    
     // run the initial function calls
     $scope.bikeTotalRequest($http);
     $scope.slotTotalRequest($http);
     $scope.slotsRequest($http);
     $scope.popularStationRequest($http);
     $scope.stationLive($http);
+    $scope.emptyBicycles($http);
+    $scope.emptySlots($http);
 });

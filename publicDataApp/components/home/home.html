@@ -1,5 +1,5 @@
 <div class="containerLg">
-    <h2>Activity dashboard (Prototype)</h2>
+    <h2>Activity dashboard</h2>
     <div class="row activity">
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
@@ -48,7 +48,7 @@
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-success pull-right">Today</span>
+                    <span class="label label-success pull-right">24 hours</span>
                     <h5>Most popular station</h5>
                 </div>
                 <div class="ibox-content">
@@ -91,24 +91,28 @@
             <div class="row ">
                 <div class="col-md-6">
                     <div class="ibox-title">
-                        <span class="label label-success pull-right">Today</span>
-                        <h4>Stations run out of bikes</h4>
+                        <span class="label label-success pull-right">24 hours</span>
+                        <h4>Top 10 stations without bicycles by duration</h4>
                     </div>
                     <div class="ibox-content">
-                        <a class="stationList" href="/#/station/1">River Street , Clerkenwell</a>
-                        <a class="stationList" href="/#/station/2">Phillimore Gardens, Kensington</a>
-                        <a class="stationList" href="/#/station/3">Christopher Street, Liverpool Street</a>
+                        <div class="svgCenter" ng-if="!topEmptyBicycles && !errorMessage">
+                            <div ng-include="'shared/loading/loading.html'"></div>
+                        </div>
+                        <div ng-repeat="stationEmptyBicycles in topEmptyBicycles"><a class="stationList" href="/#/station/{{stationEmptyBicycles['_id']}}">{{stationEmptyBicycles.name[0]}} <span class="availableTime">{{(stationEmptyBicycles.count/60).toFixed(2)}} hours</span></a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="ibox-title">
-                        <span class="label label-success pull-right">Today</span>
-                        <h4>Stations run out of empty slots</h4>
+                        <span class="label label-success pull-right">24 hours</span>
+                        <h4>Top 10 stations without empty slots by duration</h4>
                     </div>
                     <div class="ibox-content">
-                        <a class="stationList" href="/#/station/14">Belgrove Street , King's Cross</a>
-                        <a class="stationList" href="/#/station/15">Great Russell Street, Bloomsbury</a>
-                        <a class="stationList" href="/#/station/20">Drummond Street , Euston</a>
+                        <div class="svgCenter" ng-if="!topEmptySlots && !errorMessage">
+                            <div ng-include="'shared/loading/loading.html'"></div>
+                        </div>
+                        <div ng-repeat="stationEmptySlots in topEmptySlots"><a class="stationList" href="/#/station/{{stationEmptySlots['_id']}}">{{stationEmptySlots.name[0]}} <span class="availableTime">{{(stationEmptySlots.count/60).toFixed(2)}} hours</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
