@@ -28,7 +28,7 @@ div.containerLg {
 
 div.well {
     background: #FFFFFF;
-    padding: 10px 19px 19px 19px;
+    padding-top: 10px;
 }
 
 div.input-group {
@@ -176,7 +176,7 @@ nav.navbar-default .navbar-toggle {
 }
 
 .legend {
-    width: 420px;
+    width: 440px;
     margin: 0 auto;
     padding-bottom: 10px;
     clear: both;
@@ -374,6 +374,7 @@ nav.navbar-default .navbar-toggle {
     float: left;
     width: 50%;
     margin-top: 5px;
+    padding-bottom:30px;
 }
 
 @media (max-width: 767px) {

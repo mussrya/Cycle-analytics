@@ -1,6 +1,12 @@
 <div class="containerLg">
     <h2>Activity dashboard</h2>
-    <div class="row activity">
+    <div ng-if="errorMessage">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> Data could not be retrieved, please try again later
+        </div>
+    </div>
+    <div class="row activity" ng-if="!errorMessage">
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -8,6 +14,9 @@
                     <h5>Bikes available</h5>
                 </div>
                 <div class="ibox-content">
+                    <span ng-if="totalBikes.length<=0">
+                        <h3><small><center>Data is currently being generated</center></small></h3>
+                    </span>
                     <div class="svgCenter dashboard" ng-if="!totalBikes && !errorMessage">
                         <div class="dashboard" ng-include="'shared/loading/loading.html'"></div>
                     </div>
@@ -49,7 +58,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-success pull-right">24 hours</span>
-                    <h5>Most popular station</h5>
+                    <h5>Most popular</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="svgCenter dashboard" ng-if="!popularStation && !errorMessage">
@@ -61,7 +70,7 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div class="row m-t-lg customMargin">
+    <div class="row m-t-lg customMargin" ng-if="!errorMessage">
         <div class="col-lg-6">
             <div class="row">
                 <div class="col-md-12">
@@ -86,7 +95,7 @@
             </div>
         </div>
     </div>
-    <div class="row m-t-lg">
+    <div class="row m-t-lg" ng-if="!errorMessage">
         <div class="col-lg-6">
             <div class="row ">
                 <div class="col-md-6">

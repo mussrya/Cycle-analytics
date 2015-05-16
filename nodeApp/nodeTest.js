@@ -41,18 +41,13 @@ var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 var currentTime = new Date();
 // Run hourly average
 console.log(currentTime + ' - Running hourly average ETL function');
-
-
 console.log(currentTime + ' - Running the daily average ETL function');
 
 var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 
-console.log(startTime);
-console.log(currentTime);
-
-// search mongodb
+// Search MongoDB for documents matching between the times 6:30-9:29AM
 Stations.aggregate({
         $match: {
             "timestamp": {
@@ -60,27 +55,33 @@ Stations.aggregate({
                 $lt: endTime,
             }
         }
-    }, {
-        $group: {
-            _id: "$stationId",
-            "results": {
-                "$push": "$$ROOT"
-            }
-        }
-    }, {
-        $sort: {
-            results.nbBikes: -1
-        }
-    }, {
-        $limit: 1
     },
     function (err, station) {
         if (err) {
-            console.log(err)
+            console.log(err);
         } else {
-            // res.json(JSON.stringify(station));
-            console.log(JSON.stringify(station));
+            // Sort the documents returned by nbBikes Desc
+            station.sort(function (a, b) {
+                return b.nbBikes - a.nbBikes;
+            });
 
+            // Create an array to store / check stationIds have already been saved
+            var stationIds = [];
+            
+            // Create an array to push new results into
+            var stationArray = [];
 
+            // This loop is only storing one result per station (the one with the highest nbBikes value between 6:30-9:29AM)
+            for (var i = 0; i < station.length; i++) {
+                try {
+                    if (stationIds.indexOf(station[i].stationId) == -1) {
+                        // Save stationIds
+                        stationIds.push(station[i].stationId);
+                        
+                        // Save station entry
+                        stationArray.push(station[i]);
+                    }
+                } catch (err) {}
+            }
         }
     });
