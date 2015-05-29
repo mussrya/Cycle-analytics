@@ -1,3 +1,6 @@
+// stationsAveragesHours.js
+// Schema for the averages hours collection
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

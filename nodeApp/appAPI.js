@@ -1,7 +1,8 @@
-// app.js
+// appAPI.js
+// Used to serve the site's API, this API is only used to return data for predefined DB queries
 
-// BASE SETUP
-// Call the packages we need
+// Base setup
+// Call the packages needed
 var application_root = __dirname,
     express = require("express"),
     path = require("path"),
@@ -59,7 +60,6 @@ router.route('/stationsActive')
             });
     });
 
-
 // API to return the total number of slots available
 router.route('/homeSlotsAvail').get(function (req, res) {
 
@@ -109,7 +109,7 @@ router.route('/homeBikesTotalSlots').get(function (req, res) {
     var currentTime = new Date();
     var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
 
-    // search mongodb
+    // Search mongodb
     StationsLives.aggregate({
             $group: {
                 _id: null,
@@ -131,7 +131,7 @@ router.route('/homeBikesTotalSlots').get(function (req, res) {
 router.route('/homePopularStation').get(function (req, res) {
     var oneDayAgo = new Date().getTime() - 86400000;
 
-    // search mongodb
+    // Search mongodb
     Stations.aggregate({
             $match: {
                 "timestamp": {
@@ -169,7 +169,7 @@ router.route('/homePopularStation').get(function (req, res) {
 router.route('/stationLiveOverview').get(function (req, res) {
     var oneHourAgo = new Date().getTime() - 3600000;
 
-    // search mongodb
+    // Search mongodb
     Stations.aggregate({
             $match: {
                 "timestamp": {
@@ -196,12 +196,11 @@ router.route('/stationLiveOverview').get(function (req, res) {
         });
 });
 
-
 // API to return data for stations run out of bicycles
 router.route('/homeEmptyBicycles').get(function (req, res) {
     var oneDayAgo = new Date().getTime() - 86400000;
 
-    // search mongodb
+    // Search mongodb
     Stations.aggregate({
             $match: {
                 "timestamp": {
@@ -239,7 +238,7 @@ router.route('/homeEmptyBicycles').get(function (req, res) {
 router.route('/homeEmptySlots').get(function (req, res) {
     var oneDayAgo = new Date().getTime() - 86400000;
 
-    // search mongodb
+    // Search mongodb
     Stations.aggregate({
             $match: {
                 "timestamp": {
@@ -273,12 +272,11 @@ router.route('/homeEmptySlots').get(function (req, res) {
         });
 });
 
-
 // API to return data for a single station - overview
 router.route('/station/:id')
     .get(function (req, res) {
 
-        // search mongodb
+        // Search mongodb
         Stations.findOne({
                 'stationId': req.params.id
             },
@@ -295,7 +293,7 @@ router.route('/station/:id')
 router.route('/stationLive/:id').get(function (req, res) {
     var oneHourAgo = new Date().getTime() - 3600000;
 
-    // search mongodb
+    // Search mongodb
     Stations.aggregate({
             $match: {
                 "stationId": req.params.id,
@@ -318,7 +316,7 @@ router.route('/stationHourly/:id').get(function (req, res) {
 
     var fortyEightHoursAgo = new Date().getTime() - 172800000;
 
-    // search mongodb
+    // Search mongodb
     StationsAveragesHourly.aggregate({
             $match: {
                 "stationId": req.params.id,
@@ -345,7 +343,7 @@ router.route('/stationDaily/:id').get(function (req, res) {
 
     var twoWeeksAgo = new Date().getTime() - 2419200000;
 
-    // search mongodb
+    // Search mongodb
     StationsAveragesDays.aggregate({
             $match: {
                 "stationId": req.params.id,

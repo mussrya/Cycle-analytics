@@ -80,8 +80,10 @@ nav.navbar-default .navbar-nav>li>a {
     color: #FFFFFF;
 }
 
-a.navbarTitle:hover, a.navbarTitle:active, a.navbarTitle:focus{
-    color:#FFFFFF!important;
+a.navbarTitle:hover,
+a.navbarTitle:active,
+a.navbarTitle:focus {
+    color: #FFFFFF!important;
 }
 
 nav.navbar-default .navbar-nav>.active>a,
@@ -129,10 +131,11 @@ nav.navbar-default .navbar-toggle {
     color: #fff;
 }
 /* Home */
-.availableTime{
-    color:#888;
-    float:right;
-    font-size:14px;
+
+.availableTime {
+    color: #888;
+    float: right;
+    font-size: 14px;
 }
 
 @media (min-width: 900px) {
@@ -154,7 +157,6 @@ nav.navbar-default .navbar-toggle {
         margin-top: 20px;
     }
 }
-
 /* Activity */
 /* Stations */
 
@@ -374,7 +376,7 @@ nav.navbar-default .navbar-toggle {
     float: left;
     width: 50%;
     margin-top: 5px;
-    padding-bottom:30px;
+    padding-bottom: 30px;
 }
 
 @media (max-width: 767px) {

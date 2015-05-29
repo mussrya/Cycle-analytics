@@ -4,6 +4,7 @@ app.controller('publicStations', function ($scope, $http, $window, $location, $f
     // Defining core variables
     $scope.dataRealTimeChildNumber = 0;
     $scope.selected = undefined;
+    
     // This is set so angular animation works on first page load
     $scope.dataRealTimeChild = [];
     $scope.host = 'http://cycleanalytics.io:8080/api/v1/';
@@ -15,7 +16,7 @@ app.controller('publicStations', function ($scope, $http, $window, $location, $f
             $scope.setDataRealTime();
         }
     };
-    
+
     // Function to request data from the Node API to get the list of stations on the /stations page
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {

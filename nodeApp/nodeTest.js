@@ -1,3 +1,6 @@
+// nodeTest.js
+// Node testing file for live agile development
+
 // BASE SETUP
 // Call the packages we need
 var application_root = __dirname,
@@ -67,7 +70,7 @@ Stations.aggregate({
 
             // Create an array to store / check stationIds have already been saved
             var stationIds = [];
-            
+
             // Create an array to push new results into
             var stationArray = [];
 
@@ -77,7 +80,7 @@ Stations.aggregate({
                     if (stationIds.indexOf(station[i].stationId) == -1) {
                         // Save stationIds
                         stationIds.push(station[i].stationId);
-                        
+
                         // Save station entry
                         stationArray.push(station[i]);
                     }

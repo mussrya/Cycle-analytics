@@ -1,4 +1,6 @@
+// stationController.js
 // Controller for the individual station page
+
 app.controller('stationTrends', function ($scope, $http, $window, $location, $interval, chartDefaults) {
 
     // Click handler for when a point on the chart is clicked (unused)
@@ -209,7 +211,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
     // Initial calls to get the data required
     $scope.stationData = $scope.stationRequest($http);
 
-    // Dummy array until the real functionality has been added
+    // WIP - Dummy array until the real functionality has been added
     $scope.bestTimes = [{
         day: 'Mon',
         morning: new Date(),
