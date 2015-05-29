@@ -42,13 +42,12 @@ var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 function getData() {
     dataCounter++;
     console.log(Date() + '- Getting data');
-    var req = http.get('http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml', function (res) {
+    var req = http.get('http://s3-eu-west-1.amazonaws.com/tfl.pub/Serco/livecyclehireupdates.xml', function (res) {
         // Convert from XML to JSON object
         var xml = '';
         res.on('data', function (chunk) {
             xml += chunk;
         });
-
         res.on('end', function () {
             console.log(Date() + '- Converting data to JSON');
             xml = xml.replace("\ufeff", "");
@@ -93,7 +92,7 @@ function saveData(station) {
     StationsLives.remove({}, function () {});
 
     // Save data to main Stations collection
-    console.log(Date() + ' - Saving data to the stations collection');
+    console.log(Date() + ' - Saving data to the stations and stationsLives collection');
     for (var i = 0, len = station.length; i < len; i++) {
         var stationSave = new Stations({
             timestamp: entryDate,
@@ -109,7 +108,6 @@ function saveData(station) {
         });
 
         // Save data to stationsLives collection
-        console.log(Date() + ' - Saving data to the stationsLives collection');
         var stationSave = new StationsLives({
             timestamp: entryDate,
             stationId: station[i].id,
