@@ -4,7 +4,7 @@ This project provides both real-time and historical analysis of Barclays cycle s
 The main structure is as follows:
 * nodeApp - the NodeJS backend, which is split into 2 seperate node servers:
  * API for the front-end application
- * Task runner for the grabbing, storing & processing cycle station data
+ * Task runner for the grabbing, storing & processing of cycle station data
 * publicDataApp - the AngularJS frontend which acts as the MVC application
 
 ### Version
@@ -15,15 +15,19 @@ The main structure is as follows:
 Cycle Analytics makes use of multiple frameworks & libraries as shown below:
 
 * [AngularJS] 
- * [Chart.js] 
+ * [chart.js] 
+ * [ui.bootstrap]
+ * [ngAnimate]
+ * [angulartics]
 * [Node.js] 
- * [Express] 
- * [XML2JS] 
- * [Mongoose] 
+ * [express] 
+ * [xml2js] 
+ * [mongoose] 
 
 ### High level design
 
 TBD
+![HLD](http://cycleanalytics.io/assets/img/cycleanalytics.png)
 
 ### Installation
 
