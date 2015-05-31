@@ -26,7 +26,6 @@ Cycle Analytics makes use of multiple frameworks & libraries as shown below:
 
 ### High level design
 
-TBD
 ![HLD](http://cycleanalytics.io/assets/img/cycleanalytics.png)
 
 ### Installation
