@@ -40,6 +40,11 @@ Want to contribute? Feel free to submit a pull request.
 
 See the public Trello board here for the current tasks & bugs outstanding: https://trello.com/b/xgTHXbhR/cycleanalytics
 
+### Additional links
+[Author's LinkedIn profile page](http://uk.linkedin.com/in/ryanmusselwhite/en) - shameless plug of my LinkedIn profile
+[Government public data API site](http://www.tfl.gov.uk/info-for/open-data-users/) - as well as the cycle data used within this platform there are many other types of data available
+[Official Barclays cycle hire page](https://web.barclayscyclehire.tfl.gov.uk/maps) - this page contains the official searching for docking stations with realtime information
+
 ### License
 
 MIT Licence
