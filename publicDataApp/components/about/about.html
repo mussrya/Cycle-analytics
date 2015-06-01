@@ -8,8 +8,42 @@
             <p>To view the source files for this project, as well as contribute, please see the official GitHub project page here <a href="https://github.com/mussrya/Cycle-analytics">GitHub project page</a>
                 <br/>
                 <h2>How it works</h2>
+                <p>The main structure is as follows:</p>
+                <ul>
+                    <li>nodeApp - the NodeJS backend, which is split into 2 seperate node servers:
 
-                <br/>
+                        <ul>
+                            <li>API for the front-end application</li>
+                            <li>Task runner for the grabbing, storing &amp; processing of cycle station data</li>
+                        </ul>
+                    </li>
+                    <li>publicDataApp - the AngularJS frontend which acts as the MVC application</li>
+                </ul>
+                <h2>HLD</h2>
+                <a href="/assets/img/cycleanalytics.png"><img class="img-responsive" src="/assets/img/cycleanalytics.png" />
+                </a>
+                <a href="/assets/img/cycleanalytics.png"><p class="text-center">view larger</p></a>
+                <h2>Frameworks / Libraries used</h2>
+                <p>Cycle Analytics makes use of multiple frameworks &amp; libraries as shown below:</p>
+                <ul>
+                    <li>[AngularJS]
+
+                        <ul>
+                            <li>[chart.js] </li>
+                            <li>[ui.bootstrap]</li>
+                            <li>[ngAnimate]</li>
+                            <li>[angulartics]</li>
+                        </ul>
+                    </li>
+                    <li>[Node.js]
+
+                        <ul>
+                            <li>[express] </li>
+                            <li>[xml2js] </li>
+                            <li>[mongoose] </li>
+                        </ul>
+                    </li>
+                </ul>
                 <h2>Additional links</h2>
                 <p><a href="http://uk.linkedin.com/in/ryanmusselwhite/en">Author's LinkedIn profile page</a> - shameless plug of my LinkedIn profile</p>
                 <p><a href="https://github.com/mussrya/Cycle-analytics">GitHub project page</a> - here you can find the source files for the majority of this project (excluding any binary files such as node or mongodb).</p>
