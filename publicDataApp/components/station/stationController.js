@@ -32,6 +32,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
             $scope.stationLiveData = JSON.parse(data);
 
             $scope.stationLiveOptions = chartDefaults;
+            $scope.stationLiveOptions.scaleOverride = true;
             $scope.stationLiveOptions.scaleStepWidth = 5;
             $scope.stationLiveOptions.scaleStartValue = 0;
             $scope.stationLiveOptions.scaleSteps = $scope.stationLiveData[0].nbDocks / 5;

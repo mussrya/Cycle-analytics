@@ -68,9 +68,10 @@ app.controller('stationHome', function ($scope, $http, $window, $location, $inte
 
             // Options for the chart
             $scope.stationLiveOptions = chartDefaults;
-            $scope.stationLiveOptions.scaleSteps = 10,
-                $scope.stationLiveOptions.scaleStepWidth = 150;
-            $scope.stationLiveOptions.scaleStartValue = 7000;
+            $scope.stationLiveOptions.scaleOverride = false;
+            //$scope.stationLiveOptions.scaleSteps = 10,
+            //    $scope.stationLiveOptions.scaleStepWidth = 150;
+            //$scope.stationLiveOptions.scaleStartValue = 7000;
 
             // Defining the chart structure
             var chartData = {

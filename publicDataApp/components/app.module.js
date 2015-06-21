@@ -11,14 +11,7 @@ app.value('chartDefaults', {
     // Boolean - If we should show the scale at all
     showScale: true,
     // Boolean - If we want to override with a hard coded scale
-    scaleOverride: true,
-    // ** Required if scaleOverride is true **
-    // Number - The number of steps in a hard coded scale
-    scaleSteps: 20,
-    // Number - The value jump in the hard coded scale
-    scaleStepWidth: 5,
-    // Number - The scale starting value
-    scaleStartValue: 0,
+    scaleOverride: false,
     // String - Colour of the scale line
     scaleLineColor: "rgba(0,0,0,.1)",
     // Number - Pixel width of the scale line
