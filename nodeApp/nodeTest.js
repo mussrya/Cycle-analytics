@@ -78,6 +78,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         for (var i = 0, len = results.length; i < len; i++) {
             lookupMorning[results[i].stationId] = results[i];
         }
+        console.log(lookupMorning[500]);
         count = count + 1;
 
 /*
