@@ -54,6 +54,7 @@ var day = endTime.getDay();
 
 var lookupMorning = [];
 var lookupEvening = [];
+var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
@@ -75,10 +76,11 @@ Stations.aggregate({
 
             for (var i = 0, len = station.length; i < len; i++) {
                 lookupMorning[station[i].stationId] = station[i];
+                count = count + 1;
             }
         }
     });
-/*
+
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 
@@ -100,18 +102,27 @@ Stations.aggregate({
 
             for (var i = 0, len = station.length; i < len; i++) {
                 lookupAfternoon[station[i].stationId] = station[i];
+                count = count + 1;
             }
         }
     });
-*/
-setTimeout(function(){ console.log(lookupMorning); },10000);
-for (var i = 0; i < 900; i++) {
-    if (lookupMorning[i]) {
-        console.log('///////');
-        console.log(lookupMorning[i]);
-        console.log(lookupAfternoon[i]);
-        
-        console.log('///////');
 
+
+function saveResults() {
+    if (count == 2) {
+        for (var i = 0; i < 900; i++) {
+            if (lookupMorning[i]) {
+                console.log('///////');
+                console.log(lookupMorning[i]);
+                console.log(lookupAfternoon[i]);
+                console.log('///////');
+
+            }
+        }
+    } else {
+        setTimeout(function () {
+            saveResults();
+        }, 1000);
     }
+
 }
