@@ -94,19 +94,19 @@ Stations.aggregate({
             }
         }
     },
-    function (err, station) {
+    function (err, station2) {
         if (err) {
             console.log(err);
         } else {
-            station.sort(function (a, b) {
+            station2.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            console.log(station);
+            console.log(station2);
             
-            for (var i = 0, len = station.length; i < len; i++) {
-                lookupEvening[station[i].stationId] = station[i];
-                console.log(lookupEvening[station[i].stationId]);
+            for (var i = 0, len = station2.length; i < len; i++) {
+                lookupEvening[station2[i].stationId] = station[i];
+                //console.log(lookupEvening[station[i].stationId]);
             }
             count = count + 1;
         }
