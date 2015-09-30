@@ -80,7 +80,7 @@ Stations.aggregate({
 
 var currentTime = new Date();
 var endTime = new Date();
-var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 10, 00);
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 50);
 var day = endTime.getDay();
 
