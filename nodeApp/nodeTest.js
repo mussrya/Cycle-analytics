@@ -67,11 +67,11 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     function setCount() {
         setTimeout(function () {
             count = count + 1;
+            console.log(lookupMorning);
         }, 10000);
     }
 
     var results = [];
-    console.log(cursor);
     cursor.each(function (error, station) {
         lookupMorning.push(station);
     });
