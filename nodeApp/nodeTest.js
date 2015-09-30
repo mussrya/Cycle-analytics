@@ -64,17 +64,21 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         batchSize: 100000000
     }).exec();
 
+    var results = [];
+    
     cursor.each(function (error, station) {
-        console.log(station);
-        station.sort(function (a, b) {
+        results.push(station);
+        
+    });
+    
+    results.sort(function (a, b) {
             return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
         });
 
-        for (var i = 0, len = station.length; i < len; i++) {
-            lookupMorning[station[i].stationId] = station[i];
+        for (var i = 0, len = results.length; i < len; i++) {
+            lookupMorning[results[i].stationId] = results[i];
         }
         count = count + 1;
-    });
 
 /*
     var endTime = new Date();
