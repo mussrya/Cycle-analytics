@@ -49,8 +49,14 @@ console.log(currentTime + ' - Running the daily average ETL function');
 var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
+var day = endTime.getDay();
+
+
+var lookupMorning = {};
+var lookupEvening = {};
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
+
 Stations.aggregate({
         $match: {
             "timestamp": {
@@ -67,19 +73,45 @@ Stations.aggregate({
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            var lookup = {};
             for (var i = 0, len = station.length; i < len; i++) {
-                lookup[station[i].stationId] = station[i];
+                lookupMorning[station[i].stationId] = station[i];
             }
-
-            //Loop through each stationId
-            //For that station, find the largest nbBikes value and it’s timestamp associated
-
-            for (var i = 0; i < 900; i++) {
-                if (lookup[i]) {
-                    console.log(lookup[i]);
-                }
-            }
-
         }
     });
+
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
+
+Stations.aggregate({
+        $match: {
+            "timestamp": {
+                $gte: startTime,
+                $lt: endTime,
+            }
+        }
+    },
+    function (err, station) {
+        if (err) {
+            console.log(err);
+        } else {
+            station.sort(function (a, b) {
+                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+            });
+
+            for (var i = 0, len = station.length; i < len; i++) {
+                lookupAfternoon[station[i].stationId] = station[i];
+            }
+        }
+    });
+
+
+for (var i = 0; i < 900; i++) {
+    if (lookupMorning[i] && lookupAfternoon[i]) {
+        console.log('///////');
+        console.log(lookupMorning[i]);
+        console.log(lookupAfternoon[i]);
+        
+        console.log('///////');
+
+    }
+}

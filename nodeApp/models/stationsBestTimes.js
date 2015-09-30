@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 
 var stationsBestTimesSchema = new Schema({
     stationId: String,
+    day: String,
     times: [{
         morning: String,
         evening: String
