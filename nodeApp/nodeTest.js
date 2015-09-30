@@ -113,7 +113,7 @@ function saveResults() {
     if (count == 2) {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
-                var stationSave = new StationsAveragesDays({
+                var stationSave = new StationsBestTimes({
                     stationId: lookupMorning[i].stationId,
                     day: day,
                     times: {
