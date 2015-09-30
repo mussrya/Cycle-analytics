@@ -68,7 +68,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     
     cursor.each(function (error, station) {
         results.push(station);
-        console.log(station);
+        //console.log(station);
         // Need a call back here to allow the console.log(results) further down to have results
         
     });
@@ -81,7 +81,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
             lookupMorning[results[i].stationId] = results[i];
         }
         
-        setTimeout(function(){console.dir(cursor);}, 1000);
+        setTimeout(function(){console.dir(cursor);}, 5000);
         count = count + 1;
 
 /*
