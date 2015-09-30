@@ -37,14 +37,6 @@ var StationsAveragesHours = require('./models/stationsAveragesHours.js');
 var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
-
-var currentTime = new Date();
-var endTime = new Date();
-var endTime = new Date(endTime.getTime() - 172800000);
-var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
-var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
-
-
 var lookupMorning = [];
 var lookupEvening = [];
 var count = 0;
@@ -54,13 +46,18 @@ function setCount() {
         console.log(lookupMorning);
         console.log(lookupEvening);
         count = count + 1;
-    }, 10000);
+    }, 20000);
 }
 
-// Search MongoDB for documents matching between the times 6:30-9:29AM
 console.log(Date() + ' - Connecting to the DB');
 // Database connection
 mongoose.connect('mongodb://localhost/cycleHire', function () {
+    var currentTime = new Date();
+    var endTime = new Date();
+    var endTime = new Date(endTime.getTime() - 172800000);
+    var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
+    var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
+
     var cursor = Stations.aggregate({
         $match: {
             "timestamp": {
