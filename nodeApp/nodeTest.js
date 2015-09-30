@@ -97,7 +97,6 @@ Stations.aggregate({
         if (err) {
             console.log(err);
         } else {
-            console.log(station);
             station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
@@ -114,10 +113,10 @@ function saveResults() {
     if (count == 2) {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
-                //console.log('///////');
-                //console.log(lookupMorning[i]);
-                //console.log(lookupEvening[i]);
-                //console.log('///////');
+                console.log('///////');
+                console.log(lookupMorning[i]);
+                console.log(lookupEvening[i]);
+                console.log('///////');
 
             }
         }
