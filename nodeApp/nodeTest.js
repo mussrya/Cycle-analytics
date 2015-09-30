@@ -66,17 +66,6 @@ var cursor = Stations.aggregate([
           cursor: {batchSize:1000000}
     });
 
-cursor.get(function(err, station){
-  station.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
-
-            for (var i = 0, len = station.length; i < len; i++) {
-                lookupMorning[station[i].stationId] = station[i];
-            }
-            count = count + 1;
-});
-
 
 /*
 var endTime = new Date();
