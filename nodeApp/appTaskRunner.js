@@ -269,6 +269,70 @@ function checkTime() {
                         }
                     }
                 });
+            
+            // Runs the best times function for morning
+            console.log(currentTime + ' - Runs the best times function for morning peak');
+            
+            
+            /*
+            // Example JSON which would be returned from Mongo
+                var json = [];
+                json.push({
+                    "stationId": "98",
+                    "nbBikes": 26,
+                    "timestamp": "2015-08-30T06:31:03Z"
+                }, {
+                    "stationId": "98",
+                    "nbBikes": 22,
+                    "timestamp": "2015-08-30T07:33:46Z"
+                }, {
+                    "stationId": "98",
+                    "nbBikes": 6,
+                    "timestamp": "2015-08-30T08:38:23Z"
+                }, {
+                    "stationId": "98",
+                    "nbBikes": 42,
+                    "timestamp": "2015-08-30T08:40:32Z"
+                }, {
+                    "stationId": "9",
+                    "nbBikes": 42,
+                    "timestamp": "2015-08-30T08:40:32Z"
+                }, {
+                    "stationId": "81",
+                    "nbBikes": 22,
+                    "timestamp": "2015-08-30T07:40:32Z"
+                }, {
+                    "stationId": "81",
+                    "nbBikes": 4,
+                    "timestamp": "2015-08-30T06:40:32Z"
+                });
+
+                // Sorting the array from High to Low
+                json.sort(function(a, b) {
+                    return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+                });
+
+                // This can be used as a lookup function for a single ID
+                var lookup = {};
+                for (var i = 0, len = json.length; i < len; i++) {
+                    lookup[json[i].stationId] = json[i];
+                }
+
+                //Loop through each stationId
+                //For that station, find the largest nbBikes value and it’s timestamp associated
+
+                // You can see the lookup here which returns the entry I need for a station
+                for(var i = 0; i<900; i++){
+                    if(lookup[i]){console.log(lookup[i]);}
+                }
+            */
+            
+            
+            // Runs the best times function for afternoon
+            console.log(currentTime + ' - Runs the best times function for afternoon peak');
+            
+            
+            
         } else if (currentTime.getHours() == 2) {
             // WIP - If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
             console.log(currentTime + ' - Running the daily cleanup function');

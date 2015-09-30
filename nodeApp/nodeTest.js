@@ -63,28 +63,24 @@ Stations.aggregate({
         if (err) {
             console.log(err);
         } else {
-            // Sort the documents returned by nbBikes Desc
+
             station.sort(function (a, b) {
-                return b.nbBikes - a.nbBikes;
+                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            // Create an array to store / check stationIds have already been saved
-            var stationIds = [];
-
-            // Create an array to push new results into
-            var stationArray = [];
-
-            // This loop is only storing one result per station (the one with the highest nbBikes value between 6:30-9:29AM)
-            for (var i = 0; i < station.length; i++) {
-                try {
-                    if (stationIds.indexOf(station[i].stationId) == -1) {
-                        // Save stationIds
-                        stationIds.push(station[i].stationId);
-
-                        // Save station entry
-                        stationArray.push(station[i]);
-                    }
-                } catch (err) {}
+            var lookup = {};
+            for (var i = 0, len = station.length; i < len; i++) {
+                lookup[station[i].stationId] = json[i];
             }
+
+            //Loop through each stationId
+            //For that station, find the largest nbBikes value and it’s timestamp associated
+
+            for (var i = 0; i < 900; i++) {
+                if (lookup[i]) {
+                    console.log(lookup[i]);
+                }
+            }
+
         }
     });
