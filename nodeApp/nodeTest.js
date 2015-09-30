@@ -66,7 +66,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
 
     var results = [];
     
-    cursor.each(function (error, station) {
+    cursor.on(function (error, station) {
         results.push(station);
         //console.log(station);
         // Need a call back here to allow the console.log(results) further down to have results
