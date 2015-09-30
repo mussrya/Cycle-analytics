@@ -54,20 +54,19 @@ var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
-var cursor = Stations.aggregate([
-    { $match: {
+Stations.aggregate({
+        $match: {
             "timestamp": {
                 $gte: startTime,
                 $lt: endTime,
             }
         }
-    }
-], {
-          cursor: {batchSize:1000000}
-    });
-
-cursor.get(function(err, station){
-  station.sort(function (a, b) {
+    },
+    function (err, station) {
+        if (err) {
+            console.log(err);
+        } else {
+            station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
@@ -75,10 +74,10 @@ cursor.get(function(err, station){
                 lookupMorning[station[i].stationId] = station[i];
             }
             count = count + 1;
-});
+        }
+    });
 
 
-/*
 var endTime = new Date();
 var endTime = new Date(endTime.getTime() - 172800000);
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
@@ -138,4 +137,3 @@ function saveResults() {
 }
 
 saveResults();
-*/
