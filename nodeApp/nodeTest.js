@@ -62,7 +62,11 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         }
     }).cursor({
         batchSize: 100000000
-    }).exec();
+    }).exec(test());
+    
+    function test(){
+        console.log('hi');
+    }
 
     var results = [];
     console.log(cursor);
