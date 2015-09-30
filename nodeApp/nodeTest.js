@@ -159,6 +159,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
 
 
 function saveResults() {
+    console.log(lookupMorning);
     if (count == 2) {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
