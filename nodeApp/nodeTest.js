@@ -43,11 +43,10 @@ var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
 var currentTime = new Date();
 var endTime = new Date();
-var endTime = new Date(endTime.getTime() - 86400000);
+var endTime = new Date(endTime.getTime() - (86400000*2));
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
-var day = endTime.getDay();
-
+var day = 1;
 
 var lookupMorning = [];
 var lookupEvening = [];
@@ -80,10 +79,10 @@ Stations.aggregate({
 
 
 var endTime = new Date();
-var endTime = new Date(endTime.getTime() - 86400000);
+var endTime = new Date(endTime.getTime() - (86400000*2));
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-var day = endTime.getDay();
+var day = 1;
 
 Stations.aggregate({
         $match: {
