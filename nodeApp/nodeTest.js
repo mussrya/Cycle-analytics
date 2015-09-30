@@ -76,7 +76,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         count = count + 1;
     });
 
-
+/*
     var endTime = new Date();
     var endTime = new Date(endTime.getTime() - 172800000);
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
@@ -104,7 +104,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         }
         count = count + 1;
     });
-
+*/
 });
 
 
