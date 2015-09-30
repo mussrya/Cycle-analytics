@@ -81,7 +81,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
             lookupMorning[results[i].stationId] = results[i];
         }
         
-        setTimeout(function(){console.dir(cursor.query);}, 5000);
+        setTimeout(function(){console.dir(cursor);}, 5000);
         count = count + 1;
 
 /*
