@@ -50,10 +50,9 @@ var lookupEvening = [];
 var count = 0;
 
 function setCount() {
-    console.log(lookupMorning);
-    console.log(lookupMorning);
     setTimeout(function () {
-        console.log('this');
+        console.log(lookupMorning);
+        console.log(lookupMorning);
         count = count + 1;
     }, 10000);
 }
@@ -104,12 +103,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     }).cursor({
         batchSize: 100000000
     }).exec();
-
-    function setCount() {
-        setTimeout(function () {
-            count = count + 1;
-        }, 10000);
-    }
 
     var results = [];
     cursor.each(function (error, station) {
