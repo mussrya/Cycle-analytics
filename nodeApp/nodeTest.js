@@ -40,20 +40,21 @@ var StationsAveragesHours = require('./models/stationsAveragesHours.js');
 var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
-/*
+
 var currentTime = new Date();
 var endTime = new Date();
+var endTime = new Date(endTime.getTime() - 86400000);
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 var day = endTime.getDay();
-*/
+
 
 var lookupMorning = [];
 var lookupEvening = [];
 var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
-/*
+
 Stations.aggregate({
         $match: {
             "timestamp": {
@@ -76,12 +77,12 @@ Stations.aggregate({
             count = count + 1;
         }
     });
-*/
 
-var currentTime = new Date();
+
 var endTime = new Date();
-var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 10, 00);
-var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 12, 50);
+var endTime = new Date(endTime.getTime() - 86400000);
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 var day = endTime.getDay();
 
 Stations.aggregate({
