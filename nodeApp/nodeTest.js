@@ -52,8 +52,8 @@ var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDat
 var day = endTime.getDay();
 
 
-var lookupMorning = {};
-var lookupEvening = {};
+var lookupMorning = [];
+var lookupEvening = [];
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
