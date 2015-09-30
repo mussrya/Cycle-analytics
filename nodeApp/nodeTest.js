@@ -102,7 +102,7 @@ Stations.aggregate({
             });
 
             for (var i = 0, len = station.length; i < len; i++) {
-                lookupMorning[station[i].stationId] = station[i];
+                lookupEvening[station[i].stationId] = station[i];
             }
             count = count + 1;
         }
