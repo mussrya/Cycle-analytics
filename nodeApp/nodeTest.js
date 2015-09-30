@@ -63,7 +63,6 @@ Stations.aggregate({
         if (err) {
             console.log(err);
         } else {
-
             station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });

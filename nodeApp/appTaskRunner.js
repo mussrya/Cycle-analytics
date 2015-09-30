@@ -269,7 +269,7 @@ function checkTime() {
                         }
                     }
                 });
-            
+
             // Runs the best times function for morning
             console.log(currentTime + ' - Runs the best times function for morning peak');
             
@@ -331,8 +331,7 @@ function checkTime() {
             // Runs the best times function for afternoon
             console.log(currentTime + ' - Runs the best times function for afternoon peak');
             
-            
-            
+        
         } else if (currentTime.getHours() == 2) {
             // WIP - If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
             console.log(currentTime + ' - Running the daily cleanup function');
