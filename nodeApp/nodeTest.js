@@ -101,7 +101,7 @@ Stations.aggregate({
             });
 
             for (var i = 0, len = station.length; i < len; i++) {
-                lookupAfternoon[station[i].stationId] = station[i];
+                lookupEvening[station[i].stationId] = station[i];
             }
             count = count + 1;
         }
@@ -114,7 +114,7 @@ function saveResults() {
             if (lookupMorning[i]) {
                 console.log('///////');
                 console.log(lookupMorning[i]);
-                console.log(lookupAfternoon[i]);
+                console.log(lookupEvening[i]);
                 console.log('///////');
 
             }
