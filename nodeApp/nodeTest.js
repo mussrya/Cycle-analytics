@@ -49,6 +49,15 @@ var lookupMorning = [];
 var lookupEvening = [];
 var count = 0;
 
+function setCount() {
+    setTimeout(function () {
+        console.log('this');
+        count = count + 1;
+        console.log(lookupMorning);
+        console.log(lookupMorning);
+    }, 10000);
+}
+
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 console.log(Date() + ' - Connecting to the DB');
 // Database connection
@@ -63,15 +72,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     }).cursor({
         batchSize: 100000000
     }).exec();
-
-    function setCount() {
-        setTimeout(function () {
-            console.log('this');
-            count = count + 1;
-            console.log(lookupMorning);
-            console.log(lookupMorning);
-        }, 10000);
-    }
 
     var results = [];
     cursor.each(function (error, station) {
@@ -178,7 +178,7 @@ function saveResults() {
                 });
             }
         }
-        console.log('Results Saved'+count);
+        console.log('Results Saved');
     } else {
         console.log('Re-running saveResults ' + count);
         setTimeout(function () {
