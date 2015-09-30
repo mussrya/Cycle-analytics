@@ -82,10 +82,6 @@ Stations.aggregate({
     });
 */
 
-var endTime = new Date();
-var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
-var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-
 Stations.aggregate({
         $match: {
             "timestamp": {
@@ -94,18 +90,18 @@ Stations.aggregate({
             }
         }
     },
-    function (err, station2) {
+    function (err, station) {
         if (err) {
             console.log(err);
         } else {
-            station2.sort(function (a, b) {
+            station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            console.log(station2);
+            console.log(station);
             
-            for (var i = 0, len = station2.length; i < len; i++) {
-                lookupEvening[station2[i].stationId] = station[i];
+            for (var i = 0, len = station.length; i < len; i++) {
+                lookupEvening[station[i].stationId] = station[i];
                 //console.log(lookupEvening[station[i].stationId]);
             }
             count = count + 1;
