@@ -81,6 +81,7 @@ Stations.aggregate({
         }
     });
 
+var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 
