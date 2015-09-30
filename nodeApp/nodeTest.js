@@ -69,6 +69,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     cursor.each(function (error, station) {
         results.push(station);
         console.log(station);
+        // Need a call back here to allow the console.log(results) further down to have results
         
     });
     
@@ -79,7 +80,8 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         for (var i = 0, len = results.length; i < len; i++) {
             lookupMorning[results[i].stationId] = results[i];
         }
-        console.log(results);
+        
+        console.log(cursor);
         count = count + 1;
 
 /*
