@@ -63,12 +63,10 @@ var cursor = Stations.aggregate({
         }
     },{
           cursor: {batchSize:1000000}
-    },
-    function (err, station) {
-        if (err) {
-            console.log(err);
-        } else {
-            station.sort(function (a, b) {
+    });
+
+cursor.get(function(err, station){
+  station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
@@ -76,9 +74,7 @@ var cursor = Stations.aggregate({
                 lookupMorning[station[i].stationId] = station[i];
             }
             count = count + 1;
-        }
-    });
-
+});
 
 
 /*
