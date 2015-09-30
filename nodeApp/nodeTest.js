@@ -19,9 +19,6 @@ var app = express();
 console.log(Date() + ' - Launching the server');
 
 
-// Database connection
-mongoose.connect('mongodb://localhost/cycleHire');
-console.log(Date() + ' - Connecting to the DB');
 
 // Create the router
 var router = express.Router();
@@ -54,6 +51,8 @@ var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
+// Database connection
+mongoose.connect('mongodb://localhost/cycleHire', function(){
 Stations.aggregate({
         $match: {
             "timestamp": {
@@ -94,11 +93,17 @@ var cursor = Stations.aggregate({
             }
         }
     }).cursor({ batchSize: 100000000 }).exec();
+
 console.log(cursor);
 
 cursor.each(function(error, doc) {
 console.log(doc);
 });
+
+});
+console.log(Date() + ' - Connecting to the DB');
+
+
 
 function test(){
     console.log('running');
