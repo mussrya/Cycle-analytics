@@ -42,9 +42,6 @@ var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
 
 var currentTime = new Date();
-// Run hourly average
-console.log(currentTime + ' - Running hourly average ETL function');
-console.log(currentTime + ' - Running the daily average ETL function');
 
 var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
@@ -81,6 +78,11 @@ Stations.aggregate({
         }
     });
 */
+
+var endTime = new Date();
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
+
 
 Stations.aggregate({
         $match: {
