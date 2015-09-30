@@ -50,11 +50,11 @@ var lookupEvening = [];
 var count = 0;
 
 function setCount() {
+    console.log(lookupMorning);
+    console.log(lookupMorning);
     setTimeout(function () {
         console.log('this');
         count = count + 1;
-        console.log(lookupMorning);
-        console.log(lookupMorning);
     }, 10000);
 }
 
