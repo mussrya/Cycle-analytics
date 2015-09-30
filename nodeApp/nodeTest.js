@@ -178,7 +178,7 @@ function saveResults() {
                 });
             }
         }
-        console.log('Results Saved');
+        console.log('Results Saved'+count);
     } else {
         console.log('Re-running saveResults ' + count);
         setTimeout(function () {
