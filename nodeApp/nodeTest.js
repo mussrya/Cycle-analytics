@@ -94,6 +94,8 @@ var cursor = Stations.aggregate({
             }
         }
     }).cursor({ batchSize: 100000000 }).exec();
+console.log(cursor);
+
 cursor.each(function(error, doc) {
 console.log(doc);
 });
