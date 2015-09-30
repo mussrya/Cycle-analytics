@@ -100,6 +100,8 @@ Stations.aggregate({
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
+            console.log(station);
+            
             for (var i = 0, len = station.length; i < len; i++) {
                 lookupEvening[station[i].stationId] = station[i];
                 console.log(lookupEvening[station[i].stationId]);
