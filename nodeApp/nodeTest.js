@@ -68,6 +68,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         setTimeout(function () {
             count = count + 1;
             console.log(lookupMorning);
+            console.log(lookupMorning);
         }, 10000);
     }
 
@@ -159,7 +160,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
 
 
 function saveResults() {
-    console.log(lookupMorning);
     if (count == 2) {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
