@@ -78,7 +78,7 @@ Stations.aggregate({
             }
         }
     });
-
+/*
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 
@@ -103,7 +103,7 @@ Stations.aggregate({
             }
         }
     });
-
+*/
 
 for (var i = 0; i < 900; i++) {
     if (lookupMorning[i] && lookupAfternoon[i]) {
