@@ -65,6 +65,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     }).exec();
 
     cursor.each(function (error, station) {
+        console.log(station);
         station.sort(function (a, b) {
             return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
         });
