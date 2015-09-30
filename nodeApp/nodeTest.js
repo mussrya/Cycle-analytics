@@ -84,14 +84,23 @@ var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getD
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 var day = 1;
 
-Stations.aggregate({
+
+
+var cursor = Stations.aggregate({
         $match: {
             "timestamp": {
                 $gte: startTime,
                 $lt: endTime,
             }
         }
-    },
+    }).cursor({ batchSize: 100000000 }).exec();
+cursor.each(function(error, doc) {
+console.log(doc);
+});
+
+function test(){
+    console.log('running');
+    /*
     function (err, station) {
         if (err) {
             console.log(err);
@@ -105,7 +114,9 @@ Stations.aggregate({
             }
             count = count + 1;
         }
-    });
+    }
+    */
+}
 
 
 function saveResults() {
