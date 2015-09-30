@@ -40,6 +40,7 @@ var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 var lookupMorning = [];
 var lookupEvening = [];
 var count = 0;
+var day = 1;
 
 function setCount() {
     setTimeout(function () {
@@ -86,7 +87,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     var endTime = new Date(endTime.getTime() - 172800000);
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
     var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-    var day = 1;
 
     var cursor = Stations.aggregate({
         $match: {
