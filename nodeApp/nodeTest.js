@@ -68,6 +68,7 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     
     cursor.each(function (error, station) {
         results.push(station);
+        console.log(station);
         
     });
     
