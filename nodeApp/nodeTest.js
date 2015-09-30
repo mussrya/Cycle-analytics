@@ -69,7 +69,7 @@ Stations.aggregate({
 
             var lookup = {};
             for (var i = 0, len = station.length; i < len; i++) {
-                lookup[station[i].stationId] = json[i];
+                lookup[station[i].stationId] = station[i];
             }
 
             //Loop through each stationId
