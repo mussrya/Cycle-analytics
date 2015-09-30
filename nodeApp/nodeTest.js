@@ -113,11 +113,18 @@ function saveResults() {
     if (count == 2) {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
-                console.log('///////');
-                console.log(lookupMorning[i]);
-                console.log(lookupEvening[i]);
-                console.log('///////');
+                var stationSave = new StationsAveragesDays({
+                    stationId: station[i]._id,
+                    day: day,
+                    times: {
+                        morning: lookupMorning[i].timestamp,
+                        evening: lookupEvening[i].timestamp
+                    }
+                });
 
+                stationSave.save(function (err) {
+                    if (err) return console.error('Error:' + err);
+                });
             }
         }
     } else {
