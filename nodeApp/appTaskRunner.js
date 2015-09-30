@@ -273,74 +273,77 @@ function checkTime() {
             // Runs the best times function for morning
             console.log(currentTime + ' - Runs the best times function for morning peak');
 
-
-            var currentTime = new Date();
-            var endTime = new Date();
-            var endTime = new Date(endTime.getTime() - 86400000);
-            var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
-            var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
-            var day = endTime.getDay();
-
-
             var lookupMorning = [];
             var lookupEvening = [];
             var count = 0;
+            var day = 1;
 
-            // Search MongoDB for documents matching between the times 6:30-9:29AM
+            function setCount() {
+                setTimeout(function () {
+                    count = count + 1;
+                }, 20000);
+            }
 
-            Stations.aggregate({
-                    $match: {
-                        "timestamp": {
-                            $gte: startTime,
-                            $lt: endTime,
-                        }
+            var currentTime = new Date();
+            var endTime = new Date();
+            var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
+            var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
+
+            var cursor = Stations.aggregate({
+                $match: {
+                    "timestamp": {
+                        $gte: startTime,
+                        $lt: endTime,
                     }
-                },
-                function (err, station) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        station.sort(function (a, b) {
-                            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-                        });
+                }
+            }).cursor({
+                batchSize: 100000000
+            }).exec();
 
-                        for (var i = 0, len = station.length; i < len; i++) {
-                            lookupMorning[station[i].stationId] = station[i];
-                        }
-                        count = count + 1;
-                    }
-                });
+            var results = [];
+            cursor.each(function (error, station) {
+                lookupMorning.push(station);
+            });
 
+            results.sort(function (a, b) {
+                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+            });
+
+            for (var i = 0, len = results.length; i < len; i++) {
+                lookupMorning[results[i].stationId] = results[i];
+            }
+
+            setCount();
 
             var endTime = new Date();
-            var endTime = new Date(endTime.getTime() - 86400000);
             var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
             var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-            var day = endTime.getDay();
 
-            Stations.aggregate({
-                    $match: {
-                        "timestamp": {
-                            $gte: startTime,
-                            $lt: endTime,
-                        }
+            var cursor = Stations.aggregate({
+                $match: {
+                    "timestamp": {
+                        $gte: startTime,
+                        $lt: endTime,
                     }
-                },
-                function (err, station) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        station.sort(function (a, b) {
-                            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-                        });
+                }
+            }).cursor({
+                batchSize: 100000000
+            }).exec();
 
-                        for (var i = 0, len = station.length; i < len; i++) {
-                            lookupEvening[station[i].stationId] = station[i];
-                        }
-                        count = count + 1;
-                    }
-                });
+            var results = [];
+            cursor.each(function (error, station) {
+                lookupEvening.push(station);
+            });
 
+            results.sort(function (a, b) {
+                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+            });
+
+            for (var i = 0, len = results.length; i < len; i++) {
+                lookupEvening[results[i].stationId] = results[i];
+            }
+
+            setCount();
 
             function saveResults() {
                 if (count == 2) {
@@ -360,6 +363,7 @@ function checkTime() {
                             });
                         }
                     }
+                    console.log('Results Saved');
                 } else {
                     console.log('Re-running saveResults ' + count);
                     setTimeout(function () {

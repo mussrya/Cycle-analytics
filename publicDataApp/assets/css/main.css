@@ -29,6 +29,8 @@ div.containerLg {
 div.well {
     background: #FFFFFF;
     padding-top: 10px;
+    border-radius: 0px;
+    box-shadow: none;
 }
 
 div.input-group {
@@ -262,10 +264,7 @@ nav.navbar-default .navbar-toggle {
     background-color: #ffffff;
     color: inherit;
     padding: 15px 20px 20px 20px;
-    border-color: #e7eaec;
-    border-image: none;
-    border-style: solid solid none;
-    border-width: 1px 0px;
+    border:1px solid #ccc;
 }
 
 .stationList {

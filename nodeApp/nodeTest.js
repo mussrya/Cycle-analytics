@@ -53,7 +53,6 @@ console.log(Date() + ' - Connecting to the DB');
 mongoose.connect('mongodb://localhost/cycleHire', function () {
     var currentTime = new Date();
     var endTime = new Date();
-    var endTime = new Date(endTime.getTime() - 172800000);
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
     var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 
@@ -84,7 +83,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     setCount();
 
     var endTime = new Date();
-    var endTime = new Date(endTime.getTime() - 172800000);
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
     var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
 
@@ -114,37 +112,6 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
 
     setCount();
 
-
-    /*
-    
-        var endTime = new Date();
-        var endTime = new Date(endTime.getTime() - 172800000);
-        var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
-        var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-        var day = 1;
-
-        var cursor = Stations.aggregate({
-            $match: {
-                "timestamp": {
-                    $gte: startTime,
-                    $lt: endTime,
-                }
-            }
-        }).cursor({
-            batchSize: 100000000
-        }).exec();
-
-        cursor.each(function (error, station) {
-            station.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
-
-            for (var i = 0, len = station.length; i < len; i++) {
-                lookupEvening[station[i].stationId] = station[i];
-            }
-            count = count + 1;
-        });
-    */
 });
 
 
