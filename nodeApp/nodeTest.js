@@ -54,15 +54,14 @@ var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
-var cursor = Stations.aggregate({
-    { $match: {
+var cursor = Stations.aggregate([
+     $match: {
             "timestamp": {
                 $gte: startTime,
                 $lt: endTime,
             }
         }
-    }
-                                }, {
+], {
           cursor: {batchSize:1000000}
     });
 
