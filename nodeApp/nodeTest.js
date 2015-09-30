@@ -123,10 +123,10 @@ function saveResults() {
 
                 stationSave.save(function (err) {
                     if (err) return console.error('Error:' + err);
-                    console.log('Results Saved');
                 });
             }
         }
+        console.log('Results Saved');
     } else {
         console.log('Re-running saveResults ' + count);
         setTimeout(function () {
