@@ -114,7 +114,7 @@ function saveResults() {
         for (var i = 0; i < 900; i++) {
             if (lookupMorning[i]) {
                 var stationSave = new StationsAveragesDays({
-                    stationId: station[i]._id,
+                    stationId: lookupMorning[i].stationId,
                     day: day,
                     times: {
                         morning: lookupMorning[i].timestamp,
