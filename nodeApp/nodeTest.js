@@ -102,6 +102,7 @@ Stations.aggregate({
 
             for (var i = 0, len = station.length; i < len; i++) {
                 lookupEvening[station[i].stationId] = station[i];
+                console.log(lookupEvening[station[i].stationId]);
             }
             count = count + 1;
         }
