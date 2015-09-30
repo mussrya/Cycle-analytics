@@ -54,7 +54,7 @@ var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
 
-Stations.aggregate({
+var cursor = Stations.aggregate({
         $match: {
             "timestamp": {
                 $gte: startTime,
@@ -75,9 +75,11 @@ Stations.aggregate({
             }
             count = count + 1;
         }
-    });
+    }).cursor({ batchSize: 100000000 }).exec();
 
 
+
+/*
 var endTime = new Date();
 var endTime = new Date(endTime.getTime() - 172800000);
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
@@ -137,3 +139,4 @@ function saveResults() {
 }
 
 saveResults();
+*/
