@@ -62,7 +62,9 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         }
     }).cursor({
         batchSize: 100000000
-    }).exec(setTimeout(function(){test()},1000));
+    }).exec(setTimeout(function () {
+        test()
+    }, 1000));
 
     function test() {
         var results = [];
@@ -70,21 +72,21 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
             results.push(station);
             //console.log(station);
             // Need a call back here to allow the console.log(results) further down to have results
-            
+
         });
         console.log(results);
+        results.sort(function (a, b) {
+            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+        });
 
+        for (var i = 0, len = results.length; i < len; i++) {
+            lookupMorning[results[i].stationId] = results[i];
+        }
+        count = count + 1;
     }
 
 
-    results.sort(function (a, b) {
-        return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-    });
 
-    for (var i = 0, len = results.length; i < len; i++) {
-        lookupMorning[results[i].stationId] = results[i];
-    }
-    count = count + 1;
 
     /*
         var endTime = new Date();
