@@ -104,7 +104,7 @@ Stations.aggregate({
         }
     });
 */
- console.log(lookupMorning);
+setTimeout(function(){ console.log(lookupMorning); },10000);
 for (var i = 0; i < 900; i++) {
     if (lookupMorning[i]) {
         console.log('///////');
