@@ -1,3 +1,6 @@
+// stations.js
+// Schema for the main stations collection which stores all data
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

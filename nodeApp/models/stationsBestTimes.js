@@ -1,3 +1,6 @@
+// stationsBestTimes.js
+// Schema for the best times to get a bicycle collection
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

@@ -1,3 +1,6 @@
+// stationsLives.js
+// Schema for the live data collection which only shows the most recent data grab
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

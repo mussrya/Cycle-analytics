@@ -1,9 +1,10 @@
-// Controller for the Home page
+// Controller for the Stations page
 app.controller('publicStations', function ($scope, $http, $window, $location, $filter) {
 
     // Defining core variables
     $scope.dataRealTimeChildNumber = 0;
     $scope.selected = undefined;
+    
     // This is set so angular animation works on first page load
     $scope.dataRealTimeChild = [];
     $scope.host = 'http://cycleanalytics.io:8080/api/v1/';
@@ -15,7 +16,8 @@ app.controller('publicStations', function ($scope, $http, $window, $location, $f
             $scope.setDataRealTime();
         }
     };
-    // Function to request data from the Node API
+
+    // Function to request data from the Node API to get the list of stations on the /stations page
     $scope.dataRequest = function ($requestType, $http) {
         if ($requestType === 'stationsRealTime') {
             $http.get($scope.host + 'stationsActive').success(function (data, status, headers, config) {
@@ -44,24 +46,35 @@ app.controller('publicStations', function ($scope, $http, $window, $location, $f
     }
 
     // Function to provide infinate scroll functinality
-    $scope.infinate = angular.element($window).bind("scroll", function () {
-        var el = document.querySelector("#loadMore");
-        var top = el.getBoundingClientRect().top;
+    $scope.infinate = function () {
+        if ($scope.dataRealTime) {
+            // Locate the hidden load button and the top of the scroll
+            var el = document.querySelector("#loadMore");
+            var top = el.getBoundingClientRect().top;
 
-        if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
-            $scope.$apply(function () {
-                $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
-                $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
-            });
+            // Check it's within X pixels of the load button before initiating the loading of more results
+            if (el.getBoundingClientRect().top <= 800 && ($scope.selected === '' || $scope.selected === undefined)) {
+                $scope.$apply(function () {
+                    console.log(el.getBoundingClientRect().top);
+                    $scope.dataRealTimeChildNumber = $scope.dataRealTimeChildNumber + 10;
+                    $scope.dataRealTimeChild = $scope.dataRealTime.slice(0, $scope.dataRealTimeChildNumber + 10);
+                });
+            }
         }
+    }
+
+    // When the scope is destroyed, unbind the infinate scroll function and scroll to the top of the page
+    $scope.$on("$destroy", function () {
+        // Scroll to top
+        $window.scrollTo(0, 0);
+
+        // Unbind scroll when leaving the view
+        angular.element($window).unbind("scroll", $scope.infinate);
     });
 
-    $scope.changeView = function (station) {
-        $window.scrollTo(0, 0);
-        $scope.infinate.unbind();
-        var stationPath = '/station/' + station;
-        $location.path(stationPath);
-    }
+    // Bind the infinate scroll function to window
+    angular.element($window).bind("scroll", $scope.infinate);
+
 
     // Calls to functions on initial load
     $scope.dataRealTime = $scope.dataRequest('stationsRealTime', $http);

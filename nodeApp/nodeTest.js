@@ -1,3 +1,6 @@
+// nodeTest.js
+// Node testing file for live agile development
+
 // BASE SETUP
 // Call the packages we need
 var application_root = __dirname,
@@ -41,67 +44,47 @@ var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 var currentTime = new Date();
 // Run hourly average
 console.log(currentTime + ' - Running hourly average ETL function');
-
-
 console.log(currentTime + ' - Running the daily average ETL function');
 
-var dayAverageEnd = new Date();
-var dayAverageStart = dayAverageEnd.getTime() - 86400000;
-dayAverageStart = new Date(dayAverageStart);
+var endTime = new Date();
+var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
+var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 
-StationsAveragesHours.aggregate([
-        {
-            $match: {
-                "timestamp": {
-                    $gte: dayAverageStart,
-                    $lt: dayAverageEnd
-                }
+// Search MongoDB for documents matching between the times 6:30-9:29AM
+Stations.aggregate({
+        $match: {
+            "timestamp": {
+                $gte: startTime,
+                $lt: endTime,
             }
-                },
-        {
-            $group: {
-                _id: "$stationId",
-                "name": {
-                    "$addToSet": "$name"
-                },
-                nbBikes: {
-                    $avg: "$nbBikes"
-                },
-                nbEmptyDocks: {
-                    $avg: "$nbEmptyDocks"
-                },
-                nbDocks: {
-                    $avg: "$nbDocks"
-                },
-                timestamp: {
-                    "$addToSet": dayAverageStart
-                }
-            }
-
-                }, {
-            $sort: {
-                ISODate: 1
-            }
-                }
-
-            ],
+        }
+    },
     function (err, station) {
         if (err) {
-            console.log(err)
+            console.log(err);
         } else {
+            // Sort the documents returned by nbBikes Desc
+            station.sort(function (a, b) {
+                return b.nbBikes - a.nbBikes;
+            });
 
-            for (var i = 0, len = station.length; i < len; i++) {
-                var stationSave = new StationsAveragesDays({
-                    timestamp: station[i].timestamp,
-                    stationId: station[i]._id,
-                    nbBikes: parseInt(station[i].nbBikes),
-                    nbEmptyDocks: parseInt(station[i].nbEmptyDocks),
-                    nbDocks: parseInt(station[i].nbDocks)
-                });
+            // Create an array to store / check stationIds have already been saved
+            var stationIds = [];
 
-                stationSave.save(function (err) {
-                    if (err) return console.error('Error:' + err);
-                });
+            // Create an array to push new results into
+            var stationArray = [];
+
+            // This loop is only storing one result per station (the one with the highest nbBikes value between 6:30-9:29AM)
+            for (var i = 0; i < station.length; i++) {
+                try {
+                    if (stationIds.indexOf(station[i].stationId) == -1) {
+                        // Save stationIds
+                        stationIds.push(station[i].stationId);
+
+                        // Save station entry
+                        stationArray.push(station[i]);
+                    }
+                } catch (err) {}
             }
         }
     });

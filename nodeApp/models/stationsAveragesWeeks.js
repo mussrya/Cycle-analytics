@@ -1,3 +1,6 @@
+// stationsAveragesWeeks.js
+// Schema for the averages weeks collection
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

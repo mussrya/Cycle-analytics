@@ -2,27 +2,27 @@
     <h4 id="dealing-with-specificity">{{stations.name}}</h4>
     <div class="panel-body">
         <div class="progress custom">
-            <span ng-if="stations.nbEmptyDocks!=0 && stations.nbBikes!=0"> 
+            <span ng-if="stations.nbEmptyDocks==0 || stations.nbBikes==0">
                                 <span ng-if="stations.nbEmptyDocks!=0">
-                                    <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
+                                    <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes / (stations.nbBikes + stations.nbEmptyDocks)) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbEmptyDocks + stations.nbBikes}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>
             </span>
-            <span ng-if="stations.nbEmptyDocks==0 || stations.nbBikes==0">
+            <span ng-if="stations.nbEmptyDocks!=0 && stations.nbBikes!=0"> 
                                 <span ng-if="stations.nbEmptyDocks!=0">
-                                    <div class="custom-float custom-pad" style="width: {{(100-(stations.nbBikes / stations.nbDocks) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
+                                    <div class="custom-float custom-pad custom-width" style="width: {{(100-(stations.nbBikes / (stations.nbBikes + stations.nbEmptyDocks)) * 100)}}%">{{stations.nbEmptyDocks}} slots</div>
                                 </span>
             <span ng-if="stations.nbBikes!=0">
-                                    <div class="progress-bar progress-bar-info custom-pad" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbDocks}}" style="width: {{(stations.nbBikes / stations.nbDocks) * 100}}%">
+                                    <div class="progress-bar progress-bar-info custom-pad custom-width" role="progressbar" aria-valuenow="{{stations.nbBikes}}" aria-valuemin="0" aria-valuemax="{{stations.nbEmptyDocks + stations.nbBikes}}" style="width: {{(stations.nbBikes / (stations.nbBikes + stations.nbEmptyDocks)) * 100}}%">
                                         {{stations.nbBikes}} bikes
                                     </div>
                                 </span>
             </span>
         </div>
-        <div class="btnLoad btn" ng-click="changeView(stations.stationId)">view trends and historical data</div>
+        <a class="btnLoad btn" href="/#/station/{{stations.stationId}}">view trends and historical data</a>
     </div>
 </div>

@@ -1,6 +1,7 @@
-// app.js
+// appTaskRunner.js
+// Used to get, process and save data from the TFL public API (ETL)
 
-// BASE SETUP
+// Base setup
 // Call the packages we need
 var application_root = __dirname,
     express = require("express"),
@@ -15,7 +16,6 @@ var port = process.env.PORT || 8081;
 // Create the express app
 var app = express();
 console.log(Date() + ' - Launching the server');
-
 
 // Database connection
 mongoose.connect('mongodb://localhost/cycleHire');
@@ -37,21 +37,19 @@ var StationsBestTimes = require('./models/stationsBestTimes.js');
 var StationsAveragesHours = require('./models/stationsAveragesHours.js');
 var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 
-// Backend for capture & prcoessing
+// Backend for get, process and saving of data
 // The function which is called as part of the setInterval to capture and store data into the database
 function getData() {
     dataCounter++;
     console.log(Date() + '- Getting data');
-    var req = http.get('http://www.tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml', function (res) {
-        // save the data
+    var req = http.get('http://s3-eu-west-1.amazonaws.com/tfl.pub/Serco/livecyclehireupdates.xml', function (res) {
+        // Convert from XML to JSON object
         var xml = '';
         res.on('data', function (chunk) {
             xml += chunk;
         });
-
         res.on('end', function () {
             console.log(Date() + '- Converting data to JSON');
-            // Bug fix for incorrect white spacing
             xml = xml.replace("\ufeff", "");
             parseString(xml, function (err, result) {
                 try {
@@ -59,8 +57,8 @@ function getData() {
                         if (lastCallTimeStamp != result.stations['$'].lastUpdate) {
                             lastCallTimeStamp = result.stations['$'].lastUpdate;
                             var stationsRealTime = result.stations['station'];
-                            // commented this out during testing
                             console.log('Calling the saveData function');
+                            // Send the JSON object to the saveData function
                             saveData(result.stations['station']);
                         } else {
                             console.log(Date() + ' - No new updates since last run');
@@ -74,26 +72,27 @@ function getData() {
             console.log(Date() + ' - Finished data capture run: ' + dataCounter);
         });
         res.on('error', function (err) {
-            // error in processing
-            console.log('Error retrieving all of the XML content'+err);
+            // Error in processing
+            console.log('Error retrieving all of the XML content' + err);
         });
     });
 
     req.on('error', function (err) {
-        console.log('Error requesting the XML data: '+err);
+        console.log('Error requesting the XML data: ' + err);
     });
 }
 
+// Function to save the grabbed data from the TFL public API
 function saveData(station) {
     console.log(Date() + ' - Adding the data to the collections');
     var entryDate = Date();
 
+    // Remove StationsLive database collection prior to importing new content
     console.log(Date() + ' - Removing previous station data');
-    // Remove StationsLive collection prior to importing new content
     StationsLives.remove({}, function () {});
 
-    console.log(Date() + ' - Saving data to the stations collection');
-    // Save data to database
+    // Save data to main Stations collection
+    console.log(Date() + ' - Saving data to the stations and stationsLives collection');
     for (var i = 0, len = station.length; i < len; i++) {
         var stationSave = new Stations({
             timestamp: entryDate,
@@ -108,7 +107,7 @@ function saveData(station) {
             if (err) return console.error('Error saving data to the stations collection: ' + err);
         });
 
-        console.log(Date() + ' - Saving data to the stationsLives collection');
+        // Save data to stationsLives collection
         var stationSave = new StationsLives({
             timestamp: entryDate,
             stationId: station[i].id,
@@ -125,13 +124,14 @@ function saveData(station) {
     }
 }
 
-// Will call the getData function every 30 seconds
+// Calls the getData function every minute to get the TFL public API data
 setInterval(function () {
     getData();
 }, 60000);
 
-// checkTime function which is used to run the ETL reports for hourly, daily and weekly averages as well as the cleanup of the previous day of live data
+// Function which is used to run the ETL reports for hourly, daily and weekly averages
 function checkTime() {
+    // Time calculations used to workout an older time
     var timeDifference = new Date().getTime() + 3600000;
     timeDifference = new Date(timeDifference);
     timeDifference = new Date(timeDifference.getFullYear(), timeDifference.getMonth(), timeDifference.getDate(), timeDifference.getHours());
@@ -140,14 +140,11 @@ function checkTime() {
         var currentTime = new Date();
         // Run hourly average
         console.log(currentTime + ' - Running hourly average ETL function');
-        // Calculating time an hour ago
         var hourAverageEnd = new Date();
         var hourAverageStart = hourAverageEnd.getTime() - 3600000;
         hourAverageStart = new Date(hourAverageStart);
 
-        // Query the stations collection
-        // search mongodb
-
+        // Query the Stations collection
         console.log(Date() + ' - Searching mongodb');
         Stations.aggregate([
                 {
@@ -189,6 +186,7 @@ function checkTime() {
                 if (err) {
                     console.log('Error querying the stations collection: ' + err)
                 } else {
+                    // Saves the data to the stationsAveragesHours collection
                     console.log(Date() + ' - Saving data to the stationsAveragesHours collection');
                     for (var i = 0, len = station.length; i < len; i++) {
                         var stationSave = new StationsAveragesHours({
@@ -206,10 +204,9 @@ function checkTime() {
                 }
             });
 
-        // If the hour is equal to midnight, then run the daily average function
+        // If the hour is equal to midnight, then run the daily average code
         if (currentTime.getHours() == 0) {
             console.log(currentTime + ' - Running the daily average ETL function');
-
             var dayAverageEnd = new Date();
             var dayAverageStart = dayAverageEnd.getTime() - 86400000;
             dayAverageStart = new Date(dayAverageStart);
@@ -255,6 +252,7 @@ function checkTime() {
                     if (err) {
                         console.log('Error querying the stationsAveragesHours collection: ' + err)
                     } else {
+                        // Saves the data to the stationsAveragesDays collection
                         console.log(currentTime + ' - Saving to the stationsAveragesDays collection');
                         for (var i = 0, len = station.length; i < len; i++) {
                             var stationSave = new StationsAveragesDays({
@@ -272,7 +270,7 @@ function checkTime() {
                     }
                 });
         } else if (currentTime.getHours() == 2) {
-            // If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
+            // WIP - If a new day has passed and the time is equal to 2am, then do cleanup of the previous day of data
             console.log(currentTime + ' - Running the daily cleanup function');
         }
 
@@ -283,8 +281,8 @@ function checkTime() {
     }, timeDifference);
 }
 
-console.log(Date() + ' - Running checkTime function for the first time');
 // Initiate the checkTime function when node loads, commented out for test purposes
+console.log(Date() + ' - Running checkTime function for the first time');
 checkTime();
 
 // Launch the server

@@ -1,56 +1,7 @@
-// Controller for the Station trends page
-app.controller('stationTrends', function ($scope, $http, $window, $location, $interval) {
+// stationController.js
+// Controller for the individual station page
 
-    // Options for the charts
-    $scope.defaults = {
-        // Boolean - Whether to animate the chart
-        animation: true,
-        // Number - Number of animation steps
-        animationSteps: 30,
-        // String - Animation easing effect
-        animationEasing: "easeOutQuart",
-        // Boolean - If we should show the scale at all
-        showScale: true,
-        // Boolean - If we want to override with a hard coded scale
-        scaleOverride: true,
-        // ** Required if scaleOverride is true **
-        // Number - The number of steps in a hard coded scale
-        scaleSteps: 20,
-        // Number - The value jump in the hard coded scale
-        scaleStepWidth: 5,
-        // Number - The scale starting value
-        scaleStartValue: 0,
-        // String - Colour of the scale line
-        scaleLineColor: "rgba(0,0,0,.1)",
-        // Number - Pixel width of the scale line
-        scaleLineWidth: 1,
-        // Boolean - Whether to show labels on the scale
-        scaleShowLabels: true,
-        // Interpolated JS string - can access value
-        scaleLabel: "<%=value%> bikes",
-        // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
-        scaleIntegersOnly: true,
-        // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-        scaleBeginAtZero: true,
-        // String - Scale label font declaration for the scale label
-        scaleFontFamily: "'Helvetica'",
-        // Number - Scale label font size in pixels
-        scaleFontSize: 12,
-        // String - Scale label font weight style
-        scaleFontStyle: "normal",
-        // String - Scale label font colour
-        scaleFontColor: "#666",
-        // Boolean - whether or not the chart should be responsive and resize when the browser does.
-        responsive: true,
-        // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-        maintainAspectRatio: false,
-        // String - Template string for single tooltips
-        tooltipTemplate: "<%= value %> bikes",
-        // String - Template string for multiple tooltips
-        multiTooltipTemplate: "<%= value %>",
-        // Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-        pointHitDetectionRadius: 1
-    }
+app.controller('stationTrends', function ($scope, $http, $window, $location, $interval, chartDefaults) {
 
     // Click handler for when a point on the chart is clicked (unused)
     $scope.onClick = function (points, evt) {
@@ -80,7 +31,10 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         $http.get($scope.host + '/stationLive/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationLiveData = JSON.parse(data);
 
-            $scope.stationLiveOptions = $scope.defaults;
+            $scope.stationLiveOptions = chartDefaults;
+            $scope.stationLiveOptions.scaleOverride = true;
+            $scope.stationLiveOptions.scaleStepWidth = 5;
+            $scope.stationLiveOptions.scaleStartValue = 0;
             $scope.stationLiveOptions.scaleSteps = $scope.stationLiveData[0].nbDocks / 5;
 
             // Defining the chart structure
@@ -118,6 +72,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
 
             // Updating the chart data
             $scope.data = chartData;
+            $scope.apply;
         }).
         error(function (data, status, headers, config) {
             $scope.errorMessage = true;
@@ -130,7 +85,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         $http.get($scope.host + '/stationHourly/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationHourlyData = JSON.parse(data);
 
-            $scope.stationHourlyOptions = $scope.defaults;
+            $scope.stationHourlyOptions = chartDefaults;
             $scope.stationHourlyOptions.scaleSteps = $scope.stationHourlyData[0].nbDocks / 5;
 
             // Defining the chart structure
@@ -179,7 +134,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
         $http.get($scope.host + '/stationDaily/' + $scope.stationId).success(function (data, status, headers, config) {
             $scope.stationDailyData = JSON.parse(data);
 
-            $scope.stationDailyOptions = $scope.defaults;
+            $scope.stationDailyOptions = chartDefaults;
             $scope.stationDailyOptions.scaleSteps = $scope.stationDailyData[0].nbDocks / 5;
 
             // Defining the chart structure
@@ -257,7 +212,7 @@ app.controller('stationTrends', function ($scope, $http, $window, $location, $in
     // Initial calls to get the data required
     $scope.stationData = $scope.stationRequest($http);
 
-    // Dummy array until the real functionality has been added
+    // WIP - Dummy array until the real functionality has been added
     $scope.bestTimes = [{
         day: 'Mon',
         morning: new Date(),
