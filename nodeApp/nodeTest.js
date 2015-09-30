@@ -50,80 +50,61 @@ var lookupEvening = [];
 var count = 0;
 
 // Search MongoDB for documents matching between the times 6:30-9:29AM
-
+console.log(Date() + ' - Connecting to the DB');
 // Database connection
-mongoose.connect('mongodb://localhost/cycleHire', function(){
-Stations.aggregate({
+mongoose.connect('mongodb://localhost/cycleHire', function () {
+    var cursor = Stations.aggregate({
         $match: {
             "timestamp": {
                 $gte: startTime,
                 $lt: endTime,
             }
         }
-    },
-    function (err, station) {
-        if (err) {
-            console.log(err);
-        } else {
-            station.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
+    }).cursor({
+        batchSize: 100000000
+    }).exec();
 
-            for (var i = 0, len = station.length; i < len; i++) {
-                lookupMorning[station[i].stationId] = station[i];
-            }
-            count = count + 1;
+    cursor.each(function (error, station) {
+        station.sort(function (a, b) {
+            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+        });
+
+        for (var i = 0, len = station.length; i < len; i++) {
+            lookupMorning[station[i].stationId] = station[i];
         }
+        count = count + 1;
     });
 
 
-var endTime = new Date();
-var endTime = new Date(endTime.getTime() - 172800000);
-var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
-var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-var day = 1;
+    var endTime = new Date();
+    var endTime = new Date(endTime.getTime() - 172800000);
+    var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+    var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
+    var day = 1;
 
-
-
-var cursor = Stations.aggregate({
+    var cursor = Stations.aggregate({
         $match: {
             "timestamp": {
                 $gte: startTime,
                 $lt: endTime,
             }
         }
-    }).cursor({ batchSize: 100000000 }).exec();
+    }).cursor({
+        batchSize: 100000000
+    }).exec();
 
-console.log(cursor);
+    cursor.each(function (error, station) {
+        station.sort(function (a, b) {
+            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+        });
 
-cursor.each(function(error, doc) {
-console.log(doc);
-});
-
-});
-console.log(Date() + ' - Connecting to the DB');
-
-
-
-function test(){
-    console.log('running');
-    /*
-    function (err, station) {
-        if (err) {
-            console.log(err);
-        } else {
-            station.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
-
-            for (var i = 0, len = station.length; i < len; i++) {
-                lookupEvening[station[i].stationId] = station[i];
-            }
-            count = count + 1;
+        for (var i = 0, len = station.length; i < len; i++) {
+            lookupEvening[station[i].stationId] = station[i];
         }
-    }
-    */
-}
+        count = count + 1;
+    });
+
+});
 
 
 function saveResults() {
