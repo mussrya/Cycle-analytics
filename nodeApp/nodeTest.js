@@ -104,7 +104,7 @@ Stations.aggregate({
         }
     });
 */
-
+ console.log('///////');
 for (var i = 0; i < 900; i++) {
     if (lookupMorning[i] && lookupAfternoon[i]) {
         console.log('///////');
