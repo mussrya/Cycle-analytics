@@ -101,11 +101,8 @@ Stations.aggregate({
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            
-            
             for (var i = 0, len = station.length; i < len; i++) {
-                lookupEvening[station[i].stationId] = station[i];
-                //console.log(lookupEvening[station[i].stationId]);
+                lookupMorning[station[i].stationId] = station[i];
             }
             count = count + 1;
         }
