@@ -43,8 +43,6 @@ var count = 0;
 
 function setCount() {
     setTimeout(function () {
-        console.log(lookupMorning);
-        console.log(lookupEvening);
         count = count + 1;
     }, 20000);
 }
