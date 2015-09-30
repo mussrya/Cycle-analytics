@@ -63,33 +63,29 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
     }).cursor({
         batchSize: 100000000
     }).exec();
-    
-    function test(){
-        setTimeout(function(){console.log(results);}, 10000);
+
+    function setCount() {
+        setTimeout(function () {
+            count = count + 1;
+        }, 10000);
     }
 
     var results = [];
     console.log(cursor);
     cursor.each(function (error, station) {
-        results.push(station);
-        //console.log(station);
-        // Need a call back here to allow the console.log(results) further down to have results
-        
+        lookupMorning.push(station);
     });
-    
+
     results.sort(function (a, b) {
-            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-        });
+        return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+    });
 
-        for (var i = 0, len = results.length; i < len; i++) {
-            lookupMorning[results[i].stationId] = results[i];
-        }
-        
-        setTimeout(function(){console.log(cursor);}, 5000);
-        count = count + 1;
-    test();
+    for (var i = 0, len = results.length; i < len; i++) {
+        lookupMorning[results[i].stationId] = results[i];
+    }
 
-/*
+    setCount();
+
     var endTime = new Date();
     var endTime = new Date(endTime.getTime() - 172800000);
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
@@ -107,17 +103,58 @@ mongoose.connect('mongodb://localhost/cycleHire', function () {
         batchSize: 100000000
     }).exec();
 
-    cursor.each(function (error, station) {
-        station.sort(function (a, b) {
-            return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-        });
+    function setCount() {
+        setTimeout(function () {
+            count = count + 1;
+        }, 10000);
+    }
 
-        for (var i = 0, len = station.length; i < len; i++) {
-            lookupEvening[station[i].stationId] = station[i];
-        }
-        count = count + 1;
+    var results = [];
+    cursor.each(function (error, station) {
+        lookupEvening.push(station);
     });
-*/
+
+    results.sort(function (a, b) {
+        return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+    });
+
+    for (var i = 0, len = results.length; i < len; i++) {
+        lookupEvening[results[i].stationId] = results[i];
+    }
+
+    setCount();
+
+
+    /*
+    
+        var endTime = new Date();
+        var endTime = new Date(endTime.getTime() - 172800000);
+        var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+        var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
+        var day = 1;
+
+        var cursor = Stations.aggregate({
+            $match: {
+                "timestamp": {
+                    $gte: startTime,
+                    $lt: endTime,
+                }
+            }
+        }).cursor({
+            batchSize: 100000000
+        }).exec();
+
+        cursor.each(function (error, station) {
+            station.sort(function (a, b) {
+                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+            });
+
+            for (var i = 0, len = station.length; i < len; i++) {
+                lookupEvening[station[i].stationId] = station[i];
+            }
+            count = count + 1;
+        });
+    */
 });
 
 
