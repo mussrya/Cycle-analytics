@@ -120,6 +120,7 @@ function saveResults() {
             }
         }
     } else {
+        console.log('Re-running saveResults ' + count);
         setTimeout(function () {
             saveResults();
         }, 1000);
