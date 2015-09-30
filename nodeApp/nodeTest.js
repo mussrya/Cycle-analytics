@@ -40,14 +40,13 @@ var StationsAveragesHours = require('./models/stationsAveragesHours.js');
 var StationsAveragesDays = require('./models/stationsAveragesDays.js');
 var StationsAveragesWeeks = require('./models/stationsAveragesWeeks.js');
 
-
+/*
 var currentTime = new Date();
-
 var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
 var day = endTime.getDay();
-
+*/
 
 var lookupMorning = [];
 var lookupEvening = [];
@@ -79,10 +78,11 @@ Stations.aggregate({
     });
 */
 
+var currentTime = new Date();
 var endTime = new Date();
 var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
 var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-
+var day = endTime.getDay();
 
 Stations.aggregate({
         $match: {
@@ -96,11 +96,12 @@ Stations.aggregate({
         if (err) {
             console.log(err);
         } else {
+            console.log(station);
             station.sort(function (a, b) {
                 return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
             });
 
-            console.log(station);
+            
             
             for (var i = 0, len = station.length; i < len; i++) {
                 lookupEvening[station[i].stationId] = station[i];
