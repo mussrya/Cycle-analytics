@@ -285,17 +285,16 @@ function checkTime() {
     }, timeDifference);
 }
 
-
+var lookupMorning = [];
+var lookupEvening = [];
+var count = 0;
+var endTime = new Date();
+var day = endTime.getDay();
 
 
 function test() {
     // Runs the best times function for morning
     console.log(currentTime + ' - Runs the best times function');
-
-    var lookupMorning = [];
-    var lookupEvening = [];
-    var count = 0;
-    var day = 1;
 
     var currentTime = new Date();
     var endTime = new Date();
@@ -395,7 +394,9 @@ function saveResults() {
 
 }
 
-setTimeout(function(){test();},20000);
+setTimeout(function () {
+    test();
+}, 20000);
 
 // Initiate the checkTime function when node loads, commented out for test purposes
 console.log(Date() + ' - Running checkTime function for the first time');
