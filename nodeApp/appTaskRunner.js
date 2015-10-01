@@ -270,110 +270,7 @@ function checkTime() {
                     }
                 });
 
-            // Runs the best times function for morning
-            console.log(currentTime + ' - Runs the best times function for morning peak');
 
-            var lookupMorning = [];
-            var lookupEvening = [];
-            var count = 0;
-            var day = 1;
-
-            function setCount() {
-                setTimeout(function () {
-                    count = count + 1;
-                }, 20000);
-            }
-
-            var currentTime = new Date();
-            var endTime = new Date();
-            var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
-            var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
-
-            var cursor = Stations.aggregate({
-                $match: {
-                    "timestamp": {
-                        $gte: startTime,
-                        $lt: endTime,
-                    }
-                }
-            }).cursor({
-                batchSize: 100000000
-            }).exec();
-
-            var results = [];
-            cursor.each(function (error, station) {
-                lookupMorning.push(station);
-            });
-
-            results.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
-
-            for (var i = 0, len = results.length; i < len; i++) {
-                lookupMorning[results[i].stationId] = results[i];
-            }
-
-            setCount();
-
-            var endTime = new Date();
-            var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
-            var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
-
-            var cursor = Stations.aggregate({
-                $match: {
-                    "timestamp": {
-                        $gte: startTime,
-                        $lt: endTime,
-                    }
-                }
-            }).cursor({
-                batchSize: 100000000
-            }).exec();
-
-            var results = [];
-            cursor.each(function (error, station) {
-                lookupEvening.push(station);
-            });
-
-            results.sort(function (a, b) {
-                return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
-            });
-
-            for (var i = 0, len = results.length; i < len; i++) {
-                lookupEvening[results[i].stationId] = results[i];
-            }
-
-            setCount();
-
-            function saveResults() {
-                if (count == 2) {
-                    for (var i = 0; i < 900; i++) {
-                        if (lookupMorning[i]) {
-                            var stationSave = new StationsBestTimes({
-                                stationId: lookupMorning[i].stationId,
-                                day: day,
-                                times: {
-                                    morning: lookupMorning[i].timestamp,
-                                    evening: lookupEvening[i].timestamp
-                                }
-                            });
-
-                            stationSave.save(function (err) {
-                                if (err) return console.error('Error:' + err);
-                            });
-                        }
-                    }
-                    console.log('Results Saved');
-                } else {
-                    console.log('Re-running saveResults ' + count);
-                    setTimeout(function () {
-                        saveResults();
-                    }, 1000);
-                }
-
-            }
-
-            saveResults();
 
 
         } else if (currentTime.getHours() == 2) {
@@ -387,6 +284,118 @@ function checkTime() {
 
     }, timeDifference);
 }
+
+
+
+
+function test() {
+    // Runs the best times function for morning
+    console.log(currentTime + ' - Runs the best times function');
+
+    var lookupMorning = [];
+    var lookupEvening = [];
+    var count = 0;
+    var day = 1;
+
+    var currentTime = new Date();
+    var endTime = new Date();
+    var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
+    var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
+
+    var cursor = Stations.aggregate({
+        $match: {
+            "timestamp": {
+                $gte: startTime,
+                $lt: endTime,
+            }
+        }
+    }).cursor({
+        batchSize: 100000000
+    }).exec();
+
+    var results = [];
+    cursor.each(function (error, station) {
+        lookupMorning.push(station);
+    });
+
+    results.sort(function (a, b) {
+        return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+    });
+
+    for (var i = 0, len = results.length; i < len; i++) {
+        lookupMorning[results[i].stationId] = results[i];
+    }
+
+    setCount();
+
+    var endTime = new Date();
+    var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
+    var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
+
+    var cursor = Stations.aggregate({
+        $match: {
+            "timestamp": {
+                $gte: startTime,
+                $lt: endTime,
+            }
+        }
+    }).cursor({
+        batchSize: 100000000
+    }).exec();
+
+    var results = [];
+    cursor.each(function (error, station) {
+        lookupEvening.push(station);
+    });
+
+    results.sort(function (a, b) {
+        return parseFloat(a.nbBikes) - parseFloat(b.nbBikes);
+    });
+
+    for (var i = 0, len = results.length; i < len; i++) {
+        lookupEvening[results[i].stationId] = results[i];
+    }
+
+    setCount();
+
+    saveResults();
+}
+
+function setCount() {
+    setTimeout(function () {
+        count = count + 1;
+    }, 20000);
+}
+
+function saveResults() {
+    if (count == 2) {
+        for (var i = 0; i < 900; i++) {
+            if (lookupMorning[i]) {
+                var stationSave = new StationsBestTimes({
+                    stationId: lookupMorning[i].stationId,
+                    day: day,
+                    times: {
+                        morning: lookupMorning[i].timestamp,
+                        evening: lookupEvening[i].timestamp
+                    }
+                });
+
+                stationSave.save(function (err) {
+                    if (err) return console.error('Error:' + err);
+                });
+            }
+        }
+        console.log('Results Saved');
+    } else {
+        console.log('Re-running saveResults ' + count);
+        setTimeout(function () {
+            saveResults();
+        }, 1000);
+    }
+
+}
+
+setTimeout(function(){test();},20000);
 
 // Initiate the checkTime function when node loads, commented out for test purposes
 console.log(Date() + ' - Running checkTime function for the first time');
