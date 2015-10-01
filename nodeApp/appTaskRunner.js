@@ -270,7 +270,7 @@ function checkTime() {
                     }
                 });
 
-
+            getBestTimeData();
 
 
         } else if (currentTime.getHours() == 2) {
@@ -292,11 +292,10 @@ var endTime = new Date();
 var day = endTime.getDay();
 
 
-function test() {
-    // Runs the best times function for morning
-    console.log(currentTime + ' - Runs the best times function');
-
+function getBestTimeData() {
+    // Runs the best times function for the morning
     var currentTime = new Date();
+    console.log(currentTime + ' - Runs the best times function');
     var endTime = new Date();
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 06, 30);
     var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 09, 29);
@@ -327,6 +326,7 @@ function test() {
 
     setCount();
 
+    // Runs the best times function for the evening
     var endTime = new Date();
     var startTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 16, 00);
     var endTime = new Date(endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), 18, 59);
@@ -393,10 +393,6 @@ function saveResults() {
     }
 
 }
-
-setTimeout(function () {
-    test();
-}, 20000);
 
 // Initiate the checkTime function when node loads, commented out for test purposes
 console.log(Date() + ' - Running checkTime function for the first time');
