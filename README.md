@@ -28,17 +28,9 @@ Cycle Analytics makes use of multiple frameworks & libraries as shown below:
 
 ![HLD](http://cycleanalytics.io/assets/img/cycleanalytics.png)
 
-### Installation
-
-TBD
-
 ### Development
 
 Want to contribute? Feel free to submit a pull request.
-
-### Todo's
-
-See the public Trello board here for the current tasks & bugs outstanding: https://trello.com/b/xgTHXbhR/cycleanalytics
 
 ### Additional links
 * [Author's LinkedIn profile page](http://uk.linkedin.com/in/ryanmusselwhite/en) - shameless plug of my LinkedIn profile
